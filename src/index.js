@@ -1,7 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles/index.css';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import EmployeesTable from './js/components/EmployeesTable';
+import './styles/index.css';
+import allReducers from './js/reducers/index';
+import Login from "./js/components/Login";
+import Dashboard from "./js/components/Dashboard";
+import EmployeesPage from './js/components/EmployeesPage';
 
-ReactDOM.render(<EmployeesTable />, document.getElementById('root'));
+const store=createStore(allReducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+console.log(store.getState());
+
+ReactDOM.render(<Provider store={store}>
+        <BrowserRouter>
+            <Switch>
+                <Route exact path='/' component={Login}/>
+                <Route path='/dashboard' component={Dashboard}/>
+                <Route path="/employees/employeeID" component={EmployeesPage}/>
+            </Switch>
+        </BrowserRouter>
+    </Provider>,
+    document.getElementById('root'));
