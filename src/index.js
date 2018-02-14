@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles/index.css';
-import App from './js/components/App';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import EmployeesTable from './js/components/EmployeesTable';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<EmployeesTable />, document.getElementById('root'));
