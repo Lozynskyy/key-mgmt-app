@@ -1,0 +1,22 @@
+.vvp-new-key {
+   width: 75%;
+}
+
+.vvp-new-key__content{
+    border: 1px solid black;
+    height: 60px;
+    width:80% ;
+    display: flex;
+
+}
+
+.vvp-new-key__id{
+    border: 1px solid black;
+    width:20%;
+    height: 100%;
+}
+
+.vvp-new-key__tag-input{
+    width: 80%;
+    height: 100%;
+}
