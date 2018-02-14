@@ -17,7 +17,7 @@ selectKey(){
   render() {
         return (
             <div className="row">
-                <div className="col-xl-8 col-lg-10 col-md-12 col-sm-12 ">
+                <div className="col-xl-8 col-lg-10 col-md-12 col-sm-12">
                     <div className="table-responsive">
                         <table className="table table-bordered">
                             <tbody>

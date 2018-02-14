@@ -7,6 +7,8 @@ export  default class EmployeesPage extends React.Component{
     }
     render(){
         return (
+            <div className="row">
+                <div className="col-xl-8 col-lg-10 col-md-12 col-sm-12 ">
             <table className="table table-bordered">
                 <thead>
                     <tr>
@@ -28,10 +30,14 @@ export  default class EmployeesPage extends React.Component{
 
                 <tbody>
                     <tr>
-                        <td colSpan='4'><NewKey/></td>
+                        <td colSpan='4'>
+                            <NewKey/>
+                        </td>
                     </tr>
                 </tbody>
             </table>
+                </div>
+            </div>
         )
     }
 }
