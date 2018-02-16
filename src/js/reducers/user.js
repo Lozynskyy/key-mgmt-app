@@ -1,7 +1,8 @@
 const initialState={
-	data:'',
+	token:'',
 	loading:false,
-	loaded:false
+	loaded:false,
+	link:'/dashboard'
 };
 
 export default function (state=initialState, action) {
@@ -16,14 +17,16 @@ export default function (state=initialState, action) {
 			...state,
 			loading:false,
 			loaded:true,
-			data:action.payload
+			token:action.payload,
+			link:'/dashboard'
 		};
+
 	case  'LOGIN_USER_FAILURE':
 		return{
 			...state,
 			loading:false,
 			loaded:false,
-			data:[]
+			token:''
 		};
 	default:
 		return state;
