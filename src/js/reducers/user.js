@@ -1,10 +1,10 @@
-import Dashboard from "../components/Dashboard";
+import Dashboard from '../components/Dashboard';
 
 const initialState={
 	token:'',
 	loading:false,
 	loaded:false,
-    isSignedIn:false
+	isSignedIn:false
 };
 
 export default function (state=initialState, action) {

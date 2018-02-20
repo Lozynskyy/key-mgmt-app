@@ -1,11 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import Dashboard from './Dashboard';
 import {postUserData} from '../actions/login';
 import { BrowserRouter, Route, Link, Switch,Redirect } from 'react-router-dom';
-import store from '../store/configurateStore';
-
-
 
 
 
@@ -22,15 +18,15 @@ class Login extends React.Component{
 		this.handlePassword=this.handlePassword.bind(this);
 	}
 	signIn(e) {
-        e.preventDefault();
-        if(this.state.password && this.state.username) {
-            this.props.signin(this.state.username,this.state.password);
-        }
-        else{
-            alert('Fill all inputs');
-        }
+		e.preventDefault();
+		if(this.state.password && this.state.username) {
+			this.props.signin(this.state.username,this.state.password);
+		}
+		else{
+			alert('Fill all inputs');
+		}
 
-    }
+	}
 	handleUsername(event){
 		this.setState({
 			username:event.target.value
@@ -57,23 +53,6 @@ class Login extends React.Component{
 		);
 	}
 }
-(function func1(){
-    let myHeaders = new Headers();
-
-    myHeaders.set("Content-Type", "application/json");
-    let myInit = {
-        method:"POST",
-        headers:{
-        	Accept:"application/json",
-			"Content-Type":"application/json"},
-        mode: 'no-cors',
-        body:JSON.stringify({"_username":"Pasha1","_password":"123"})
-
-    };
-
-
-    fetch('https://api-test.opendoors.od.ua:1013/login_check',myInit).then((response) =>{});
-})();
 
 function mapStateToProps(state){
 	return {
