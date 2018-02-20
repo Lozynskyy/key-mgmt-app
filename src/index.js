@@ -12,7 +12,7 @@ import './styles/index.css';
 import allReducers from './js/reducers/index';
 import Login from "./js/components/Login";
 import Dashboard from "./js/components/Dashboard";
-import EmployeesPage from './js/components/EmployeesPage';
+import LocksPage from './js/components/LocksPage';
 import EmployeesTable from './js/components/EmployeesTable';
 
 const history = createBrowserHistory();
@@ -26,7 +26,7 @@ ReactDOM.render(<Provider store={store}>
             <Switch>
                 <Route exact path='/' component={Login}/>
                 <Route path='/dashboard' component={Dashboard}/>
-                <Route path="/employees/employeeID" component={EmployeesPage}/>
+                <Route path="/locks" component={LocksPage}/>
                 <Route path="/employees" component={EmployeesTable}/>
             </Switch>
         </ConnectedRouter>
