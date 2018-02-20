@@ -11,6 +11,9 @@ import Dashboard from './js/components/Dashboard';
 import EmployeesPage from './js/components/EmployeesPage';
 import LocksPage from './js/components/LocksPage';
 
+console.log(store.getState());
+
+
 
 ReactDOM.render(
 	<Provider store={store}>
@@ -19,7 +22,6 @@ ReactDOM.render(
 			<Route exact path='/' component={Login}/>
 			<Route path='/dashboard' component={Dashboard}/>
 			<Route path="/employees/employeeID" component={EmployeesPage}/>
-			<Route path='/locks/locksID/keys' component={LocksPage}/>
 		</Switch>
 	</BrowserRouter>
 </Provider>,

@@ -1,8 +1,10 @@
+import Dashboard from "../components/Dashboard";
+
 const initialState={
 	token:'',
 	loading:false,
 	loaded:false,
-	link:'/dashboard'
+    isSignedIn:false
 };
 
 export default function (state=initialState, action) {
@@ -18,7 +20,7 @@ export default function (state=initialState, action) {
 			loading:false,
 			loaded:true,
 			token:action.payload,
-			link:'/dashboard'
+			isSignedIn:true
 		};
 
 	case  'LOGIN_USER_FAILURE':

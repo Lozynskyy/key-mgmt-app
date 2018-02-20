@@ -1,4 +1,6 @@
 import React from 'react';
+import store from '../store/configurateStore';
+
 
 
 class Dashboard extends React.Component {
@@ -6,6 +8,7 @@ class Dashboard extends React.Component {
 		super();
 		this.selectUser=this.selectUser.bind(this);
 		this.selectKey=this.selectKey.bind(this);
+		this.signInCheck=this.signInCheck.bind(this);
 	}
 	selectUser(){
 		alert('User was selected');
@@ -14,9 +17,13 @@ class Dashboard extends React.Component {
 	selectKey(){
 		alert('key was selected');
 	}
+	signInCheck(){
+		//console.log(store.getState().user)
+	}
 	render() {
-		return (
+        return (
 			<div className="row">
+				{this.signInCheck()}
 				<div className="col-xl-8 col-lg-10 col-md-12 col-sm-12">
 					<div className="table-responsive">
 						<table className="table table-bordered">

@@ -7,4 +7,5 @@ import reducers from '../reducers/index';
 const logicMiddleware = createLogicMiddleware(actions);
 const configureStore=createStore(reducers,composeWithDevTools(applyMiddleware(logicMiddleware)));
 
+
 export default configureStore;
