@@ -1,8 +1,31 @@
 import React from 'react';
+import EmployeesListElement from './EmployeesListElement';
+import { connect } from 'react-redux';
+import {Pagination} from 'react-bootstrap';
+import {push} from 'react-router-redux';
+import { queryString } from 'query-string';
 
 class EmplyeesTable extends React.Component{
-	render(){
+	constructor(props){
+		super(props);
+		this.changePage = this.changePage.bind(this);
+	}
+	renderPages(pages) {
+		const result = [];
+		for (let number = 1; number <= pages; number++) {
+      result.push(<Pagination.Item key={number} onClick={() => this.changePage(number)}>{number}</Pagination.Item>);
+    }
+    return result;
+	}
+	render()
+	{
+		const per_page = 10;
+		const pages = Math.ceil(this.props.employees.length / per_page);
+		const current_page = this.props.page;
+		const start_offset = (current_page - 1) * per_page;
+		let start_count = 0;
 		return(
+			<div>
 			<table className="table table-bordered table-hover table-striped">
 			  <thead>
 			    <tr>
@@ -15,30 +38,37 @@ class EmplyeesTable extends React.Component{
 			    </tr>
 			  </thead>
         <tbody>
-          <tr>
-            <td>User_ID1</td>
-            <td>Vasyok1</td>
-            <td>Vasya1</td>
-          </tr>
-          <tr>
-            <td>User_ID2</td>
-            <td>Vasyok2</td>
-            <td>Vasya2</td>
-          </tr>
-          <tr>
-            <td>User_ID3</td>
-            <td>Vasyok3</td>
-            <td>Vasya3</td>
-          </tr>
-          <tr>
-            <td>User_ID4</td>
-            <td>Vasyok4</td>
-            <td>Vasya4</td>
-          </tr>
+          {this.props.employees.map((employee, index) => {
+            	if (index >= start_offset && start_count < per_page) {
+            		start_count ++;
+            		return(
+                <EmployeesListElement key={employee.id} employee={employee}/>
+              );
+            	}
+            })}
         </tbody>
       </table>
+      <Pagination className="employees-pagination pull-right" bsSize="medium">
+      {this.renderPages(pages)}
+      </Pagination>
+
+      </div>
 			);
+	}
+
+changePage(pagen)
+	{
+		this.props.dispatch(push('/dashboard/?page=' + pagen));
 	}
 }
 
-export default EmplyeesTable;
+function mapStateToProps(state){
+	const queryString = require('query-string');
+	const parsed = queryString.parse(state.routing.location.search);
+	return({
+		employees: state.employeesInfo.employeesInfo,
+		page: Number(parsed.page) || 1,
+	});
+}
+
+export default connect(mapStateToProps)(EmplyeesTable);
