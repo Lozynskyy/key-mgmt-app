@@ -1,42 +1,48 @@
-import { createLogic } from 'redux-logic';
+import { createLogic } from "redux-logic";
+import {LOGIN_USER,LOGIN_USER_SUCCESS,LOGIN_USER_FAILURE} from "../constants";
+import {push} from "react-router-redux";
+
 
 export function postUserData(username,password) {
-	console.log(username+' '+password);
-	//TODO:pass data into redux-logic
-	return {
-		type: 'LOGIN_USER',
-	};
+    return {
+        type: LOGIN_USER,
+        username,
+        password
+    };
 }
 const postUserDataLogic = createLogic({
-	type: 'LOGIN_USER',
-	latest: true,
-	process({}, dispatch, done) {//TODO:{}pass here password and username. view documentation
-		const path='http://localhost:8002/user';
-		let myInit = {
-			method: 'POST',
-			mode: 'cors',
-			//body:{"username":"Pasha","password":"123"}
-		};
-		fetch(path,myInit)
-			.then(res => res.json())
-			.then((res) => {
-				console.log(res);
-				dispatch({
-					type: 'LOGIN_USER_SUCCESS',
-					payload: res._id
-					//TODO: change on 'token'
-					//TODO: перенаправить на другой url
-				});
-				done();
-			})
-			.catch((res) => {
-				dispatch({
-					type: 'LOGIN_USER_FAILURE',
-					payload: res
-				});
-				done();
-			});
-	}
+    type: LOGIN_USER,
+    latest: true,
+    process({getState,action}, dispatch, done) {
+        const path="https://api-test.opendoors.od.ua:1013/login_check";
+        let myInit = {
+            method: "POST",
+            mode: "cors",
+            headers:{
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body:JSON.stringify({"_username":action.username,"_password":action.password})
+        };
+        fetch(path,myInit)
+            .then(res => res.json())
+            .then((res) => {
+                console.log(res);
+                dispatch({
+                    type: LOGIN_USER_SUCCESS,
+                    payload: res.token
+                });
+                push("/dashboard");
+                done();
+            })
+            .catch((res) => {
+                dispatch({
+                    type: LOGIN_USER_FAILURE,
+                    payload: res
+                });
+                done();
+            });
+    }
 });
 
 export default [postUserDataLogic];

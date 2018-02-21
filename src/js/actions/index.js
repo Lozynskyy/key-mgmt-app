@@ -1,7 +1,7 @@
-import loginUser from './login';
+import loginUser from "./login";
 
 const actions=[
-	...loginUser
+    ...loginUser
 ];
 
 export default actions;
