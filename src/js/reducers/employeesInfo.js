@@ -1,18 +1,20 @@
+import {ADD_EMPLOYEE} from "../constants";
+
 const employeesArr = [];
 for(let i=0; i<45; i++){
-	employeesArr.push({
-		id: i,
-    surname: 'John ' + i,
-    name: 'Walk ' + i,
-	});	
+    employeesArr.push({
+        id: i,
+        surname: "John " + i,
+        name: "Walk " + i,
+    });	
 }
 const initialState={
-	employeesInfo: employeesArr,
+    employeesInfo: employeesArr,
 };
 
 function employeesInfo(state = initialState, action){
-	switch(action.type){
-		case 'ADD_EMPLOYEE':
+    switch(action.type){
+    case ADD_EMPLOYEE:
 		  return [
 		    ...state,
 		    {
@@ -20,10 +22,10 @@ function employeesInfo(state = initialState, action){
 		    	surname: action.surname,
 		    	name: action.name,
 		    }
-		  ]
-		default:
-		  return state
-	}
+		  ];
+    default:
+		  return state;
+    }
 }
 
 export default employeesInfo;
