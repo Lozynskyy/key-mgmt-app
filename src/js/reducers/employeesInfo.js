@@ -1,5 +1,5 @@
 const employeesArr = [];
-for(let i=0; i<45; i++){
+for(let i=0; i<125; i++){
 	employeesArr.push({
 		id: i,
     surname: 'John ' + i,

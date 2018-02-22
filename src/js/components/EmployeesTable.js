@@ -13,7 +13,7 @@ class EmplyeesTable extends React.Component{
 	renderPages(pages) {
 		const result = [];
 		for (let number = 1; number <= pages; number++) {
-      result.push(<Pagination.Item key={number} onClick={() => this.changePage(number)}>{number}</Pagination.Item>);
+      result.push(<Pagination.Item key={number} active={number === this.props.page} onClick={() => this.changePage(number)}>{number}</Pagination.Item>);
     }
     return result;
 	}
