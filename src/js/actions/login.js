@@ -1,6 +1,6 @@
 import { createLogic } from "redux-logic";
 import {LOGIN_USER,LOGIN_USER_SUCCESS,LOGIN_USER_FAILURE} from "../constants";
-import {push} from "react-router-redux";
+import {history} from "../configurateStore/history";
 
 
 export function postUserData(username,password) {
@@ -32,7 +32,7 @@ const postUserDataLogic = createLogic({
                     type: LOGIN_USER_SUCCESS,
                     payload: res.token
                 });
-                push("/dashboard");
+                history.push({pathname:"/dashboard"});
                 done();
             })
             .catch((res) => {
