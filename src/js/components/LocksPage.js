@@ -1,19 +1,26 @@
 import React from 'react';
+import { Button, Modal, Label } from 'react-bootstrap'
+
 
 export  default class LocksPage extends React.Component{
     constructor(){
         super();
-        this.deleteKey=this.deleteKey.bind(this);
-        this.updateKey=this.updateKey.bind(this);
+        
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        
+        this.state = {
+            show: false
+        };
     }
     
-    deleteKey(e){
-        console.log(e.target.id);
-    }
-    
-    updateKey(e){
-        console.log(e.target.id);
-    }
+    handleClose() {
+    this.setState({ show: false });
+  }
+
+  handleShow() {
+    this.setState({ show: true });
+  }
     
     render(){
          const data = [
@@ -23,9 +30,11 @@ export  default class LocksPage extends React.Component{
         
         var tableTemplate = data.map((item) => {
             return <tr key={item.id}><td>{item.id}</td><td>{item.tag}</td><td>{item.description}</td><td>{item.employee}</td>
-                <td><button className="btn-danger" id={item.id} onClick={this.deleteKey} data-toggle="modal" data-target="#deleteModal">Delete</button>               
-                <button className="btn-warning" id={item.id} onClick={this.updateKey} data-toggle="modal" data-target="#updateModal">Update</button></td>   
-                </tr>
+                <td>
+                    <Button bsStyle="danger" onClick={this.handleShow}>Delete</Button>
+                    <Button bsStyle="warning">Update</Button>
+                </td>   
+            </tr>
         });
         
         return (
@@ -46,6 +55,18 @@ export  default class LocksPage extends React.Component{
                     {tableTemplate}
                 </tbody>
             </table>
+            <Modal show={this.state.show} onHide={this.handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm the action</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>Are you sure you want to delete the key?</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button bsStyle="success" onClick={this.handleClose}>Yes</Button>
+                    <Button bsStyle="danger" onClick={this.handleClose}>No</Button>
+                </Modal.Footer>
+            </Modal>
             </div>
             </div>
         )
