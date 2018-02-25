@@ -5,6 +5,8 @@ import locks from "./locks";
 import createEmployee from "./createEmployee";
 import { routerReducer } from "react-router-redux";
 import user from "./user";
+import { reducer as formReducer } from "redux-form";
+
 
 const allReducers=combineReducers({
     employees: employees,
@@ -12,7 +14,8 @@ const allReducers=combineReducers({
     user: user,
     employeesInfo: employeesInfo,
     createEmployee:createEmployee,
-    routing: routerReducer
+    routing: routerReducer,
+    form: formReducer
 });
 
 export default allReducers;

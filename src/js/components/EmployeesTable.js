@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import {Pagination} from "react-bootstrap";
 import {push} from "react-router-redux";
 import { queryString } from "query-string";
-import AddEmployee from "./AddEmployee";
+import AddEmployee from "./EmployeeSubmit";
 
 class EmplyeesTable extends React.Component{
     constructor(props){

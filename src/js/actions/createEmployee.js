@@ -1,13 +1,10 @@
 import {CREATE_EMPLOYEE} from "../constants";
 
 
-export function createEmployee(token,surname,name,age) {
+export function createEmployee(values) {
     return {
         type: CREATE_EMPLOYEE,
-        token,
-        surname,
-        name,
-        age
+        values
     };
 }
 

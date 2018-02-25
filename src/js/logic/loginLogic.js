@@ -1,6 +1,6 @@
 import {LOGIN_USER, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS} from "../constants";
-import {history} from "../configurateStore/history";
 import {createLogic} from "redux-logic";
+import {history} from "../configurateStore/history";
 
 const postUserDataLogic = createLogic({
     type: LOGIN_USER,
@@ -9,15 +9,9 @@ const postUserDataLogic = createLogic({
         const path="https://api-test.opendoors.od.ua:1013/login_check";
         let myInit = {
             method: "POST",
-            mode: "cors",
-            headers:{
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
             body:JSON.stringify({"_username":action.username,"_password":action.password})
         };
         fetch(path,myInit)
-            .then(res => res.json())
             .then((res) => {
                 console.log(res);
                 dispatch({
