@@ -1,10 +1,11 @@
-import React from 'react';
-import EmployeesTable from './EmployeesTable';
+import React from "react";
+
+import EmployeesTable from "./EmployeesTable";
 
 
 class Dashboard extends React.Component {
-  render() 
-  {
+    render() 
+    {
         return (
             <div className="row">
                 <div className="col-xl-8 col-lg-10 col-md-12 col-sm-12 ">
@@ -13,7 +14,7 @@ class Dashboard extends React.Component {
                     </div>
                 </div>
             </div>
-        )
-  }
+        );
+    }
 }
 export default Dashboard;
