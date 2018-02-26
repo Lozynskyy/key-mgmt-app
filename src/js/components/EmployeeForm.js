@@ -33,13 +33,13 @@ const EmployeeForm = (props) => {
                 validate={[ required, max_length ]}
             />
             <Field name="surname" type="text"
-                component={renderField} label="Email"
+                component={renderField} label="Surname"
                 validate={[required,max_length]}
             />
             <Field name="age" type="number"
                 component={renderField} label="Age"
-                validate={[ required, number, minAge ]}
-                warn={tooOld}
+                validate={[ required, number,tooOld, minAge ]}
+
             />
             <div>
                 <Button bsStyle="success" bsSize="small" type="submit" disabled={submitting}>Submit</Button>

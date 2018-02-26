@@ -1,7 +1,7 @@
 import fetchIntercept from "fetch-intercept";
 import {history} from "../configurateStore/history";
 
-export default fetchIntercept.register({
+fetchIntercept.register({
     request: function (url, config) {
         let token=localStorage.getItem("token");
         config.mode="cors";

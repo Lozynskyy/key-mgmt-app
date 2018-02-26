@@ -14,6 +14,8 @@ import EmployeesTable from "./js/components/EmployeesTable";
 import {history} from "./js/configurateStore/history";
 import {store} from "./js/configurateStore/store";
 
+import "./js/fetch/fetchInterscept";
+
 
 
 ReactDOM.render(<Provider store={store}>
@@ -22,7 +24,7 @@ ReactDOM.render(<Provider store={store}>
             <Route exact path='/' component={Login}/>
             <Route path='/dashboard' component={Dashboard}/>
             <Route path="/locks" component={LocksPage}/>
-            <Route path="/employees" component={EmployeesTable}/>
+            <Route path="/employees"/>
         </Switch>
     </ConnectedRouter>
 </Provider>,
