@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import {Pagination} from "react-bootstrap";
 import {push} from "react-router-redux";
 import { queryString } from "query-string";
+import AddEmployee from "./EmployeeSubmit";
 
 class EmplyeesTable extends React.Component{
 	constructor(props){
@@ -26,6 +27,8 @@ class EmplyeesTable extends React.Component{
         let start_count = 0;
         return(
             <div>
+                <AddEmployee/>
+
                 <table className="table table-bordered table-hover table-striped">
 			  <thead>
 			    <tr>
