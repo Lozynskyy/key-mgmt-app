@@ -5,7 +5,7 @@ const deleteEmployeeLogic=createLogic({
     type:DELETE_EMPLOYEE,
     latest:true,
     process({getState,action},dispatch,done){
-        const path="https://api-test.opendoors.od.ua:1013/employees/22";
+        const path=`https://api-test.opendoors.od.ua:1013/employees/${action.id}`;
         let myInit={
             method:"DELETE"
         };

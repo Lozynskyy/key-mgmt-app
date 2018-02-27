@@ -27,8 +27,8 @@ class EmplyeesTable extends React.Component{
         });
     }
     removeEmployee(){
-        console.log(this.state.currentId);
         this.props.delEmployee(this.state.currentId);
+        this.setState({showModalDelEmpl:false});
     }
 
     closeDelEmplModal(){

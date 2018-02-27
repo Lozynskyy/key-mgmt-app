@@ -2,9 +2,6 @@ import React from "react";
 import {Button} from "react-bootstrap";
 
 class EmployeesListElement extends React.Component{
-    constructor(){
-        super();
-    }
 
     render()
     {
