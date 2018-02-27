@@ -5,16 +5,39 @@ import {Pagination} from "react-bootstrap";
 import {push} from "react-router-redux";
 import { queryString } from "query-string";
 import AddEmployee from "./EmployeeSubmit";
+import {Button,Modal} from "react-bootstrap";
+import {deleteEmployee} from "../actions/deleteEmployee";
 
 class EmplyeesTable extends React.Component{
     constructor(props){
         super(props);
-        this.changePage = this.changePage.bind(this);
+        this.state={
+            showModalDelEmpl:false,
+            currentId:null
+        };
+        this.showDeleteEmployeeModal=this.showDeleteEmployeeModal.bind(this);
+        this.closeDelEmplModal=this.closeDelEmplModal.bind(this);
+        this.removeEmployee=this.removeEmployee.bind(this);
+    }
+    showDeleteEmployeeModal(id){
+        console.log(id);
+        this.setState({
+            showModalDelEmpl:true,
+            currentId:id
+        });
+    }
+    removeEmployee(){
+        console.log(this.state.currentId);
+        this.props.delEmployee(this.state.currentId);
+    }
+
+    closeDelEmplModal(){
+        this.setState({showModalDelEmpl:false});
     }
     renderPages(pages) {
         const result = [];
         for (let number = 1; number <= pages; number++) {
-            result.push(<Pagination.Item key={number} onClick={() => this.changePage(number)}>{number}</Pagination.Item>);
+            result.push(<Pagination.Item key={number} onClick={() => this.props.changePage(number)}>{number}</Pagination.Item>);
         }
         return result;
     }
@@ -32,12 +55,13 @@ class EmplyeesTable extends React.Component{
                 <table className="table table-bordered table-hover table-striped">
 			  <thead>
 			    <tr>
-			      <th colSpan="3">Employees</th>
+			      <th colSpan="4">Employees</th>
 			    </tr>
 			    <tr>
 			      <th>ID</th>
 			      <th>Surname</th>
 			      <th>Name</th>
+                            <th>Actions</th>
 			    </tr>
 			  </thead>
                     <tbody>
@@ -45,7 +69,7 @@ class EmplyeesTable extends React.Component{
             	if (index >= start_offset && start_count < per_page) {
             		start_count ++;
             		return(
-                                    <EmployeesListElement key={employee.id} employee={employee}/>
+                                    <EmployeesListElement key={employee.id} employee={employee} deleteEmployee={this.showDeleteEmployeeModal}/>
                                 );
             	}
                         })}
@@ -55,13 +79,23 @@ class EmplyeesTable extends React.Component{
                     {this.renderPages(pages)}
                 </Pagination>
 
+
+                <Modal show={this.state.showModalDelEmpl}>
+                    <Modal.Header>
+                        <Modal.Title>Confirm action</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>Do you really want to delete this employee?</Modal.Body>
+
+                    <Modal.Footer>
+                        <Button onClick={this.closeDelEmplModal}>Close</Button>
+                        <Button onClick={this.removeEmployee} bsStyle="primary">Delete</Button>
+                    </Modal.Footer>
+                </Modal>
+
+
             </div>
         );
-    }
-
-    changePage(pagen)
-    {
-        this.props.dispatch(push("/dashboard/?page=" + pagen));
     }
 }
 
@@ -71,7 +105,18 @@ function mapStateToProps(state){
     return({
         employees: state.employeesInfo.employeesInfo,
         page: Number(parsed.page) || 1,
+        resp:state.delEmployee
     });
 }
+function mapDispatchToProps(dispatch){
+    return {
+        delEmployee(id){
+            dispatch(deleteEmployee(id));
+        },
+        changePage(pagen){
+            dispatch(push("/dashboard/?page=" + pagen));
+        }
+    };
+}
 
-export default connect(mapStateToProps)(EmplyeesTable);
+export default connect(mapStateToProps,mapDispatchToProps)(EmplyeesTable);
