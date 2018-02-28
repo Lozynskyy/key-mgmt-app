@@ -1,20 +1,19 @@
 import React from "react";
-import EmployeesListElement from "./EmployeesListElement";
+import LocksListElement from "./LocksListElement";
 import { connect } from "react-redux";
 import {Pagination} from "react-bootstrap";
 import {push} from "react-router-redux";
 import { queryString } from "query-string";
-import AddEmployee from "./EmployeeSubmit";
-import {getEmployeesData} from "../actions/getEmployeesData";
+import {getLocksData} from "../actions/getLocksData";
 import { history } from "../configurateStore/history";
 
-class EmplyeesTable extends React.Component{
+class LocksTable extends React.Component{
 	constructor(props){
 		super(props);
 		this.changePage = this.changePage.bind(this);
 	}
-    componentDidMount() {
-        this.props.getAllEmployeesData();
+    componentDidMount(){
+        this.props.getAllLocksData();
     }
 	renderPages(pages) {
 		const result = [];
@@ -25,38 +24,35 @@ class EmplyeesTable extends React.Component{
 }
     render()
     {
-        const per_page = 10;
-        const pages = Math.ceil(this.props.employees.length / per_page);
+        const per_page = 5;
+        const pages = Math.ceil(this.props.locks.length / per_page);
         const current_page = this.props.page;
         const start_offset = (current_page - 1) * per_page;
         let start_count = 0;
         return(
             <div>
-                <AddEmployee/>
-
                 <table className="table table-bordered table-hover table-striped">
 			  <thead>
 			    <tr>
-			      <th colSpan="3">Employees</th>
+			      <th colSpan="3">Locks</th>
 			    </tr>
 			    <tr>
 			      <th>ID</th>
-			      <th>Surname</th>
 			      <th>Name</th>
 			    </tr>
 			  </thead>
                     <tbody>
-                        {this.props.employees.map((employee, index) => {
+                        {this.props.locks.map((lock, index) => {
             	if (index >= start_offset && start_count < per_page) {
             		start_count ++;
             		return(
-                                    <EmployeesListElement key={employee.id} employee={employee}/>
+                                    <LocksListElement key={lock.id} lock={lock}/>
                                 );
             	}
                         })}
                     </tbody>
                 </table>
-                <Pagination className="employees-pagination pull-right" bsSize="medium">
+                <Pagination className="locks-pagination pull-right" bsSize="medium">
                     {this.renderPages(pages)}
                 </Pagination>
 
@@ -69,11 +65,11 @@ class EmplyeesTable extends React.Component{
         const queryString = require("query-string");
         const parsed = queryString.parse(this.props.location.search);
         if(parsed.employeesPage === undefined && parsed.locksPage === undefined)
-            history.push("/dashboard/?employeesPage=" + pagen);
-        else if(parsed.employeesPage === undefined && parsed.locksPage !== undefined)
-            history.push(this.props.location.pathname + this.props.location.search + "&employeesPage=" + pagen);
-        else if(parsed.employeesPage !== undefined){
-            parsed.employeesPage = pagen;
+            history.push("/dashboard/?locksPage=" + pagen);
+        else if(parsed.employeesPage !== undefined && parsed.locksPage === undefined)
+            history.push(this.props.location.pathname + this.props.location.search + "&locksPage=" + pagen);
+        else if(parsed.locksPage !== undefined){
+            parsed.locksPage = pagen;
             const searchString = queryString.stringify(parsed);
             history.push("/dashboard/?" + searchString);
         }
@@ -84,18 +80,18 @@ function mapStateToProps(state){
     const queryString = require("query-string");
     const parsed = queryString.parse(state.routing.location.search);
     return({
-        employees: state.employees.data,
-        page: Number(parsed.employeesPage) || 1,
+        locks: state.locks.data,
+        page: Number(parsed.locksPage) || 1,
         location: state.routing.location
     });
 }
 
 function mapDispatchToProps(dispatch){
     return {
-        getAllEmployeesData(){
-            dispatch(getEmployeesData());
+        getAllLocksData(){
+            dispatch(getLocksData());
         }
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmplyeesTable);
+export default connect(mapStateToProps, mapDispatchToProps)(LocksTable);
