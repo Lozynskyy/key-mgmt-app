@@ -20,7 +20,6 @@ class EmplyeesTable extends React.Component{
         this.removeEmployee=this.removeEmployee.bind(this);
     }
     showDeleteEmployeeModal(id){
-        console.log(id);
         this.setState({
             showModalDelEmpl:true,
             currentId:id

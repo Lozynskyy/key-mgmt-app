@@ -9,6 +9,7 @@ import "./styles/login.css";
 import Login from "./js/components/Login";
 import Dashboard from "./js/components/Dashboard";
 import LocksPage from "./js/components/LocksPage";
+import EmployeePage from "./js/components/EmployeePage";
 
 import {history} from "./js/configurateStore/history";
 import {store} from "./js/configurateStore/store";
@@ -23,7 +24,7 @@ ReactDOM.render(<Provider store={store}>
             <Route exact path='/' component={Login}/>
             <Route path='/dashboard' component={Dashboard}/>
             <Route path="/locks" component={LocksPage}/>
-            <Route path="/employees"/>
+            <Route path="/employee" component={EmployeePage}/>
         </Switch>
     </ConnectedRouter>
 </Provider>,
