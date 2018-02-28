@@ -13,6 +13,6 @@ export default class KeyListElement extends React.Component{
                 <td>desc</td>
                 <td><Button type="button" bsSize="small" bsStyle="danger">Delete</Button></td>
             </tr>
-        )
+        );
     }
 }

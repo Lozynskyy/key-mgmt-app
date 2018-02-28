@@ -1,15 +1,17 @@
 import loginUser from "../logic/loginLogic";
 import createEmployee from "../logic/createEmployeeLogic";
-import getLocks from "../logic/getLocksLogic";
 import deleteEmployee from "../logic/deleteEmployeeLogic";
 import getEmployeeKeys from "../logic/getEmployeeKeysLogic";
+import fetchEmployees from "../logic/getEmployeesDataLogic";
+import fetchLocks from "../logic/getLocksDataLogic";
 
 const actions=[
     ...loginUser,
     ...createEmployee,
-    ...getLocks,
     ...deleteEmployee,
-    ...getEmployeeKeys
+    ...getEmployeeKeys,
+    ...fetchEmployees,
+    ...fetchLocks
 ];
 
 export default actions;

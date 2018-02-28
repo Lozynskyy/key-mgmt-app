@@ -1,6 +1,5 @@
 import {combineReducers} from "redux";
 import employees from "./employees";
-import employeesInfo from "./employeesInfo";
 import locks from "./locks";
 import employeeKeys from "./employeeKeys";
 import createEmployee from "./createEmployee";
@@ -13,7 +12,6 @@ const allReducers=combineReducers({
     employees: employees,
     locks: locks,
     user: user,
-    employeesInfo: employeesInfo,
     createEmployee:createEmployee,
     employeeKeys:employeeKeys,
     routing: routerReducer,

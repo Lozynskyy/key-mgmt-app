@@ -9,7 +9,7 @@ class EmployeesListElement extends React.Component{
     }
     selectEmployee(id){
         localStorage.setItem("currentEmployee",id);
-        history.push("/employee")
+        history.push("/employee");
     }
 
     render()

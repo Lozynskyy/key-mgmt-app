@@ -8,9 +8,14 @@ import AddEmployee from "./EmployeeSubmit";
 import {Button,Modal} from "react-bootstrap";
 import {deleteEmployee} from "../actions/deleteEmployee";
 
+
+import {getEmployeesData} from "../actions/getEmployeesData";
+import { history } from "../configurateStore/history";
+
 class EmplyeesTable extends React.Component{
     constructor(props){
         super(props);
+        this.changePage = this.changePage.bind(this);
         this.state={
             showModalDelEmpl:false,
             currentId:null
@@ -33,10 +38,13 @@ class EmplyeesTable extends React.Component{
     closeDelEmplModal(){
         this.setState({showModalDelEmpl:false});
     }
+    componentDidMount() {
+        this.props.getAllEmployeesData();
+    }
     renderPages(pages) {
         const result = [];
         for (let number = 1; number <= pages; number++) {
-            result.push(<Pagination.Item key={number} onClick={() => this.props.changePage(number)}>{number}</Pagination.Item>);
+            result.push(<Pagination.Item key={number} active={number === this.props.page} onClick={() => this.changePage(number)}>{number}</Pagination.Item>);
         }
         return result;
     }
@@ -96,25 +104,43 @@ class EmplyeesTable extends React.Component{
             </div>
         );
     }
+
+    changePage(pagen)
+    {
+        const queryString = require("query-string");
+        const parsed = queryString.parse(this.props.location.search);
+        if(parsed.employeesPage === undefined && parsed.locksPage === undefined)
+            history.push("/dashboard/?employeesPage=" + pagen);
+        else if(parsed.employeesPage === undefined && parsed.locksPage !== undefined)
+            history.push(this.props.location.pathname + this.props.location.search + "&employeesPage=" + pagen);
+        else if(parsed.employeesPage !== undefined){
+            parsed.employeesPage = pagen;
+            const searchString = queryString.stringify(parsed);
+            history.push("/dashboard/?" + searchString);
+        }
+    }
 }
 
 function mapStateToProps(state){
     const queryString = require("query-string");
     const parsed = queryString.parse(state.routing.location.search);
     return({
-        employees: state.employeesInfo.employeesInfo,
-        page: Number(parsed.page) || 1,
+        employees: state.employees.data,
+        page: Number(parsed.employeesPage) || 1,
+        location: state.routing.location
     });
 }
+
+
 function mapDispatchToProps(dispatch){
     return {
         delEmployee(id){
             dispatch(deleteEmployee(id));
         },
-        changePage(pagen){
-            dispatch(push("/dashboard/?page=" + pagen));
+        getAllEmployeesData(){
+            dispatch(getEmployeesData());
         }
     };
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(EmplyeesTable);
+export default connect(mapStateToProps, mapDispatchToProps)(EmplyeesTable);
