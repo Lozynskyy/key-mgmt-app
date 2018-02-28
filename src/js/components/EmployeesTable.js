@@ -105,7 +105,6 @@ function mapStateToProps(state){
     return({
         employees: state.employeesInfo.employeesInfo,
         page: Number(parsed.page) || 1,
-        resp:state.delEmployee
     });
 }
 function mapDispatchToProps(dispatch){

@@ -11,9 +11,7 @@ const deleteEmployeeLogic=createLogic({
         };
         fetch(path,myInit)
             .then((res)=>{
-                console.log(res);
-                console.log(res.status);
-                if(res.status===204){
+                if(res.status===200){
                     dispatch({
                         type:DELETE_EMPLOYEE_SUCCESS
                     });
