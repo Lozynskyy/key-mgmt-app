@@ -6,14 +6,33 @@ import {push} from "react-router-redux";
 import { queryString } from "query-string";
 import {getLocksData} from "../actions/getLocksData";
 import { history } from "../configurateStore/history";
+import {Button,Modal} from "react-bootstrap";
+import {deleteLock} from "../actions/deleteLock";
+import AddLock from "./LockSubmit";
 
 class LocksTable extends React.Component{
     constructor(props){
         super(props);
+        this.state={
+            showDelLockModal:false,
+            currentLock:null
+        };
         this.changePage = this.changePage.bind(this);
+        this.showDeleteLockModal=this.showDeleteLockModal.bind(this);
+        this.delLock=this.delLock.bind(this);
     }
     componentDidMount(){
         this.props.getAllLocksData();
+    }
+    showDeleteLockModal(id){
+        this.setState({
+            showDelLockModal:true,
+            currentLock:id
+        });
+    }
+    delLock(){
+        this.props.deleteThisLock(this.state.currentLock);
+        this.setState({showDelLockModal:false});
     }
     renderPages(pages) {
         const result = [];
@@ -31,30 +50,45 @@ class LocksTable extends React.Component{
         let start_count = 0;
         return(
             <div>
+                <AddLock/>
                 <table className="table table-bordered table-hover table-striped">
-			  <thead>
-			    <tr>
-			      <th colSpan="3">Locks</th>
-			    </tr>
-			    <tr>
-			      <th>ID</th>
-			      <th>Name</th>
-			    </tr>
-			  </thead>
+                    <thead>
+                        <tr>
+                            <th colSpan="3">Locks</th>
+                        </tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         {this.props.locks.map((lock, index) => {
-            	if (index >= start_offset && start_count < per_page) {
-            		start_count ++;
-            		return(
-                                    <LocksListElement key={lock.id} lock={lock}/>
+                            if (index >= start_offset && start_count < per_page) {
+                                start_count ++;
+                                return(
+                                    <LocksListElement key={lock.id} lock={lock} deleteLock={this.showDeleteLockModal}/>
                                 );
-            	}
+                            }
                         })}
                     </tbody>
                 </table>
                 <Pagination className="locks-pagination pull-right" bsSize="medium">
                     {this.renderPages(pages)}
                 </Pagination>
+
+                <Modal show={this.state.showDelLockModal}>
+                    <Modal.Header>
+                        <Modal.Title>Confirm action</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>Do you really want to delete this lock?</Modal.Body>
+
+                    <Modal.Footer>
+                        <Button onClick={()=>{this.setState({showDelLockModal:false});}}>Close</Button>
+                        <Button bsStyle="danger" onClick={this.delLock}>Delete</Button>
+                    </Modal.Footer>
+                </Modal>
 
             </div>
         );
@@ -90,6 +124,9 @@ function mapDispatchToProps(dispatch){
     return {
         getAllLocksData(){
             dispatch(getLocksData());
+        },
+        deleteThisLock(id){
+            dispatch(deleteLock(id));
         }
     };
 }

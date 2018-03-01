@@ -21,7 +21,6 @@ class EmplyeesTable extends React.Component{
             currentId:null
         };
         this.showDeleteEmployeeModal=this.showDeleteEmployeeModal.bind(this);
-        this.closeDelEmplModal=this.closeDelEmplModal.bind(this);
         this.removeEmployee=this.removeEmployee.bind(this);
     }
     showDeleteEmployeeModal(id){
@@ -35,9 +34,6 @@ class EmplyeesTable extends React.Component{
         this.setState({showModalDelEmpl:false});
     }
 
-    closeDelEmplModal(){
-        this.setState({showModalDelEmpl:false});
-    }
     componentDidMount() {
         this.props.getAllEmployeesData();
     }
@@ -60,25 +56,25 @@ class EmplyeesTable extends React.Component{
                 <AddEmployee/>
 
                 <table className="table table-bordered table-hover table-striped">
-			  <thead>
-			    <tr>
-			      <th colSpan="4">Employees</th>
-			    </tr>
-			    <tr>
-			      <th>ID</th>
-			      <th>Surname</th>
-			      <th>Name</th>
+                    <thead>
+                        <tr>
+                            <th colSpan="4">Employees</th>
+                        </tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>Surname</th>
+                            <th>Name</th>
                             <th>Actions</th>
-			    </tr>
-			  </thead>
+                        </tr>
+                    </thead>
                     <tbody>
                         {this.props.employees.map((employee, index) => {
-            	if (index >= start_offset && start_count < per_page) {
-            		start_count ++;
-            		return(
+                            if (index >= start_offset && start_count < per_page) {
+                                start_count ++;
+                                return(
                                     <EmployeesListElement key={employee.id} employee={employee} deleteEmployee={this.showDeleteEmployeeModal}/>
                                 );
-            	}
+                            }
                         })}
                     </tbody>
                 </table>
@@ -95,8 +91,8 @@ class EmplyeesTable extends React.Component{
                     <Modal.Body>Do you really want to delete this employee?</Modal.Body>
 
                     <Modal.Footer>
-                        <Button onClick={this.closeDelEmplModal}>Close</Button>
-                        <Button onClick={this.removeEmployee} bsStyle="primary">Delete</Button>
+                        <Button onClick={()=>{this.setState({showModalDelEmpl:false});}}>Close</Button>
+                        <Button onClick={this.removeEmployee} bsStyle="danger">Delete</Button>
                     </Modal.Footer>
                 </Modal>
 

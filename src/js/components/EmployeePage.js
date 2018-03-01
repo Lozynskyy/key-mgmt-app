@@ -3,20 +3,30 @@ import NewKey from "./NewKey";
 import KeyListElement from "./KeyListElement";
 import {connect} from "react-redux";
 import {getEmployeeKeys} from "../actions/getEmployeeKeys";
+import { queryString } from "query-string";
+
 
 class EmployeePage extends React.Component{
     constructor(){
         super();
+        this.showEmployeeName=this.showEmployeeName.bind(this);
     }
     componentDidMount(){
-        const currentEmployee=localStorage.getItem("currentEmployee");
-        this.props.fetchEmployeeKeys(currentEmployee);
+        const queryString = require("query-string");
+        const parsed = queryString.parse(this.props.location.search);
+        this.props.fetchEmployeeKeys(parsed.emplID);
+    }
+    showEmployeeName(){
+        if(this.props.keys[0].employee.name){
+            //TODO:Problem
+            return this.props.keys[0].employee.name;
+        }
     }
 
     render(){
         return(
             <div>
-                <h3>Surname name</h3>
+                <h3>{this.showEmployeeName}</h3>
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
@@ -30,9 +40,9 @@ class EmployeePage extends React.Component{
                         </tr>
                     </thead>
                     <tbody>
-                        <KeyListElement/>
-                        <KeyListElement/>
-                        <KeyListElement/>
+                        {this.props.keys.map((key)=>{
+                            return <KeyListElement key={key.rkey.id} id={key.rkey.id} tag={key.rkey.tag} description={key.description}/>;
+                        })}
                     </tbody>
                 </table>
                 <NewKey id={12} tag="ghbgf4"/>
@@ -44,7 +54,7 @@ class EmployeePage extends React.Component{
 }
 function mapStateToProps(state) {
     return{
-        keys:state.fetchEmployeeKeys
+        keys:state.employeeKeys.data
     };
 }
 function mapDispatchToProps(dispatch) {

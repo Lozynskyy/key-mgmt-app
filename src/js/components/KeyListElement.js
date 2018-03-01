@@ -8,9 +8,9 @@ export default class KeyListElement extends React.Component{
     render(){
         return(
             <tr>
-                <td>#1</td>
-                <td>tag</td>
-                <td>desc</td>
+                <td>#{this.props.id}</td>
+                <td>{this.props.tag}</td>
+                <td>{this.props.description}</td>
                 <td><Button type="button" bsSize="small" bsStyle="danger">Delete</Button></td>
             </tr>
         );

@@ -8,8 +8,7 @@ class EmployeesListElement extends React.Component{
         this.selectEmployee=this.selectEmployee.bind(this);
     }
     selectEmployee(id){
-        localStorage.setItem("currentEmployee",id);
-        history.push("/employee");
+        history.push(`/employee/?emplID=${id}`);
     }
 
     render()

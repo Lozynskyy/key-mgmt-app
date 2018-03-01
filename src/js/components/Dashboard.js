@@ -9,7 +9,7 @@ class Dashboard extends React.Component {
     {
         return (
             <div className="row">
-                <div className="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div className="table-responsive">
                         <div className="row">
                             <div className="col-xl-5 col-lg-7 col-md-7 col-sm-7 col-xs-7">
