@@ -3,7 +3,6 @@ import NewKey from "./NewKey";
 import KeyListElement from "./KeyListElement";
 import {connect} from "react-redux";
 import {getEmployeeKeys} from "../actions/getEmployeeKeys";
-import { queryString } from "query-string";
 
 
 class EmployeePage extends React.Component{
@@ -12,9 +11,7 @@ class EmployeePage extends React.Component{
         this.showEmployeeName=this.showEmployeeName.bind(this);
     }
     componentDidMount(){
-        const queryString = require("query-string");
-        const parsed = queryString.parse(this.props.location.search);
-        this.props.fetchEmployeeKeys(parsed.emplID);
+        this.props.fetchEmployeeKeys(this.props.match.params.id);
     }
     showEmployeeName(){
         if(this.props.keys[0].employee.name){

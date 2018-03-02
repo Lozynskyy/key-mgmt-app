@@ -1,14 +1,10 @@
 import React from "react";
 import {Button} from "react-bootstrap";
-import {history} from "../configurateStore/history";
+import {Link} from "react-router-dom";
 
 class EmployeesListElement extends React.Component{
     constructor(){
         super();
-        this.selectEmployee=this.selectEmployee.bind(this);
-    }
-    selectEmployee(id){
-        history.push(`/employee/?emplID=${id}`);
     }
 
     render()
@@ -16,9 +12,9 @@ class EmployeesListElement extends React.Component{
         const employee=this.props.employee;
         return(
             <tr key={employee.id}>
-                <td onClick={this.selectEmployee.bind(this,employee.id)}>#{employee.id}</td>
-                <td onClick={this.selectEmployee.bind(this,employee.id)}>{employee.surname}</td>
-                <td onClick={this.selectEmployee.bind(this,employee.id)}>{employee.name}</td>
+                <td><Link to={"/employee/"+employee.id}>#{employee.id}</Link></td>
+                <td><Link to={"/employee/"+employee.id}>{employee.surname}</Link></td>
+                <td><Link to={"/employee/"+employee.id}>{employee.name}</Link></td>
                 <td>
                     <Button type="button" bsSize="small" onClick={this.props.deleteEmployee.bind(this,employee.id)} bsStyle="danger">Delete</Button>
                     <Button type="button" bsSize="small" bsStyle="warning">Update</Button>
