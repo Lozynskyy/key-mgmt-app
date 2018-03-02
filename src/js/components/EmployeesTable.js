@@ -5,24 +5,45 @@ import {Pagination} from "react-bootstrap";
 import {push} from "react-router-redux";
 import { queryString } from "query-string";
 import AddEmployee from "./EmployeeSubmit";
+import {Button,Modal} from "react-bootstrap";
+import {deleteEmployee} from "../actions/deleteEmployee";
+
+
 import {getEmployeesData} from "../actions/getEmployeesData";
 import { history } from "../configurateStore/history";
 
 class EmplyeesTable extends React.Component{
-	constructor(props){
-		super(props);
-		this.changePage = this.changePage.bind(this);
-	}
+    constructor(props){
+        super(props);
+        this.changePage = this.changePage.bind(this);
+        this.state={
+            showModalDelEmpl:false,
+            currentId:null
+        };
+        this.showDeleteEmployeeModal=this.showDeleteEmployeeModal.bind(this);
+        this.removeEmployee=this.removeEmployee.bind(this);
+    }
+    showDeleteEmployeeModal(id){
+        this.setState({
+            showModalDelEmpl:true,
+            currentId:id
+        });
+    }
+    removeEmployee(){
+        this.props.delEmployee(this.state.currentId);
+        this.setState({showModalDelEmpl:false});
+    }
+
     componentDidMount() {
         this.props.getAllEmployeesData();
     }
-	renderPages(pages) {
-		const result = [];
-		for (let number = 1; number <= pages; number++) {
-      result.push(<Pagination.Item key={number} active={number === this.props.page} onClick={() => this.changePage(number)}>{number}</Pagination.Item>);
+    renderPages(pages) {
+        const result = [];
+        for (let number = 1; number <= pages; number++) {
+            result.push(<Pagination.Item key={number} active={number === this.props.page} onClick={() => this.changePage(number)}>{number}</Pagination.Item>);
+        }
+        return result;
     }
-    return result;
-}
     render()
     {
         const per_page = 10;
@@ -35,30 +56,46 @@ class EmplyeesTable extends React.Component{
                 <AddEmployee/>
 
                 <table className="table table-bordered table-hover table-striped">
-			  <thead>
-			    <tr>
-			      <th colSpan="3">Employees</th>
-			    </tr>
-			    <tr>
-			      <th>ID</th>
-			      <th>Surname</th>
-			      <th>Name</th>
-			    </tr>
-			  </thead>
+                    <thead>
+                        <tr>
+                            <th colSpan="4">Employees</th>
+                        </tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>Surname</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         {this.props.employees.map((employee, index) => {
-            	if (index >= start_offset && start_count < per_page) {
-            		start_count ++;
-            		return(
-                                    <EmployeesListElement key={employee.id} employee={employee}/>
+                            if (index >= start_offset && start_count < per_page) {
+                                start_count ++;
+                                return(
+                                    <EmployeesListElement key={employee.id} employee={employee} deleteEmployee={this.showDeleteEmployeeModal}/>
                                 );
-            	}
+                            }
                         })}
                     </tbody>
                 </table>
                 <Pagination className="employees-pagination pull-right" bsSize="medium">
                     {this.renderPages(pages)}
                 </Pagination>
+
+
+                <Modal show={this.state.showModalDelEmpl}>
+                    <Modal.Header>
+                        <Modal.Title>Confirm action</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>Do you really want to delete this employee?</Modal.Body>
+
+                    <Modal.Footer>
+                        <Button onClick={()=>{this.setState({showModalDelEmpl:false});}}>Close</Button>
+                        <Button onClick={this.removeEmployee} bsStyle="danger">Delete</Button>
+                    </Modal.Footer>
+                </Modal>
+
 
             </div>
         );
@@ -90,8 +127,12 @@ function mapStateToProps(state){
     });
 }
 
+
 function mapDispatchToProps(dispatch){
     return {
+        delEmployee(id){
+            dispatch(deleteEmployee(id));
+        },
         getAllEmployeesData(){
             dispatch(getEmployeesData());
         }

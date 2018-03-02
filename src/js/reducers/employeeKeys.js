@@ -1,30 +1,31 @@
-import {CREATE_EMPLOYEE, CREATE_EMPLOYEE_FAILURE, CREATE_EMPLOYEE_SUCCESS} from "../constants";
+import {FETCH_EMPLOYEE_KEYS,FETCH_EMPLOYEE_KEYS_SUCCESS,FETCH_EMPLOYEE_KEYS_FAILURE} from "../constants";
 
 const initialState={
+    data:[],
     loading:false,
-    loaded:false,
-    response:{}
+    loaded:false
 };
 
 export default function (state=initialState, action) {
     switch (action.type){
-    case CREATE_EMPLOYEE:
+    case FETCH_EMPLOYEE_KEYS:
         return {
             ...state,
             loading:true
         };
-    case CREATE_EMPLOYEE_SUCCESS:
+    case FETCH_EMPLOYEE_KEYS_SUCCESS:
         return{
             ...state,
             loading:false,
             loaded:true,
+            data:action.payload
         };
-
-    case  CREATE_EMPLOYEE_FAILURE:
+    case  FETCH_EMPLOYEE_KEYS_FAILURE:
         return{
             ...state,
             loading:false,
             loaded:false,
+            data:[]
         };
     default:
         return state;
