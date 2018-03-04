@@ -2,6 +2,7 @@ import loginUser from "../logic/loginLogic";
 import createEmployee from "../logic/createEmployeeLogic";
 import deleteEmployee from "../logic/deleteEmployeeLogic";
 import getEmployeeKeys from "../logic/getEmployeeKeysLogic";
+import getLockKeys from "../logic/getLockKeysLogic";
 import fetchEmployees from "../logic/getEmployeesDataLogic";
 import fetchLocks from "../logic/getLocksDataLogic";
 import deleteLock from "../logic/deleteLockLogic";
@@ -15,7 +16,8 @@ const actions=[
     ...fetchEmployees,
     ...fetchLocks,
     ...deleteLock,
-    ...createLock
+    ...createLock,
+    ...getLockKeys
 ];
 
 export default actions;

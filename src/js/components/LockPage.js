@@ -1,6 +1,8 @@
 import React from "react";
+import {connect} from "react-redux";
+import {getLockKeys} from "../actions/getLockKeys";
 
-export  default class LockPage extends React.Component{
+class LockPage extends React.Component{
     constructor(){
         super();
         this.deleteKey=this.deleteKey.bind(this);
@@ -14,15 +16,12 @@ export  default class LockPage extends React.Component{
     updateKey(e){
         console.log(e.target.id);
     }
-    
+    componentDidMount(){
+        this.props.fetchLockKeys(this.props.match.params.id);
+    }
     render(){
-        const data = [
-            {id: 1, tag: "1udsj", description: "main", employee: "Smith"},
-            {id: 2, tag: "djn23", description: "not main", employee: "Brown"},
-        ];
-        
-        var tableTemplate = data.map((item) => {
-            return <tr key={item.id}><td>{item.id}</td><td>{item.tag}</td><td>{item.description}</td><td>{item.employee}</td>
+        var tableTemplate = this.props.keys.map((item) => {
+            return <tr key={item.id}><td>{item.id}</td>
                 <td><button className="btn-danger" id={item.id} onClick={this.deleteKey} data-toggle="modal" data-target="#deleteModal">Delete</button>               
                     <button className="btn-warning" id={item.id} onClick={this.updateKey} data-toggle="modal" data-target="#updateModal">Update</button></td>   
             </tr>;
@@ -35,9 +34,8 @@ export  default class LockPage extends React.Component{
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Tag</th>
-                                <th>Description</th>
-                                <th>Employee</th>
+                                <th>Lock_name</th>
+                                <th>Lock_pass</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -51,3 +49,17 @@ export  default class LockPage extends React.Component{
         );
     }
 }
+
+function mapStateToProps(state) {
+    return{
+        keys:state.lockKeys.keys
+    };
+}
+function mapDispatchToProps(dispatch) {
+    return{
+        fetchLockKeys(id){
+            dispatch(getLockKeys(id));
+        }
+    };
+}
+export default connect(mapStateToProps,mapDispatchToProps)(LockPage);

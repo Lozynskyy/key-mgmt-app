@@ -27,7 +27,7 @@ class EmployeePage extends React.Component{
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
-                            <th colSpan="4">His keys</th>
+                            <th colSpan="4">Keys</th>
                         </tr>
                         <tr>
                             <th>ID</th>

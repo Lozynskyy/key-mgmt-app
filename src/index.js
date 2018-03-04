@@ -23,7 +23,7 @@ ReactDOM.render(<Provider store={store}>
         <Switch>
             <Route exact path='/' component={Login}/>
             <Route path='/dashboard' component={Dashboard}/>
-            <Route path="/lock" component={LockPage}/>
+            <Route path="/lock/:id" component={LockPage}/>
             <Route path="/employee/:id" component={EmployeePage}/>
         </Switch>
     </ConnectedRouter>
