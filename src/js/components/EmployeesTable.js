@@ -1,27 +1,27 @@
 import React from "react";
 import EmployeesListElement from "./EmployeesListElement";
 import { connect } from "react-redux";
-import {Pagination} from "react-bootstrap";
-import {push} from "react-router-redux";
+import { Pagination } from "react-bootstrap";
+import { push } from "react-router-redux";
 import { queryString } from "query-string";
 import AddEmployee from "./EmployeeSubmit";
-import {Button,Modal} from "react-bootstrap";
-import {deleteEmployee} from "../actions/deleteEmployee";
-import {getEmployeesData} from "../actions/getEmployeesData";
+import { Button, Modal } from "react-bootstrap";
+import { deleteEmployee } from "../actions/deleteEmployee";
+import { getEmployeesData } from "../actions/getEmployeesData";
 import { history } from "../configurateStore/history";
-import { updateLocationSearch } from "../utilities/updateQueryParam";
+import { buildQueryString } from "../utilities/url";
 
 class EmplyeesTable extends React.Component{
     constructor(props){
         super(props);
         this.changePage = this.changePage.bind(this);
-        this.state={
+        this.state = {
             showModalDelEmpl:false,
             currentId:null
         };
-        this.changePage=this.changePage.bind(this);
-        this.showDeleteEmployeeModal=this.showDeleteEmployeeModal.bind(this);
-        this.removeEmployee=this.removeEmployee.bind(this);
+        this.changePage = this.changePage.bind(this);
+        this.showDeleteEmployeeModal = this.showDeleteEmployeeModal.bind(this);
+        this.removeEmployee = this.removeEmployee.bind(this);
     }
     showDeleteEmployeeModal(id){
         this.setState({
@@ -37,7 +37,7 @@ class EmplyeesTable extends React.Component{
         this.props.getAllEmployeesData();
     }
     changePage(pageNumber){
-        const url = updateLocationSearch(pageNumber, "employeesPage", this.props.location.search);
+        const url = buildQueryString(pageNumber, "employeesPage", this.props.location.search);
         this.props.navigate(url);
     }
     renderPages(pages) {

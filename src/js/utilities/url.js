@@ -1,9 +1,9 @@
 import queryString from "query-string";
 
-export function updateLocationSearch(paramValue, paramKey, locationSearch)
+export function buildQueryString(paramValue, paramKey, locationSearch)
 {
   const parsed = queryString.parse(locationSearch);
   parsed[paramKey] = paramValue;
-  const searchString ="?" + queryString.stringify(parsed);
+  const searchString = "?" + queryString.stringify(parsed);
   return searchString;
 };

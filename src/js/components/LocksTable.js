@@ -6,7 +6,7 @@ import {push} from "react-router-redux";
 import { queryString } from "query-string";
 import {getLocksData} from "../actions/getLocksData";
 import { history } from "../configurateStore/history";
-import { updateLocationSearch } from "../utilities/updateQueryParam";
+import { buildQueryString } from "../utilities/url";
 import {Button,Modal} from "react-bootstrap";
 import {deleteLock} from "../actions/deleteLock";
 import AddLock from "./LockSubmit";
@@ -14,20 +14,20 @@ import AddLock from "./LockSubmit";
 class LocksTable extends React.Component{
     constructor(props){
         super(props);
-        this.state={
+        this.state = {
             showDelLockModal:false,
             currentLock:null
         };
-        this.changePage=this.changePage.bind(this);
-        this.showDeleteLockModal=this.showDeleteLockModal.bind(this);
-        this.delLock=this.delLock.bind(this);
+        this.changePage = this.changePage.bind(this);
+        this.showDeleteLockModal = this.showDeleteLockModal.bind(this);
+        this.delLock = this.delLock.bind(this);
     }
     componentDidMount(){
         this.props.getAllLocksData();
     }
 
     changePage(pageNumber){
-        const url = updateLocationSearch(pageNumber, "locksPage", this.props.location.search);
+        const url = buildQueryString(pageNumber, "locksPage", this.props.location.search);
         this.props.navigate(url);
     }
 
