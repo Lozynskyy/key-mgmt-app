@@ -9,16 +9,16 @@ import {getEmployeesData} from "../actions/getEmployeesData";
 import { history } from "../configurateStore/history";
 
 class EmplyeesTable extends React.Component{
-	constructor(props){
-		super(props);
-		this.changePage = this.changePage.bind(this);
-	}
+    constructor(props){
+        super(props);
+        this.changePage = this.changePage.bind(this);
+    }
     componentDidMount() {
         this.props.getAllEmployeesData();
     }
-	renderPages(pages) {
-		const result = [];
-		for (let number = 1; number <= pages; number++) {
+    renderPages(pages) {
+        const result = [];
+        for (let number = 1; number <= pages; number++) {
       result.push(<Pagination.Item key={number} active={number === this.props.page} onClick={() => this.changePage(number)}>{number}</Pagination.Item>);
     }
     return result;
@@ -35,24 +35,24 @@ class EmplyeesTable extends React.Component{
                 <AddEmployee/>
 
                 <table className="table table-bordered table-hover table-striped">
-			  <thead>
-			    <tr>
-			      <th colSpan="3">Employees</th>
-			    </tr>
-			    <tr>
-			      <th>ID</th>
-			      <th>Surname</th>
-			      <th>Name</th>
-			    </tr>
-			  </thead>
+              <thead>
+                <tr>
+                  <th colSpan="3">Employees</th>
+                </tr>
+                <tr>
+                  <th>ID</th>
+                  <th>Surname</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
                     <tbody>
                         {this.props.employees.map((employee, index) => {
-            	if (index >= start_offset && start_count < per_page) {
-            		start_count ++;
-            		return(
+                if (index >= start_offset && start_count < per_page) {
+                    start_count ++;
+                    return(
                                     <EmployeesListElement key={employee.id} employee={employee}/>
                                 );
-            	}
+                }
                         })}
                     </tbody>
                 </table>
@@ -68,15 +68,9 @@ class EmplyeesTable extends React.Component{
     {
         const queryString = require("query-string");
         const parsed = queryString.parse(this.props.location.search);
-        if(parsed.employeesPage === undefined && parsed.locksPage === undefined)
-            history.push("/dashboard/?employeesPage=" + pagen);
-        else if(parsed.employeesPage === undefined && parsed.locksPage !== undefined)
-            history.push(this.props.location.pathname + this.props.location.search + "&employeesPage=" + pagen);
-        else if(parsed.employeesPage !== undefined){
-            parsed.employeesPage = pagen;
-            const searchString = queryString.stringify(parsed);
-            history.push("/dashboard/?" + searchString);
-        }
+        parsed.employeesPage = pagen;
+        const searchString = queryString.stringify(parsed);
+        history.push("?" + searchString);
     }
 }
 
