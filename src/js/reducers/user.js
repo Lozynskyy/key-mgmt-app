@@ -1,31 +1,34 @@
-import {FETCH_EMPLOYEES,FETCH_EMPLOYEES_SUCCESS,FETCH_EMPLOYEES_FAILURE} from "../constants";
+import {LOGIN_USER,LOGIN_USER_SUCCESS,LOGIN_USER_FAILURE} from "../constants";
 
 const initialState={
-    data:[],
+    token:"",
     loading:false,
-    loaded:false
+    loaded:false,
+    isSignedIn:false
 };
 
 export default function (state=initialState, action) {
     switch (action.type){
-    case FETCH_EMPLOYEES:
+    case LOGIN_USER:
         return {
             ...state,
             loading:true
         };
-    case FETCH_EMPLOYEES_SUCCESS:
+    case LOGIN_USER_SUCCESS:
         return{
             ...state,
             loading:false,
             loaded:true,
-            data:action.payload
+            token:action.payload,
+            isSignedIn:true
         };
-    case  FETCH_EMPLOYEES_FAILURE:
+
+    case  LOGIN_USER_FAILURE:
         return{
             ...state,
             loading:false,
             loaded:false,
-            data:[]
+            token:""
         };
     default:
         return state;

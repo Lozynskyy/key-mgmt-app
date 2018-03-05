@@ -1,5 +1,6 @@
-import React from 'react';
-import EmployeesTable from './EmployeesTable';
+import React from "react";
+
+import EmployeesTable from "./EmployeesTable";
 
 
 class Dashboard extends React.Component {
@@ -10,17 +11,17 @@ class Dashboard extends React.Component {
         for(let i = 0; i<40; i++){
             employees.push({
                 id: i,
-                surname: 'Jhones ' + i,
-                name: 'Peter ' + i,
+                surname: "Jhones " + i,
+                name: "Peter " + i,
             });
-        //save the employees in the state
-        this.state = {
-            employees:employees,
+            //save the employees in the state
+            this.state = {
+                employees:employees,
+            };
         }
     }
-}
-  render() 
-  {
+    render() 
+    {
         return (
             <div className="row">
                 <div className="col-xl-8 col-lg-10 col-md-12 col-sm-12 ">
@@ -29,7 +30,7 @@ class Dashboard extends React.Component {
                     </div>
                 </div>
             </div>
-        )
-  }
+        );
+    }
 }
 export default Dashboard;
