@@ -7,8 +7,7 @@ import { queryString } from "query-string";
 import AddEmployee from "./EmployeeSubmit";
 import {Button,Modal} from "react-bootstrap";
 import {deleteEmployee} from "../actions/deleteEmployee";
-
-
+import {getEmployee} from "../actions/getEmployee";
 import {getEmployeesData} from "../actions/getEmployeesData";
 import { history } from "../configurateStore/history";
 
@@ -18,16 +17,29 @@ class EmplyeesTable extends React.Component{
         this.changePage = this.changePage.bind(this);
         this.state={
             showModalDelEmpl:false,
-            currentId:null
+            currentId:null,
+            employeeUpdateName:"",
+            employeeUpdateSurname:"",
+            employeeUpdateAge:null
         };
         this.showDeleteEmployeeModal=this.showDeleteEmployeeModal.bind(this);
         this.removeEmployee=this.removeEmployee.bind(this);
+        this.showUpdateEmployeeModal=this.showUpdateEmployeeModal.bind(this);
     }
     showDeleteEmployeeModal(id){
         this.setState({
             showModalDelEmpl:true,
             currentId:id
         });
+    }
+    showUpdateEmployeeModal(id){
+        this.props.getOneEmployee(id);
+        this.setState({
+            employeeUpdateSurname:this.props.employee.surname,
+            employeeUpdateName:this.props.employee.name,
+            employeeUpdateAge:this.props.employee.age
+        });
+        return <AddEmployee/>
     }
     removeEmployee(){
         this.props.delEmployee(this.state.currentId);
@@ -72,7 +84,7 @@ class EmplyeesTable extends React.Component{
                             if (index >= start_offset && start_count < per_page) {
                                 start_count ++;
                                 return(
-                                    <EmployeesListElement key={employee.id} employee={employee} deleteEmployee={this.showDeleteEmployeeModal}/>
+                                    <EmployeesListElement key={employee.id} employee={employee} deleteEmployee={this.showDeleteEmployeeModal} updateEmployee={this.showUpdateEmployeeModal}/>
                                 );
                             }
                         })}
@@ -123,7 +135,8 @@ function mapStateToProps(state){
     return({
         employees: state.employees.data,
         page: Number(parsed.employeesPage) || 1,
-        location: state.routing.location
+        location: state.routing.location,
+        employee:state.employee.data
     });
 }
 
@@ -135,6 +148,9 @@ function mapDispatchToProps(dispatch){
         },
         getAllEmployeesData(){
             dispatch(getEmployeesData());
+        },
+        getOneEmployee(id){
+            dispatch(getEmployee(id))
         }
     };
 }

@@ -14,16 +14,16 @@ class EmployeePage extends React.Component{
         this.props.fetchEmployeeKeys(this.props.match.params.id);
     }
     showEmployeeName(){
-        if(this.props.keys[0].employee.name){
-            //TODO:Problem
-            return this.props.keys[0].employee.name;
+        //TODO:if there are no keys, employee name doesn't show
+        if(this.props.keys && this.props.keys.length && this.props.keys[0].employee.name){
+            return (this.props.keys[0].employee.name+" "+this.props.keys[0].employee.surname);
         }
     }
 
     render(){
         return(
             <div>
-                <h3>{this.showEmployeeName}</h3>
+                <h3>{this.showEmployeeName()}</h3>
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>

@@ -6,6 +6,7 @@ import lockKeys from "./lockKeys";
 import { routerReducer } from "react-router-redux";
 import user from "./user";
 import { reducer as formReducer } from "redux-form";
+import employee from "./employee";
 
 
 const allReducers=combineReducers({
@@ -14,6 +15,7 @@ const allReducers=combineReducers({
     user: user,
     employeeKeys:employeeKeys,
     lockKeys:lockKeys,
+    employee:employee,
     routing: routerReducer,
     form: formReducer
 });
