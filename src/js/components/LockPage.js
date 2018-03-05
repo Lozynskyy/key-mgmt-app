@@ -1,30 +1,51 @@
 import React from "react";
+import { Button, Modal } from "react-bootstrap";
 
 export  default class LockPage extends React.Component{
     constructor(){
         super();
-        this.deleteKey=this.deleteKey.bind(this);
-        this.updateKey=this.updateKey.bind(this);
+        
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.deleteKey = this.deleteKey.bind(this);
+        
+        this.state = {
+            show: false,
+            id: "",
+            data: [
+                {id: 1, tag: "1uds8", description: "main", employee: "Smith"},
+                {id: 2, tag: "djn23", description: "not main", employee: "Brown"},
+                {id: 3, tag: "hgf76", description: "unknown", employee: "Josie"},
+                {id: 4, tag: "34jhg", description: "not main", employee: "Blare"},
+                {id: 5, tag: "inb12", description: "main", employee: "Aklie"},
+                {id: 6, tag: "gf45s", description: "not main", employee: "Sara"},
+            ]
+        };
     }
     
-    deleteKey(e){
-        console.log(e.target.id);
+    handleClose() {
+        this.setState({ show: false });
+    }
+
+    handleShow(id) {
+        this.setState({ show: true, id });
     }
     
-    updateKey(e){
-        console.log(e.target.id);
+    deleteKey(id) {
+        this.setState({
+            data: this.state.data.filter(item => item.id !== id),
+            show: false
+        });
+        console.log(id);
     }
     
     render(){
-        const data = [
-            {id: 1, tag: "1udsj", description: "main", employee: "Smith"},
-            {id: 2, tag: "djn23", description: "not main", employee: "Brown"},
-        ];
-        
-        var tableTemplate = data.map((item) => {
+        let tableTemplate = this.state.data.map((item) => {
             return <tr key={item.id}><td>{item.id}</td><td>{item.tag}</td><td>{item.description}</td><td>{item.employee}</td>
-                <td><button className="btn-danger" id={item.id} onClick={this.deleteKey} data-toggle="modal" data-target="#deleteModal">Delete</button>               
-                    <button className="btn-warning" id={item.id} onClick={this.updateKey} data-toggle="modal" data-target="#updateModal">Update</button></td>   
+                <td>
+                    <Button bsStyle="danger" key={item.id} onClick={() => this.handleShow(item.id)}>Delete</Button>
+                    <Button bsStyle="warning">Update</Button>
+                </td>
             </tr>;
         });
         
@@ -41,11 +62,22 @@ export  default class LockPage extends React.Component{
                                 <th>Action</th>
                             </tr>
                         </thead>
-
                         <tbody>
                             {tableTemplate}
                         </tbody>
                     </table>
+                    <Modal show={this.state.show} onHide={this.handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Confirm the action</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <p>Are you sure you want to delete the key?</p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button bsStyle="success" onClick={()=>{this.deleteKey(this.state.id);}}>Yes</Button>
+                            <Button bsStyle="danger" onClick={this.handleClose}>No</Button>
+                        </Modal.Footer>
+                    </Modal>
                 </div>
             </div>
         );
