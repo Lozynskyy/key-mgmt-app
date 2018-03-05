@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 
-export  default class LocksPage extends React.Component{
+export  default class LockPage extends React.Component{
     constructor(){
         super();
         

@@ -1,32 +1,24 @@
 import React from "react";
 
 import EmployeesTable from "./EmployeesTable";
+import LocksTable from "./LocksTable";
 
 
 class Dashboard extends React.Component {
-    constructor(props){
-        super(props);
-        //build the employees list
-        const employees = [];
-        for(let i = 0; i<40; i++){
-            employees.push({
-                id: i,
-                surname: "Jhones " + i,
-                name: "Peter " + i,
-            });
-            //save the employees in the state
-            this.state = {
-                employees:employees,
-            };
-        }
-    }
     render() 
     {
         return (
             <div className="row">
-                <div className="col-xl-8 col-lg-10 col-md-12 col-sm-12 ">
+                <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div className="table-responsive">
-                        <EmployeesTable employees={this.state.employees}/>
+                        <div className="row">
+                            <div className="col-xl-5 col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                <EmployeesTable/>
+                            </div>
+                            <div className="col-xl-3 col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                <LocksTable/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
