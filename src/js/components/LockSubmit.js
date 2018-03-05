@@ -1,10 +1,10 @@
 import React from "react";
-import EmployeeForm from "./EmployeeForm";
+import LockForm from "./LockForm";
 import {Button,Modal} from "react-bootstrap";
 import {connect} from "react-redux";
-import {createEmployee} from "../actions/createEmployee";
+import {createLock} from "../actions/createLock";
 
-class AddEmployee extends React.Component {
+class AddLock extends React.Component {
 
     constructor(){
         super();
@@ -14,7 +14,7 @@ class AddEmployee extends React.Component {
         this.submit=this.submit.bind(this);
     }
     submit(values){
-        this.props.createNewEmployee(values);
+        this.props.createNewLock(values);
         this.setState({
             isShowModal:false
         });
@@ -23,15 +23,15 @@ class AddEmployee extends React.Component {
     render() {
         return (
             <div>
-                <Button bsStyle="primary" bsSize="small" onClick={()=>this.setState({isShowModal:true})}>Add Employee</Button>
+                <Button bsStyle="primary" bsSize="small" onClick={()=>this.setState({isShowModal:true})}>Add Lock</Button>
                 <Modal show={this.state.isShowModal}>
                     <Modal.Header>
-                        <Modal.Title>Create new employee</Modal.Title>
+                        <Modal.Title>Create new lock</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
 
-                        <EmployeeForm onSubmit={this.submit} />
+                        <LockForm onSubmit={this.submit} />
 
                     </Modal.Body>
 
@@ -44,13 +44,18 @@ class AddEmployee extends React.Component {
     }
 }
 
+function mapStateToProps(state){
+    return {
+
+    };
+}
 
 function mapDispatchToProps(dispatch){
     return {
-        createNewEmployee(values){
-            dispatch(createEmployee(values));
+        createNewLock(values){
+            dispatch(createLock(values));
         }
     };
 }
 
-export default connect(mapDispatchToProps)(AddEmployee);
+export default connect(mapStateToProps,mapDispatchToProps)(AddLock);

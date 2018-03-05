@@ -1,6 +1,6 @@
 import React from "react";
 
-export  default class LocksPage extends React.Component{
+export  default class LockPage extends React.Component{
     constructor(){
         super();
         this.deleteKey=this.deleteKey.bind(this);
