@@ -6,7 +6,7 @@ import {push} from "react-router-redux";
 import { queryString } from "query-string";
 import {getLocksData} from "../actions/getLocksData";
 import { history } from "../configurateStore/history";
-import { buildUrl } from "../utilits/buildUrl";
+import { updateLocationSearch } from "../utilities/updateQueryParam";
 import {Button,Modal} from "react-bootstrap";
 import {deleteLock} from "../actions/deleteLock";
 import AddLock from "./LockSubmit";
@@ -26,8 +26,8 @@ class LocksTable extends React.Component{
         this.props.getAllLocksData();
     }
 
-    changePage(pageNumber, pageName, locationSearch){
-        const url = buildUrl(pageNumber, pageName, locationSearch);
+    changePage(pageNumber){
+        const url = updateLocationSearch(pageNumber, "locksPage", this.props.location.search);
         this.props.navigate(url);
     }
 
@@ -44,7 +44,7 @@ class LocksTable extends React.Component{
     renderPages(pages) {
         const result = [];
         for (let number = 1; number <= pages; number++) {
-            result.push(<Pagination.Item key={number} active={number === this.props.page} onClick={() => this.changePage(number, "locksPage", this.props.location.search)}>{number}</Pagination.Item>);
+            result.push(<Pagination.Item key={number} active={number === this.props.page} onClick={() => this.changePage(number)}>{number}</Pagination.Item>);
         }
         return result;
     }

@@ -1,9 +1,9 @@
 import queryString from "query-string";
 
-export function buildUrl(pageNumber, pageName, locationSearch)
+export function updateLocationSearch(paramValue, paramKey, locationSearch)
 {
   const parsed = queryString.parse(locationSearch);
-  parsed[pageName] = pageNumber;
+  parsed[paramKey] = paramValue;
   const searchString ="?" + queryString.stringify(parsed);
   return searchString;
 };

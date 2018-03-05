@@ -9,7 +9,7 @@ import {Button,Modal} from "react-bootstrap";
 import {deleteEmployee} from "../actions/deleteEmployee";
 import {getEmployeesData} from "../actions/getEmployeesData";
 import { history } from "../configurateStore/history";
-import { buildUrl } from "../utilits/buildUrl";
+import { updateLocationSearch } from "../utilities/updateQueryParam";
 
 class EmplyeesTable extends React.Component{
     constructor(props){
@@ -36,14 +36,14 @@ class EmplyeesTable extends React.Component{
     componentDidMount() {
         this.props.getAllEmployeesData();
     }
-    changePage(pageNumber, pageName, locationSearch){
-        const url = buildUrl(pageNumber, pageName, locationSearch);
+    changePage(pageNumber){
+        const url = updateLocationSearch(pageNumber, "employeesPage", this.props.location.search);
         this.props.navigate(url);
     }
     renderPages(pages) {
         const result = [];
         for (let number = 1; number <= pages; number++) {
-            result.push(<Pagination.Item key={number} active={number === this.props.page} onClick={() => this.changePage(number, "employeesPage", this.props.location.search)}>{number}</Pagination.Item>);
+            result.push(<Pagination.Item key={number} active={number === this.props.page} onClick={() => this.changePage(number)}>{number}</Pagination.Item>);
         }
         return result;
     }
