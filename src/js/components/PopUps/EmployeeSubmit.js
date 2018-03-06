@@ -2,7 +2,8 @@ import React from "react";
 import EmployeeForm from "./EmployeeForm";
 import {Button,Modal} from "react-bootstrap";
 import {connect} from "react-redux";
-import {createEmployee} from "../actions/createEmployee";
+import {createEmployee} from "../../actions/createEmployee";
+import EmployeePopUp from "./EmployeePopUp";
 
 class AddEmployee extends React.Component {
 
@@ -24,7 +25,8 @@ class AddEmployee extends React.Component {
         return (
             <div>
                 <Button bsStyle="primary" bsSize="small" onClick={()=>this.setState({isShowModal:true})}>Add Employee</Button>
-                <Modal show={this.state.isShowModal}>
+                <EmployeePopUp/>
+                {/*<Modal show={this.state.isShowModal}>
                     <Modal.Header>
                         <Modal.Title>Create new employee</Modal.Title>
                     </Modal.Header>
@@ -38,7 +40,7 @@ class AddEmployee extends React.Component {
                     <Modal.Footer>
                         <Button type="button" bsSize="large" onClick={()=>this.setState({isShowModal:false})}>Close</Button>
                     </Modal.Footer>
-                </Modal>
+                </Modal>*/}
             </div>
         );
     }

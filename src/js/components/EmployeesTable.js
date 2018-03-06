@@ -1,21 +1,23 @@
 import React from "react";
 import EmployeesListElement from "./EmployeesListElement";
 import { connect } from "react-redux";
-import {Pagination} from "react-bootstrap";
-import {push} from "react-router-redux";
+import { Pagination } from "react-bootstrap";
+import { push } from "react-router-redux";
 import { queryString } from "query-string";
-import AddEmployee from "./EmployeeSubmit";
+import AddEmployee from "./PopUps/EmployeeSubmit";
 import {Button,Modal} from "react-bootstrap";
 import {deleteEmployee} from "../actions/deleteEmployee";
 import {getEmployee} from "../actions/getEmployee";
 import {getEmployeesData} from "../actions/getEmployeesData";
+
 import { history } from "../configurateStore/history";
+import { buildQueryString } from "../utilities/url";
 
 class EmplyeesTable extends React.Component{
     constructor(props){
         super(props);
         this.changePage = this.changePage.bind(this);
-        this.state={
+        this.state = {
             showModalDelEmpl:false,
             currentId:null,
             employeeUpdateName:"",
@@ -25,6 +27,7 @@ class EmplyeesTable extends React.Component{
         this.showDeleteEmployeeModal=this.showDeleteEmployeeModal.bind(this);
         this.removeEmployee=this.removeEmployee.bind(this);
         this.showUpdateEmployeeModal=this.showUpdateEmployeeModal.bind(this);
+        this.changePage = this.changePage.bind(this);
     }
     showDeleteEmployeeModal(id){
         this.setState({
@@ -45,9 +48,12 @@ class EmplyeesTable extends React.Component{
         this.props.delEmployee(this.state.currentId);
         this.setState({showModalDelEmpl:false});
     }
-
     componentDidMount() {
         this.props.getAllEmployeesData();
+    }
+    changePage(pageNumber){
+        const url = buildQueryString(pageNumber, "employeesPage", this.props.location.search);
+        this.props.navigate(url);
     }
     renderPages(pages) {
         const result = [];
@@ -112,21 +118,6 @@ class EmplyeesTable extends React.Component{
             </div>
         );
     }
-
-    changePage(pagen)
-    {
-        const queryString = require("query-string");
-        const parsed = queryString.parse(this.props.location.search);
-        if(parsed.employeesPage === undefined && parsed.locksPage === undefined)
-            history.push("/dashboard/?employeesPage=" + pagen);
-        else if(parsed.employeesPage === undefined && parsed.locksPage !== undefined)
-            history.push(this.props.location.pathname + this.props.location.search + "&employeesPage=" + pagen);
-        else if(parsed.employeesPage !== undefined){
-            parsed.employeesPage = pagen;
-            const searchString = queryString.stringify(parsed);
-            history.push("/dashboard/?" + searchString);
-        }
-    }
 }
 
 function mapStateToProps(state){
@@ -149,8 +140,11 @@ function mapDispatchToProps(dispatch){
         getAllEmployeesData(){
             dispatch(getEmployeesData());
         },
-        getOneEmployee(id){
+        getOneEmployee(id) {
             dispatch(getEmployee(id))
+        },
+        navigate(url) {
+            dispatch(push(url))
         }
     };
 }
