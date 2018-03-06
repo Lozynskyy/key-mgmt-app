@@ -9,25 +9,25 @@ import {Button,Modal} from "react-bootstrap";
 import {deleteEmployee} from "../actions/deleteEmployee";
 import {getEmployee} from "../actions/getEmployee";
 import {getEmployeesData} from "../actions/getEmployeesData";
-
-import { history } from "../configurateStore/history";
+import EmployeeForm from "./PopUps/EmployeeForm";
 import { buildQueryString } from "../utilities/url";
+import {updateEmployee} from "../actions/updateEmployee";
 
 class EmplyeesTable extends React.Component{
+
     constructor(props){
         super(props);
-        this.changePage = this.changePage.bind(this);
         this.state = {
             showModalDelEmpl:false,
-            currentId:null,
-            employeeUpdateName:"",
-            employeeUpdateSurname:"",
-            employeeUpdateAge:null
+            showModalUpdateEmpl:false,
+            currentId:null
         };
+        this.changePage = this.changePage.bind(this);
         this.showDeleteEmployeeModal=this.showDeleteEmployeeModal.bind(this);
         this.removeEmployee=this.removeEmployee.bind(this);
         this.showUpdateEmployeeModal=this.showUpdateEmployeeModal.bind(this);
         this.changePage = this.changePage.bind(this);
+        this.changeEmployee=this.changeEmployee.bind(this);
     }
     showDeleteEmployeeModal(id){
         this.setState({
@@ -35,19 +35,25 @@ class EmplyeesTable extends React.Component{
             currentId:id
         });
     }
-    showUpdateEmployeeModal(id){
-        this.props.getOneEmployee(id);
-        this.setState({
-            employeeUpdateSurname:this.props.employee.surname,
-            employeeUpdateName:this.props.employee.name,
-            employeeUpdateAge:this.props.employee.age
-        });
-        return <AddEmployee/>
-    }
     removeEmployee(){
         this.props.delEmployee(this.state.currentId);
         this.setState({showModalDelEmpl:false});
     }
+
+    changeEmployee(values){
+        this.props.updateEmpl(this.state.currentId,values);
+        this.setState({
+            showModalUpdateEmpl:false
+        });
+    }
+    showUpdateEmployeeModal(id){
+        this.props.getOneEmployee(id);
+        this.setState({
+            currentId:id,
+            showModalUpdateEmpl:true
+        });
+    }
+
     componentDidMount() {
         this.props.getAllEmployeesData();
     }
@@ -114,6 +120,20 @@ class EmplyeesTable extends React.Component{
                     </Modal.Footer>
                 </Modal>
 
+                <Modal show={this.state.showModalUpdateEmpl}>
+                    <Modal.Header>
+                        <Modal.Title>Update employee</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <EmployeeForm onSubmit={this.changeEmployee} employee={this.props.employee}/>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button type="button" bsSize="large" onClick={()=>this.setState({showModalUpdateEmpl:false})}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+
 
             </div>
         );
@@ -141,10 +161,13 @@ function mapDispatchToProps(dispatch){
             dispatch(getEmployeesData());
         },
         getOneEmployee(id) {
-            dispatch(getEmployee(id))
+            dispatch(getEmployee(id));
+        },
+        updateEmpl(id,data){
+            dispatch(updateEmployee(id,data));
         },
         navigate(url) {
-            dispatch(push(url))
+            dispatch(push(url));
         }
     };
 }

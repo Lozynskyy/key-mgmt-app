@@ -121,7 +121,7 @@ function mapDispatchToProps(dispatch){
             dispatch(deleteLock(id));
         },
         navigate(url) {
-            dispatch(push(url))
+            dispatch(push(url));
         }
     };
 }
