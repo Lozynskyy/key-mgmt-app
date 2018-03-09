@@ -1,25 +1,18 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
+import {connect} from "react-redux";
+import {getLockKeys} from "../actions/getLockKeys";
 
-export  default class LockPage extends React.Component{
+class LockPage extends React.Component{
     constructor(){
         super();
-        
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.deleteKey = this.deleteKey.bind(this);
         
         this.state = {
             show: false,
-            id: "",
-            data: [
-                {id: 1, tag: "1uds8", description: "main", employee: "Smith"},
-                {id: 2, tag: "djn23", description: "not main", employee: "Brown"},
-                {id: 3, tag: "hgf76", description: "unknown", employee: "Josie"},
-                {id: 4, tag: "34jhg", description: "not main", employee: "Blare"},
-                {id: 5, tag: "inb12", description: "main", employee: "Aklie"},
-                {id: 6, tag: "gf45s", description: "not main", employee: "Sara"},
-            ]
+            id: ""
         };
     }
     
@@ -33,21 +26,18 @@ export  default class LockPage extends React.Component{
     
     deleteKey(id) {
         this.setState({
-            data: this.state.data.filter(item => item.id !== id),
+            /*data: this.state.data.filter(item => item.id !== id),*/
             show: false
         });
         console.log(id);
     }
-    
+
+    componentDidMount(){
+        console.log(this.props.match);
+        this.props.fetchLockKeys(this.props.match.params.id);
+    }
+
     render(){
-        let tableTemplate = this.state.data.map((item) => {
-            return <tr key={item.id}><td>{item.id}</td><td>{item.tag}</td><td>{item.description}</td><td>{item.employee}</td>
-                <td>
-                    <Button bsStyle="danger" key={item.id} onClick={() => this.handleShow(item.id)}>Delete</Button>
-                    <Button bsStyle="warning">Update</Button>
-                </td>
-            </tr>;
-        });
         
         return (
             <div className="row">
@@ -63,7 +53,14 @@ export  default class LockPage extends React.Component{
                             </tr>
                         </thead>
                         <tbody>
-                            {tableTemplate}
+                            {this.props.keys.map((key) => {
+                                return <tr key={key.id}><td>{key.id}</td><td>{key.tag}</td><td>{key.description}</td><td>{key.employee}</td>
+                                    <td>
+                                        <Button bsStyle="danger" key={key.id} onClick={() => this.handleShow(key.id)}>Delete</Button>
+                                        <Button bsStyle="warning">Update</Button>
+                                    </td>
+                                </tr>;
+                            })}
                         </tbody>
                     </table>
                     <Modal show={this.state.show} onHide={this.handleClose}>
@@ -83,3 +80,16 @@ export  default class LockPage extends React.Component{
         );
     }
 }
+function mapStateToProps(state) {
+    return{
+        keys:state.lockKeys.data
+    };
+}
+function mapDispatchToProps(dispatch) {
+    return{
+        fetchLockKeys(id){
+            dispatch(getLockKeys(id));
+        }
+    };
+}
+export default connect(mapStateToProps,mapDispatchToProps)(LockPage);

@@ -4,7 +4,7 @@ import {DELETE_LOCK,DELETE_LOCK_SUCCESS,DELETE_LOCK_FAILURE} from "../constants"
 const deleteLockLogic=createLogic({
     type:DELETE_LOCK,
     latest:true,
-    process({getState,action},dispatch,done){
+    process({action},dispatch,done){
         const path=`https://api-test.opendoors.od.ua:1013/locks/${action.id}`;
         let myInit={
             method:"DELETE"

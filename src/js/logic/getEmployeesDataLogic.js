@@ -4,7 +4,7 @@ import { FETCH_EMPLOYEES, FETCH_EMPLOYEES_SUCCESS, FETCH_EMPLOYEES_FAILURE } fro
 const getEmployeesDataLogic = createLogic({
     type: FETCH_EMPLOYEES,
     latest: true,
-    process({ getState, action }, dispatch, done) {
+    process(_, dispatch, done) {
         const path = "https://api-test.opendoors.od.ua:1013/employees";
         let myInit = {
             method: "GET"
