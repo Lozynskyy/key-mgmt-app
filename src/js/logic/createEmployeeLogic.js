@@ -5,7 +5,7 @@ import {CREATE_EMPLOYEE_SUCCESS,CREATE_EMPLOYEE,CREATE_EMPLOYEE_FAILURE} from ".
 const createEmployeeLogic = createLogic({
     type: CREATE_EMPLOYEE,
     latest: true,
-    process({getState,action}, dispatch, done) {
+    process({action}, dispatch, done) {
         const path="https://api-test.opendoors.od.ua:1013/employees";
         let myInit = {
             method: "POST",
@@ -19,7 +19,7 @@ const createEmployeeLogic = createLogic({
                 });
                 done();
             })
-            .catch((res) => {
+            .catch(() => {
                 dispatch({
                     type: CREATE_EMPLOYEE_FAILURE,
                 });

@@ -44,7 +44,7 @@ class AddLock extends React.Component {
     }
 }
 
-function mapStateToProps(state){
+function mapStateToProps(){
     return {
 
     };
