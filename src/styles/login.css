@@ -13,3 +13,20 @@
 .vvp-form-signin__input{
     margin-bottom: 10px;
 }
+.vvp-register{
+    max-width: 330px;
+    display: flex;
+    flex-direction: column;
+}
+.vvp-register__button{
+    color:#fff;
+    border-radius: 6px;
+    font-family: inherit;
+}
+.vvp-register__button:hover{
+    color:#fff;
+    background-color: #A9A9A9;
+}
+.vvp-register__button:focus{
+    color:#fff
+}

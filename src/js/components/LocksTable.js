@@ -5,7 +5,6 @@ import {Pagination} from "react-bootstrap";
 import {push} from "react-router-redux";
 import { queryString } from "query-string";
 import {getLocksData} from "../actions/getLocksData";
-import { history } from "../configurateStore/history";
 import { buildQueryString } from "../utilities/url";
 import {Button,Modal} from "react-bootstrap";
 import {deleteLock} from "../actions/deleteLock";

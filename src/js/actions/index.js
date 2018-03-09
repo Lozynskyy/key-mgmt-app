@@ -9,6 +9,7 @@ import deleteLock from "../logic/deleteLockLogic";
 import createLock from "../logic/createLockLogic";
 import updateEmployee from "../logic/updateEmployeeLogic";
 import getEmployee from "../logic/getEmployeeLogic";
+import createUser from "../logic/createUserLogic";
 
 const actions=[
     ...loginUser,
@@ -21,7 +22,8 @@ const actions=[
     ...createLock,
     ...getLockKeys,
     ...updateEmployee,
-    ...getEmployee
+    ...getEmployee,
+    ...createUser
 ];
 
 export default actions;

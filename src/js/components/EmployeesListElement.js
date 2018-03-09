@@ -15,9 +15,10 @@ class EmployeesListElement extends React.Component{
                 <td><Link to={"/employee/"+employee.id}>#{employee.id}</Link></td>
                 <td><Link to={"/employee/"+employee.id}>{employee.surname}</Link></td>
                 <td><Link to={"/employee/"+employee.id}>{employee.name}</Link></td>
+                <td><Link to={"/employee/"+employee.id}>{employee.age}</Link></td>
                 <td>
                     <Button type="button" bsSize="small" onClick={this.props.deleteEmployee.bind(this,employee.id)} bsStyle="danger">Delete</Button>
-                    <Button type="button" bsSize="small" onClick={this.props.updateEmployee.bind(this,employee.id)} bsStyle="warning">Update</Button>
+                    <Button type="button" bsSize="small" onClick={this.props.updateEmployee.bind(this,employee)} bsStyle="warning">Update</Button>
                 </td>
             </tr>
         );

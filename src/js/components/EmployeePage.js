@@ -12,6 +12,28 @@ class EmployeePage extends React.Component{
     }
     componentDidMount(){
         this.props.fetchEmployeeKeys(this.props.match.params.id);
+        /*   const socket = new WebSocket("wss://api-test.opendoors.od.ua:1013/keys");
+       socket.onopen = function() {
+            alert("Соединение установлено.");
+        };
+
+        socket.onclose = function(event) {
+            if (event.wasClean) {
+                alert('Соединение закрыто чисто');
+            } else {
+                alert('Обрыв соединения'); // например, "убит" процесс сервера
+            }
+            alert('Код: ' + event.code + ' причина: ' + event.reason);
+        };
+
+        socket.onmessage = function(event) {
+            alert("Получены данные " + event.data);
+        };
+
+        socket.onerror = function(error) {
+            alert("Ошибка " + error.message);
+        };*/
+
     }
     showEmployeeName(){
         //TODO:if there are no keys, employee name doesn't show
@@ -42,9 +64,15 @@ class EmployeePage extends React.Component{
                         })}
                     </tbody>
                 </table>
-                <NewKey id={12} tag="ghbgf4"/>
-                <NewKey id={54} tag="rh"/>
-                <NewKey id={43} tag="rtbtrrb"/>
+                <div className="vvp-new-keys__wrap">
+                    <div className="row vvp-grid">
+                        <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10">
+                            <NewKey id={12} tag="ghbgf4"/>
+                            <NewKey id={54} tag="rh"/>
+                            <NewKey id={43} tag="rtbtrrb"/>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

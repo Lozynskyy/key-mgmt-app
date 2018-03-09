@@ -14,11 +14,11 @@ const tooOld = value =>
     value && value > 80 ? "You might be too old for this" : undefined;
 
 const renderField = ({ input, label, type,data,changeData, meta: { touched, error, warning } }) => (
-    <div>
+    <div  className="vvp-input">
         <label>{label}</label>
         <div>
-            <input {...input} placeholder={label} type={type} value={data||""} onChange={changeData}/>
-            {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+            <input className="form-control" {...input} placeholder={label} type={type} value={data||""} onChange={changeData}/>
+            {touched && ((error && <span className="vvp-input__error-msg">{error}</span>) || (warning && <span className="vvp-input__warning-msg">{warning}</span>))}
         </div>
     </div>
 );

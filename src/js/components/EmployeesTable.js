@@ -7,7 +7,6 @@ import { queryString } from "query-string";
 import AddEmployee from "./PopUps/EmployeeSubmit";
 import {Button,Modal} from "react-bootstrap";
 import {deleteEmployee} from "../actions/deleteEmployee";
-import {getEmployee} from "../actions/getEmployee";
 import {getEmployeesData} from "../actions/getEmployeesData";
 import EmployeeForm from "./PopUps/EmployeeForm";
 import { buildQueryString } from "../utilities/url";
@@ -20,7 +19,8 @@ class EmplyeesTable extends React.Component{
         this.state = {
             showModalDelEmpl:false,
             showModalUpdateEmpl:false,
-            currentId:null
+            currentId:null,
+            employee:{}
         };
         this.changePage = this.changePage.bind(this);
         this.showDeleteEmployeeModal=this.showDeleteEmployeeModal.bind(this);
@@ -41,15 +41,14 @@ class EmplyeesTable extends React.Component{
     }
 
     changeEmployee(values){
-        this.props.updateEmpl(this.state.currentId,values);
+        this.props.updateEmpl(this.state.employee.id,values);
         this.setState({
             showModalUpdateEmpl:false
         });
     }
-    showUpdateEmployeeModal(id){
-        this.props.getOneEmployee(id);
+    showUpdateEmployeeModal(data){
         this.setState({
-            currentId:id,
+            employee:data,
             showModalUpdateEmpl:true
         });
     }
@@ -82,12 +81,13 @@ class EmplyeesTable extends React.Component{
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
-                            <th colSpan="4">Employees</th>
+                            <th colSpan="5">Employees</th>
                         </tr>
                         <tr>
                             <th>ID</th>
                             <th>Surname</th>
                             <th>Name</th>
+                            <th>Age</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -126,7 +126,7 @@ class EmplyeesTable extends React.Component{
                     </Modal.Header>
 
                     <Modal.Body>
-                        <EmployeeForm onSubmit={this.changeEmployee} employee={this.props.employee}/>
+                        <EmployeeForm onSubmit={this.changeEmployee} employee={this.state.employee}/>
                     </Modal.Body>
 
                     <Modal.Footer>
@@ -147,7 +147,6 @@ function mapStateToProps(state){
         employees: state.employees.data,
         page: Number(parsed.employeesPage) || 1,
         location: state.routing.location,
-        employee:state.employee.data
     });
 }
 
@@ -159,9 +158,6 @@ function mapDispatchToProps(dispatch){
         },
         getAllEmployeesData(){
             dispatch(getEmployeesData());
-        },
-        getOneEmployee(id) {
-            dispatch(getEmployee(id));
         },
         updateEmpl(id,data){
             dispatch(updateEmployee(id,data));
