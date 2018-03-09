@@ -17,7 +17,7 @@ const allReducers=combineReducers({
     lockKeys:lockKeys,
     employee:employee,
     routing: routerReducer,
-    form: formReducer
+    form: formReducer,
 });
 
 export default allReducers;

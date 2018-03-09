@@ -23,7 +23,7 @@ const actions=[
     ...getLockKeys,
     ...updateEmployee,
     ...getEmployee,
-    ...createUser
+    ...createUser,
 ];
 
 export default actions;

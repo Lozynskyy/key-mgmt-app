@@ -1,26 +1,26 @@
-import {FETCH_LOCK_KEYS,FETCH_LOCK_KEYS_SUCCESS,FETCH_LOCK_KEYS_FAILURE} from "../constants";
+import {FETCH_LOCK_KEYS,FETCH_LOCK_KEYS_FAILURE,FETCH_LOCK_KEYS_SUCCESS} from "../constants";
 import {createLogic} from "redux-logic";
 
 const getLockKeysLogic=createLogic({
     type: FETCH_LOCK_KEYS,
     latest: true,
-    process({getState,action}, dispatch, done) {
+    process({action}, dispatch, done) {
         const path=`https://api-test.opendoors.od.ua:1013/locks/${action.id}/availablekeys`;
         let myInit = {
             method: "GET",
         };
         fetch(path,myInit)
-            .then((res) => {
+            .then((payload) => {
                 dispatch({
                     type: FETCH_LOCK_KEYS_SUCCESS,
-                    payload: res
+                    payload
                 });
                 done();
             })
-            .catch((res) => {
+            .catch((err) => {
+                console.log(err);
                 dispatch({
-                    type: FETCH_LOCK_KEYS_FAILURE,
-                    payload: res
+                    type: FETCH_LOCK_KEYS_FAILURE
                 });
                 done();
             });

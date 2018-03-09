@@ -3,7 +3,7 @@ import LocksListElement from "./LocksListElement";
 import { connect } from "react-redux";
 import {Pagination} from "react-bootstrap";
 import {push} from "react-router-redux";
-import { queryString } from "query-string";
+import queryString from "query-string";
 import {getLocksData} from "../actions/getLocksData";
 import { buildQueryString } from "../utilities/url";
 import {Button,Modal} from "react-bootstrap";
@@ -102,7 +102,6 @@ class LocksTable extends React.Component{
 }
 
 function mapStateToProps(state){
-    const queryString = require("query-string");
     const parsed = queryString.parse(state.routing.location.search);
     return({
         locks: state.locks.data,

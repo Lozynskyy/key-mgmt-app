@@ -1,5 +1,4 @@
 import React from "react";
-
 import EmployeesTable from "./EmployeesTable";
 import LocksTable from "./LocksTable";
 

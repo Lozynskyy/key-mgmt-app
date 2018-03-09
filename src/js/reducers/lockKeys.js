@@ -21,11 +21,11 @@ export default function (state=initialState, action) {
             keys:action.payload
         };
     case  FETCH_LOCK_KEYS_FAILURE:
-        return{
+        return {
             ...state,
-            loading:false,
-            loaded:false,
-            keys:[]
+            loading: false,
+            loaded: false,
+            keys: []
         };
     default:
         return state;

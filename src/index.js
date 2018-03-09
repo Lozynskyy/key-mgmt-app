@@ -10,7 +10,6 @@ import Login from "./js/components/Login";
 import Dashboard from "./js/components/Dashboard";
 import LockPage from "./js/components/LockPage";
 import EmployeePage from "./js/components/EmployeePage";
-
 import {history} from "./js/configurateStore/history";
 import {store} from "./js/configurateStore/store";
 

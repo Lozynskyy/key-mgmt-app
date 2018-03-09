@@ -3,12 +3,13 @@ import EmployeesListElement from "./EmployeesListElement";
 import { connect } from "react-redux";
 import { Pagination } from "react-bootstrap";
 import { push } from "react-router-redux";
-import { queryString } from "query-string";
+//import { queryString } from "query-string";
 import AddEmployee from "./PopUps/EmployeeSubmit";
 import {Button,Modal} from "react-bootstrap";
 import {deleteEmployee} from "../actions/deleteEmployee";
 import {getEmployeesData} from "../actions/getEmployeesData";
 import EmployeeForm from "./PopUps/EmployeeForm";
+import queryString from "query-string";
 import { buildQueryString } from "../utilities/url";
 import {updateEmployee} from "../actions/updateEmployee";
 
@@ -141,7 +142,6 @@ class EmplyeesTable extends React.Component{
 }
 
 function mapStateToProps(state){
-    const queryString = require("query-string");
     const parsed = queryString.parse(state.routing.location.search);
     return({
         employees: state.employees.data,

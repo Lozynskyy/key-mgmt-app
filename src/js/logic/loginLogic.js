@@ -5,7 +5,7 @@ import {history} from "../configurateStore/history";
 const postUserDataLogic = createLogic({
     type: LOGIN_USER,
     latest: true,
-    process({getState,action}, dispatch, done) {
+    process({action}, dispatch, done) {
         const path="https://api-test.opendoors.od.ua:1013/login_check";
         let myInit = {
             method: "POST",
