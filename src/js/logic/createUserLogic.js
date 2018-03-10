@@ -4,21 +4,20 @@ import {createLogic} from "redux-logic";
 const createUserLogic = createLogic({
     type: CREATE_USER,
     latest: true,
-    process({getState,action}, dispatch, done) {
+    process({action}, dispatch, done) {
         const path="https://api-test.opendoors.od.ua:1013/register";
         let myInit = {
             method: "POST",
             body:JSON.stringify(action.data)
         };
         fetch(path,myInit)
-            .then((res) => {
-                console.log(res);
+            .then(() => {
                 dispatch({
                     type: CREATE_USER_SUCCESS
                 });
                 done();
             })
-            .catch((res) => {
+            .catch(() => {
                 dispatch({
                     type: CREATE_USER_FAILURE,
                 });

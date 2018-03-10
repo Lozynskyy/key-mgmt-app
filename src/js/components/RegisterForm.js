@@ -19,9 +19,7 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
 
 
 class RegisterForm extends React.Component{
-    constructor(){
-        super();
-    }
+
     render(){
         return(
             <form onSubmit={this.props.handleSubmit}>

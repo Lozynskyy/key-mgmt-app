@@ -5,7 +5,7 @@ import {UPDATE_EMPLOYEE,UPDATE_EMPLOYEE_FAILURE,UPDATE_EMPLOYEE_SUCCESS} from ".
 const updateEmployeeLogic = createLogic({
     type: UPDATE_EMPLOYEE,
     latest: true,
-    process({getState,action}, dispatch, done) {
+    process({action}, dispatch, done) {
         const path=`https://api-test.opendoors.od.ua:1013/employees/${action.id}`;
         let myInit = {
             method: "PUT",
@@ -19,7 +19,7 @@ const updateEmployeeLogic = createLogic({
                 });
                 done();
             })
-            .catch((res) => {
+            .catch(() => {
                 dispatch({
                     type: UPDATE_EMPLOYEE_FAILURE,
                 });

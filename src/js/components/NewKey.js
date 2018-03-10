@@ -1,30 +1,28 @@
 import React from "react";
 import {InputGroup,Button,FormControl} from "react-bootstrap";
 
-export default class NewKey extends React.Component{
+class NewKey extends React.Component{
     constructor(){
         super();
         this.state={
-            description:""
+            description:"",
+            key:{
+                id:null,
+                tag:"",
+                description:""
+            }
         };
-        this.addKey=this.addKey.bind(this);
         this.handleDescription=this.handleDescription.bind(this);
     }
-    addKey(){
-        if(this.state.description && this.state.description.length<=50){
-            alert(this.state.description);
-        }
-        else if(this.state.description && this.state.description.length>50){
-            alert("description should be shorter");
-        }
-        else {
-            alert("enter key description");
-        }
 
-    }
     handleDescription(event){
         this.setState({
-            description:event.target.value
+            description:event.target.value,
+            key:{
+                id:this.props.id,
+                tag:this.props.tag,
+                description:this.state.description
+            }
         });
     }
     render(){
@@ -45,7 +43,7 @@ export default class NewKey extends React.Component{
                     <InputGroup>
                         <FormControl value={this.state.description} placeholder="Key description" onChange={this.handleDescription} type="text" />
                         <InputGroup.Button>
-                            <Button onClick={this.addKey}>Add key</Button>
+                            <Button onClick={this.props.addKey.bind(this,this.state.key)}>Add key</Button>
                         </InputGroup.Button>
                     </InputGroup>
                 </div>
@@ -55,3 +53,5 @@ export default class NewKey extends React.Component{
         );
     }
 }
+
+export default NewKey;

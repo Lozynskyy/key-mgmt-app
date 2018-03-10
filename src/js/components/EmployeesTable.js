@@ -3,7 +3,6 @@ import EmployeesListElement from "./EmployeesListElement";
 import { connect } from "react-redux";
 import { Pagination } from "react-bootstrap";
 import { push } from "react-router-redux";
-//import { queryString } from "query-string";
 import AddEmployee from "./PopUps/EmployeeSubmit";
 import {Button,Modal} from "react-bootstrap";
 import {deleteEmployee} from "../actions/deleteEmployee";
