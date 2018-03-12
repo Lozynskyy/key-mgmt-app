@@ -11,6 +11,7 @@ const getEmployeeKeysLogic=createLogic({
         };
         fetch(path,myInit)
             .then((res) => {
+                console.log(res);
                 dispatch({
                     type: FETCH_EMPLOYEE_KEYS_SUCCESS,
                     payload: res

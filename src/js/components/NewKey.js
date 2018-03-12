@@ -7,8 +7,7 @@ class NewKey extends React.Component{
         this.state={
             description:"",
             key:{
-                id:null,
-                tag:"",
+                rkey:null,
                 description:""
             }
         };
@@ -19,7 +18,7 @@ class NewKey extends React.Component{
         this.setState({
             description:event.target.value,
             key:{
-                id:this.props.id,
+                rkey:this.props.id,
                 tag:this.props.tag,
                 description:this.state.description
             }

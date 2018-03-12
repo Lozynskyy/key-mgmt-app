@@ -39,6 +39,7 @@ class LocksTable extends React.Component{
     delLock(){
         this.props.deleteThisLock(this.state.currentLock);
         this.setState({showDelLockModal:false});
+        this.props.getAllLocksData();
     }
     renderPages(pages) {
         const result = [];

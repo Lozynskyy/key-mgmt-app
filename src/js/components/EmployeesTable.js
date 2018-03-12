@@ -38,6 +38,7 @@ class EmplyeesTable extends React.Component{
     removeEmployee(){
         this.props.delEmployee(this.state.currentId);
         this.setState({showModalDelEmpl:false});
+        this.props.getAllEmployeesData();
     }
 
     changeEmployee(values){

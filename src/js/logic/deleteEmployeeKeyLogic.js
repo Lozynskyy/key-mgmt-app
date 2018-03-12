@@ -11,6 +11,7 @@ const deleteEmployeeKeyLogic=createLogic({
         };
         fetch(path,myInit)
             .then((res)=>{
+                console.log(res);
                 if(res.status===200){
                     dispatch({
                         type:DELETE_EMPLOYEE_KEY_SUCCESS

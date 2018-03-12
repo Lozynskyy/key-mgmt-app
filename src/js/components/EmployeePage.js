@@ -22,27 +22,27 @@ class EmployeePage extends React.Component{
     }
     componentDidMount(){
         this.props.fetchEmployeeKeys(this.props.match.params.id);
-        /*   const socket = new WebSocket("wss://api-test.opendoors.od.ua:1013/keys");
-       socket.onopen = function() {
-            alert("Соединение установлено.");
+        const socket = new WebSocket("ws://api-test.opendoors.od.ua:8080/");
+        socket.onopen = function() {
+            console.log("Соединение установлено.");
         };
 
         socket.onclose = function(event) {
             if (event.wasClean) {
-                alert('Соединение закрыто чисто');
+                alert("Соединение закрыто чисто");
             } else {
-                alert('Обрыв соединения'); // например, "убит" процесс сервера
+                alert("Обрыв соединения");
             }
-            alert('Код: ' + event.code + ' причина: ' + event.reason);
+            alert("Код: " + event.code + " причина: " + event.reason);
         };
 
         socket.onmessage = function(event) {
-            alert("Получены данные " + event.data);
+            console.log(event.data);
         };
 
         socket.onerror = function(error) {
             alert("Ошибка " + error.message);
-        };*/
+        };
 
     }
     showEmployeeName(){
@@ -61,7 +61,6 @@ class EmployeePage extends React.Component{
         this.setState({
             showModalDelKey:false
         });
-        //TODO:doesn't work. keyID is not id of key or relationship. Backend for any of the IDs responds with a message: This id doesn't exist
         this.props.delEmplKey(this.props.match.params.id,this.state.keyID);
     }
     attachKey(data){
@@ -100,7 +99,7 @@ class EmployeePage extends React.Component{
                 <div className="vvp-new-keys__wrap">
                     <div className="row vvp-grid">
                         <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10">
-                            <NewKey id={10} tag="6661" addKey={this.attachKey}/>
+                            <NewKey id="12" tag="66616473" addKey={this.attachKey}/>
                         </div>
                     </div>
                 </div>
