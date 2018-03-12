@@ -47,9 +47,10 @@ class LockPage extends React.Component{
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Lock_name</th>
-                                <th>Lock_pass</th>
-                                <th>Action</th>
+                                <th>Tag</th>
+                                <th>Description</th>
+                                <th>Employee</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
