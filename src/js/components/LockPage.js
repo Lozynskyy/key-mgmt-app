@@ -1,7 +1,7 @@
 import React from "react";
-import { Button, Modal } from "react-bootstrap";
 import {connect} from "react-redux";
 import {getLockKeys} from "../actions/getLockKeys";
+import { Button, Modal } from "react-bootstrap";
 
 class LockPage extends React.Component{
     constructor(){
@@ -32,13 +32,14 @@ class LockPage extends React.Component{
         console.log(id);
     }
 
+
     componentDidMount(){
         console.log(this.props.match);
         this.props.fetchLockKeys(this.props.match.params.id);
     }
 
     render(){
-        
+
         return (
             <div className="row">
                 <div className="col-xl-10 col-lg-10 col-md-12 col-sm-12">
@@ -49,7 +50,7 @@ class LockPage extends React.Component{
                                 <th>Tag</th>
                                 <th>Description</th>
                                 <th>Employee</th>
-                                <th>Action</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -80,9 +81,10 @@ class LockPage extends React.Component{
         );
     }
 }
+
 function mapStateToProps(state) {
     return{
-        keys:state.lockKeys.data
+        keys:state.lockKeys.keys
     };
 }
 function mapDispatchToProps(dispatch) {

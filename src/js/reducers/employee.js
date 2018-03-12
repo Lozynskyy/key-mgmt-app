@@ -1,31 +1,31 @@
-import {FETCH_LOCK_KEYS,FETCH_LOCK_KEYS_FAILURE,FETCH_LOCK_KEYS_SUCCESS} from "../constants";
+import {FETCH_EMPLOYEE,FETCH_EMPLOYEE_SUCCESS,FETCH_EMPLOYEE_FAILURE} from "../constants";
 
 const initialState={
-    keys:[],
+    data:{},
     loading:false,
     loaded:false
 };
 
 export default function (state=initialState, action) {
     switch (action.type){
-    case FETCH_LOCK_KEYS:
+    case FETCH_EMPLOYEE:
         return {
             ...state,
             loading:true
         };
-    case FETCH_LOCK_KEYS_SUCCESS:
+    case FETCH_EMPLOYEE_SUCCESS:
         return{
             ...state,
             loading:false,
             loaded:true,
-            keys:action.payload
+            data:action.payload
         };
-    case  FETCH_LOCK_KEYS_FAILURE:
-        return {
+    case  FETCH_EMPLOYEE_FAILURE:
+        return{
             ...state,
-            loading: false,
-            loaded: false,
-            keys: []
+            loading:false,
+            loaded:false,
+            data:{}
         };
     default:
         return state;
