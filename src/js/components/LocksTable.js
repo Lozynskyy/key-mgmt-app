@@ -3,23 +3,25 @@ import LocksListElement from "./LocksListElement";
 import { connect } from "react-redux";
 import {Pagination} from "react-bootstrap";
 import {push} from "react-router-redux";
-import { queryString } from "query-string";
+import queryString from "query-string";
 import {getLocksData} from "../actions/getLocksData";
-import { history } from "../configurateStore/history";
 import { buildQueryString } from "../utilities/url";
 import {Button,Modal} from "react-bootstrap";
 import {deleteLock} from "../actions/deleteLock";
 import AddLock from "./LockSubmit";
+import LockForm from "./LockForm";
 
 class LocksTable extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             showDelLockModal:false,
+            showUpLockModal:false,
             currentLock:null
         };
         this.changePage = this.changePage.bind(this);
         this.showDeleteLockModal = this.showDeleteLockModal.bind(this);
+        this.showUpdateLockModal = this.showUpdateLockModal.bind(this);
         this.delLock = this.delLock.bind(this);
     }
     componentDidMount(){
@@ -37,6 +39,14 @@ class LocksTable extends React.Component{
             currentLock:id
         });
     }
+
+    showUpdateLockModal(id){
+        this.setState({
+            showUpLockModal:true,
+            currentLock:id
+        });
+    }
+
     delLock(){
         this.props.deleteThisLock(this.state.currentLock);
         this.setState({showDelLockModal:false});
@@ -74,7 +84,7 @@ class LocksTable extends React.Component{
                             if (index >= start_offset && start_count < per_page) {
                                 start_count ++;
                                 return(
-                                    <LocksListElement key={lock.id} lock={lock} deleteLock={this.showDeleteLockModal}/>
+                                    <LocksListElement key={lock.id} lock={lock} deleteLock={this.showDeleteLockModal} updateLock={this.showUpdateLockModal}/>
                                 );
                             }
                         })}
@@ -97,13 +107,28 @@ class LocksTable extends React.Component{
                     </Modal.Footer>
                 </Modal>
 
+                <Modal show={this.state.showUpLockModal}>
+                    <Modal.Header>
+                        <Modal.Title>Update lock</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+
+                        <LockForm onSubmit={this.submit} />
+
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button type="button" bsSize="large" onClick={()=>this.setState({showUpLockModal:false})}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+
             </div>
         );
     }
 }
 
 function mapStateToProps(state){
-    const queryString = require("query-string");
     const parsed = queryString.parse(state.routing.location.search);
     return({
         locks: state.locks.data,
@@ -121,7 +146,7 @@ function mapDispatchToProps(dispatch){
             dispatch(deleteLock(id));
         },
         navigate(url) {
-            dispatch(push(url))
+            dispatch(push(url));
         }
     };
 }

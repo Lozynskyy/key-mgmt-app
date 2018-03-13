@@ -1,31 +1,31 @@
-import {FETCH_LOCKS,FETCH_LOCKS_SUCCESS,FETCH_LOCKS_FAILURE} from "../constants";
+import { FETCH_LOCK, FETCH_LOCK_FAILURE, FETCH_LOCK_SUCCESS } from "../constants";
 
 const initialState={
-    data:[],
+    data:{},
     loading:false,
     loaded:false
 };
 
 export default function (state=initialState, action) {
     switch (action.type){
-    case FETCH_LOCKS:
+    case FETCH_LOCK:
         return {
             ...state,
             loading:true
         };
-    case FETCH_LOCKS_SUCCESS:
+    case FETCH_LOCK_SUCCESS:
         return{
             ...state,
             loading:false,
             loaded:true,
             data:action.payload
         };
-    case  FETCH_LOCKS_FAILURE:
+    case  FETCH_LOCK_FAILURE:
         return{
             ...state,
             loading:false,
             loaded:false,
-            data:[]
+            data:{}
         };
     default:
         return state;

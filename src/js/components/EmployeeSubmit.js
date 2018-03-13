@@ -44,6 +44,11 @@ class AddEmployee extends React.Component {
     }
 }
 
+function mapStateToProps(state){
+    return {
+
+    };
+}
 
 function mapDispatchToProps(dispatch){
     return {
@@ -53,4 +58,4 @@ function mapDispatchToProps(dispatch){
     };
 }
 
-export default connect(mapDispatchToProps)(AddEmployee);
+export default connect(mapStateToProps, mapDispatchToProps)(AddEmployee);

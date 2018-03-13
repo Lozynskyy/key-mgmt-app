@@ -12,7 +12,7 @@ class LocksListElement extends React.Component{
                 <td>{lock.lock_name}</td>
                 <td>
                     <Button type="button" onClick={this.props.deleteLock.bind(this,lock.id)} bsSize="small" bsStyle="danger">Delete</Button>
-                    <Button type="button" bsSize="small" bsStyle="warning">Update</Button>
+                    <Button type="button" onClick={this.props.updateLock.bind(this,lock.id)} bsSize="small" bsStyle="warning">Update</Button>
                 </td>
             </tr>
         );
