@@ -25,10 +25,10 @@ class LocksTable extends React.Component{
         this.showDeleteLockModal = this.showDeleteLockModal.bind(this);
         this.showUpdateLockModal = this.showUpdateLockModal.bind(this);
         this.delLock = this.delLock.bind(this);
+        this.currentLockData = this.currentLockData.bind(this);
     }
 
     submit(values){
-        console.log(this.state.currentLock);
         this.props.updateLockData(this.state.currentLock, values);
         this.setState({showUpLockModal:false});
     }
@@ -56,10 +56,16 @@ class LocksTable extends React.Component{
         });
     }
 
+    currentLockData(){
+        return this.props.locks.find(lock => lock.id === this.state.currentLock);
+    }
+
     delLock(){
         this.props.deleteThisLock(this.state.currentLock);
         this.setState({showDelLockModal:false});
+        this.props.getAllLocksData();
     }
+
     renderPages(pages) {
         const result = [];
         for (let number = 1; number <= pages; number++) {
@@ -123,7 +129,7 @@ class LocksTable extends React.Component{
 
                     <Modal.Body>
 
-                        <LockForm onSubmit={this.submit} />
+                        <LockForm onSubmit={this.submit} lock={this.currentLockData()} />
 
                     </Modal.Body>
 

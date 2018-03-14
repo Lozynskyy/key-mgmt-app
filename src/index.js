@@ -10,7 +10,6 @@ import Login from "./js/components/Login";
 import Dashboard from "./js/components/Dashboard";
 import LockPage from "./js/components/LockPage";
 import EmployeePage from "./js/components/EmployeePage";
-
 import {history} from "./js/configurateStore/history";
 import {store} from "./js/configurateStore/store";
 
@@ -23,7 +22,7 @@ ReactDOM.render(<Provider store={store}>
         <Switch>
             <Route exact path='/' component={Login}/>
             <Route path='/dashboard' component={Dashboard}/>
-            <Route path="/lock" component={LockPage}/>
+            <Route path="/lock/:id" component={LockPage}/>
             <Route path="/employee/:id" component={EmployeePage}/>
         </Switch>
     </ConnectedRouter>

@@ -4,13 +4,14 @@ import {createLogic} from "redux-logic";
 const getEmployeeKeysLogic=createLogic({
     type: FETCH_EMPLOYEE_KEYS,
     latest: true,
-    process({getState,action}, dispatch, done) {
+    process({action}, dispatch, done) {
         const path=`https://api-test.opendoors.od.ua:1013/employees/${action.id}/keys`;
         let myInit = {
             method: "GET",
         };
         fetch(path,myInit)
             .then((res) => {
+                console.log(res);
                 dispatch({
                     type: FETCH_EMPLOYEE_KEYS_SUCCESS,
                     payload: res

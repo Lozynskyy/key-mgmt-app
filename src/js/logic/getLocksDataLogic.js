@@ -4,7 +4,7 @@ import { FETCH_LOCKS, FETCH_LOCKS_SUCCESS, FETCH_LOCKS_FAILURE } from "../consta
 const getLocksDataLogic = createLogic({
     type: FETCH_LOCKS,
     latest: true,
-    process({ getState, action }, dispatch, done) {
+    process(_, dispatch, done) {
         const path = "https://api-test.opendoors.od.ua:1013/locks";
         let myInit = {
             method: "GET"

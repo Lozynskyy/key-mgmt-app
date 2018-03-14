@@ -4,7 +4,7 @@ import {CREATE_LOCK_FAILURE,CREATE_LOCK,CREATE_LOCK_SUCCESS} from "../constants"
 const createLockLogic = createLogic({
     type: CREATE_LOCK,
     latest: true,
-    process({getState,action}, dispatch, done) {
+    process({action}, dispatch, done) {
         const path="https://api-test.opendoors.od.ua:1013/locks";
         let myInit = {
             method: "POST",

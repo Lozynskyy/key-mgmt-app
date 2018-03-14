@@ -6,8 +6,11 @@
 .table-bordered{
     margin: 0;
 }
+.vvp-grid{
+    display: flex;
+    justify-content: center;
+}
 .vvp-new-keys__wrap{
-    border: 3px solid black;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -23,3 +26,9 @@
     height: 60px;
 }
 
+.vvp-input__error-msg{
+    color:red;
+}
+.vvp-input__warning-msg{
+    color:yellow;
+}

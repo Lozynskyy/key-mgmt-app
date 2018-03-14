@@ -9,36 +9,63 @@ const max_length = maxLength(25);
 
 
 
-const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
+const renderField = ({ input, label, defValue, changeValue, type, meta: { touched, error, warning } }) => (
     <div>
         <label>{label}</label>
         <div>
-            <input {...input} placeholder={label} type={type}/>
-            {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+            <input className="form-control" {...input} placeholder={label} type={type} value={defValue} onChange={changeValue}/>
+            {touched && ((error && <span className="vvp-input__error-msg">{error}</span>) || (warning && <span className="vvp-input__warning-msg">{warning}</span>))}
         </div>
     </div>
 );
 
-const LockForm = (props) => {
-    const { handleSubmit, pristine, reset, submitting } = props;
-    return (
-        <form onSubmit={handleSubmit}>
-            <Field name="lock_name" type="text"
-                component={renderField} label="Name"
-                validate={[ required, max_length ]}
-            />
-            <Field name="lock_pass" type="text"
-                component={renderField} label="Pass"
-                validate={[required,max_length]}
-            />
+class LockForm extends React.Component{
+    constructor(){
+        super();
+        this.state={
+            lock_name: "",
+            lock_pass: ""
+        };
+        this.changeName=this.changeName.bind(this);
+        this.changePass=this.changePass.bind(this);
+    }
+    componentDidMount(){
+        if(this.props.lock){
+            this.setState({
+                lock_name:this.props.lock.lock_name,
+                lock_pass:this.props.lock.lock_pass,
+            });
+        }
+    }
+    changeName(e){
+        this.setState({lock_name:e.target.value});
+    }
+    changePass(e){
+        this.setState({lock_pass:e.target.value});
+    }
+    render(){
+        return (
+            <form onSubmit={this.props.handleSubmit}>
+                <Field name="lock_name" type="text"
+                    defValue={this.state.lock_name}
+                    changeValue={this.changeName}
+                    component={renderField} label="Name"
+                    validate={[ required, max_length ]}
+                />
+                <Field name="lock_pass" type="text"
+                    defValue={this.state.lock_pass}
+                    changeValue={this.changePass}
+                    component={renderField} label="Pass"
+                    validate={[required,max_length]}
+                />
 
-            <div>
-                <Button bsStyle="success" bsSize="small" type="submit" disabled={submitting}>Submit</Button>
-                <Button bsSize="small" type="button" disabled={pristine || submitting} onClick={reset}>Clear Values</Button>
-            </div>
-        </form>
-    );
-};
+                <div>
+                    <Button bsStyle="success" bsSize="small" type="submit" disabled={this.props.submitting}>Submit</Button>
+                    <Button bsSize="small" type="button" disabled={this.props.pristine || this.props.submitting} onClick={this.props.reset}>Clear Values</Button>
+                </div>
+            </form>
+        );}
+}
 export default reduxForm({
     form: "Add_lock"
 })(LockForm);

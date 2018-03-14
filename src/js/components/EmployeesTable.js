@@ -3,25 +3,31 @@ import EmployeesListElement from "./EmployeesListElement";
 import { connect } from "react-redux";
 import { Pagination } from "react-bootstrap";
 import { push } from "react-router-redux";
-import { queryString } from "query-string";
-import AddEmployee from "./EmployeeSubmit";
-import { Button, Modal } from "react-bootstrap";
-import { deleteEmployee } from "../actions/deleteEmployee";
-import { getEmployeesData } from "../actions/getEmployeesData";
-import { history } from "../configurateStore/history";
+import AddEmployee from "./PopUps/EmployeeSubmit";
+import {Button,Modal} from "react-bootstrap";
+import {deleteEmployee} from "../actions/deleteEmployee";
+import {getEmployeesData} from "../actions/getEmployeesData";
+import EmployeeForm from "./PopUps/EmployeeForm";
+import queryString from "query-string";
 import { buildQueryString } from "../utilities/url";
+import {updateEmployee} from "../actions/updateEmployee";
 
 class EmplyeesTable extends React.Component{
+
     constructor(props){
         super(props);
-        this.changePage = this.changePage.bind(this);
         this.state = {
             showModalDelEmpl:false,
-            currentId:null
+            showModalUpdateEmpl:false,
+            currentId:null,
+            employee:{}
         };
         this.changePage = this.changePage.bind(this);
-        this.showDeleteEmployeeModal = this.showDeleteEmployeeModal.bind(this);
-        this.removeEmployee = this.removeEmployee.bind(this);
+        this.showDeleteEmployeeModal=this.showDeleteEmployeeModal.bind(this);
+        this.removeEmployee=this.removeEmployee.bind(this);
+        this.showUpdateEmployeeModal=this.showUpdateEmployeeModal.bind(this);
+        this.changePage = this.changePage.bind(this);
+        this.changeEmployee=this.changeEmployee.bind(this);
     }
     showDeleteEmployeeModal(id){
         this.setState({
@@ -32,7 +38,22 @@ class EmplyeesTable extends React.Component{
     removeEmployee(){
         this.props.delEmployee(this.state.currentId);
         this.setState({showModalDelEmpl:false});
+        this.props.getAllEmployeesData();
     }
+
+    changeEmployee(values){
+        this.props.updateEmpl(this.state.employee.id,values);
+        this.setState({
+            showModalUpdateEmpl:false
+        });
+    }
+    showUpdateEmployeeModal(data){
+        this.setState({
+            employee:data,
+            showModalUpdateEmpl:true
+        });
+    }
+
     componentDidMount() {
         this.props.getAllEmployeesData();
     }
@@ -61,12 +82,13 @@ class EmplyeesTable extends React.Component{
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
-                            <th colSpan="4">Employees</th>
+                            <th colSpan="5">Employees</th>
                         </tr>
                         <tr>
                             <th>ID</th>
                             <th>Surname</th>
                             <th>Name</th>
+                            <th>Age</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -75,7 +97,7 @@ class EmplyeesTable extends React.Component{
                             if (index >= start_offset && start_count < per_page) {
                                 start_count ++;
                                 return(
-                                    <EmployeesListElement key={employee.id} employee={employee} deleteEmployee={this.showDeleteEmployeeModal}/>
+                                    <EmployeesListElement key={employee.id} employee={employee} deleteEmployee={this.showDeleteEmployeeModal} updateEmployee={this.showUpdateEmployeeModal}/>
                                 );
                             }
                         })}
@@ -99,6 +121,20 @@ class EmplyeesTable extends React.Component{
                     </Modal.Footer>
                 </Modal>
 
+                <Modal show={this.state.showModalUpdateEmpl}>
+                    <Modal.Header>
+                        <Modal.Title>Update employee</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <EmployeeForm onSubmit={this.changeEmployee} employee={this.state.employee}/>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button type="button" bsSize="large" onClick={()=>this.setState({showModalUpdateEmpl:false})}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+
 
             </div>
         );
@@ -106,12 +142,11 @@ class EmplyeesTable extends React.Component{
 }
 
 function mapStateToProps(state){
-    const queryString = require("query-string");
     const parsed = queryString.parse(state.routing.location.search);
     return({
         employees: state.employees.data,
         page: Number(parsed.employeesPage) || 1,
-        location: state.routing.location
+        location: state.routing.location,
     });
 }
 
@@ -123,6 +158,9 @@ function mapDispatchToProps(dispatch){
         },
         getAllEmployeesData(){
             dispatch(getEmployeesData());
+        },
+        updateEmpl(id,data){
+            dispatch(updateEmployee(id,data));
         },
         navigate(url) {
             dispatch(push(url));
