@@ -6,6 +6,8 @@ import { ConnectedRouter } from "react-router-redux";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./styles/index.css";
 import "./styles/login.css";
+import "./styles/lockKeysTable.css";
+import "./styles/table.css";
 import Login from "./js/components/Login";
 import Dashboard from "./js/components/Dashboard";
 import LockPage from "./js/components/LockPage";
