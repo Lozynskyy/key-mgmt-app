@@ -9,9 +9,9 @@ class LocksListElement extends React.Component{
         const lock=this.props.lock;
         return(
             <tr key={lock.id}>
-                <td><Link to={"/lock/"+lock.id}>#{lock.id}</Link></td>
+                <td className="id-column"><Link to={"/lock/"+lock.id}>#{lock.id}</Link></td>
                 <td><Link to={"/lock/"+lock.id}>{lock.lock_name}</Link></td>
-                <td>
+                <td className="actions-column">
                     <Button type="button" onClick={this.props.deleteLock.bind(this,lock.id)} bsSize="small" bsStyle="danger">Delete</Button>
                     <Button type="button" bsSize="small" bsStyle="warning">Update</Button>
                 </td>
