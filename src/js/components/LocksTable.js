@@ -10,6 +10,7 @@ import {Button,Modal} from "react-bootstrap";
 import {deleteLock} from "../actions/deleteLock";
 import AddLock from "./LockSubmit";
 import LockForm from "./LockForm";
+import {updateLock} from "../actions/updateLock";
 
 class LocksTable extends React.Component{
     constructor(props){
@@ -19,11 +20,19 @@ class LocksTable extends React.Component{
             showUpLockModal:false,
             currentLock:null
         };
+        this.submit = this.submit.bind(this);
         this.changePage = this.changePage.bind(this);
         this.showDeleteLockModal = this.showDeleteLockModal.bind(this);
         this.showUpdateLockModal = this.showUpdateLockModal.bind(this);
         this.delLock = this.delLock.bind(this);
     }
+
+    submit(values){
+        console.log(this.state.currentLock);
+        this.props.updateLockData(this.state.currentLock, values);
+        this.setState({showUpLockModal:false});
+    }
+
     componentDidMount(){
         this.props.getAllLocksData();
     }
@@ -147,6 +156,9 @@ function mapDispatchToProps(dispatch){
         },
         navigate(url) {
             dispatch(push(url));
+        },
+        updateLockData(id, values){
+            dispatch(updateLock(id, values));
         }
     };
 }

@@ -125,7 +125,7 @@ function mapDispatchToProps(dispatch){
             dispatch(getEmployeesData());
         },
         navigate(url) {
-            dispatch(push(url))
+            dispatch(push(url));
         }
     };
 }
