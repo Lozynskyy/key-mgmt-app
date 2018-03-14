@@ -2,13 +2,14 @@ import React from "react";
 import {connect} from "react-redux";
 import {getLockKeys} from "../actions/getLockKeys";
 import { Button, Modal } from "react-bootstrap";
+import {deleteLockKey} from "../actions/deleteLockKey";
 
 class LockPage extends React.Component{
     constructor(){
         super();
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.deleteKey = this.deleteKey.bind(this);
+        this.removeKey = this.removeKey.bind(this);
         
         this.state = {
             show: false,
@@ -20,18 +21,15 @@ class LockPage extends React.Component{
         this.setState({ show: false });
     }
 
-    handleShow(id) {
-        this.setState({ show: true, id });
+    handleShow(data) {
+        console.log(data.key.id);
+        this.setState({ show: true, id: data.key.id });
     }
     
-    deleteKey(id) {
-        this.setState({
-            /*data: this.state.data.filter(item => item.id !== id),*/
-            show: false
-        });
-        console.log(id);
+    removeKey() {
+        this.setState({ show: false });
+        this.props.deleteLockKey(this.props.match.params.id, this.state.id);
     }
-
 
     componentDidMount(){
         console.log(this.props.match);
@@ -43,22 +41,21 @@ class LockPage extends React.Component{
         return (
             <div className="row">
                 <div className="col-xl-10 col-lg-10 col-md-12 col-sm-12">
-                    <table className="table table-bordered">
+                    <table className="table table-bordered table-hover table-striped">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th className="id-column">ID</th>
                                 <th>Tag</th>
                                 <th>Description</th>
                                 <th>Employee</th>
-                                <th>Actions</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.keys.map((key) => {
-                                return <tr key={key.id}><td>{key.id}</td><td>{key.tag}</td><td>{key.description}</td><td>{key.employee}</td>
-                                    <td>
-                                        <Button bsStyle="danger" key={key.id} onClick={() => this.handleShow(key.id)}>Delete</Button>
-                                        <Button bsStyle="warning">Update</Button>
+                            {this.props.keys.map((item) => {
+                                return <tr key={item.id}><td>#{item.key.id}</td><td>{item.key.tag}</td><td>{item.key.description}</td><td>{item.key.employee}</td>
+                                    <td className="action-column">
+                                        <Button bsStyle="danger" key={item.id} onClick={() => this.handleShow(item)}>Delete</Button>
                                     </td>
                                 </tr>;
                             })}
@@ -66,14 +63,14 @@ class LockPage extends React.Component{
                     </table>
                     <Modal show={this.state.show} onHide={this.handleClose}>
                         <Modal.Header closeButton>
-                            <Modal.Title>Confirm the action</Modal.Title>
+                            <Modal.Title>Confirm action</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <p>Are you sure you want to delete the key?</p>
+                            <p>Do you really want to delete this key?</p>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button bsStyle="success" onClick={()=>{this.deleteKey(this.state.id);}}>Yes</Button>
-                            <Button bsStyle="danger" onClick={this.handleClose}>No</Button>
+                            <Button onClick={this.handleClose}>Close</Button>
+                            <Button bsStyle="danger" onClick={this.removeKey}>Delete</Button>
                         </Modal.Footer>
                     </Modal>
                 </div>
@@ -89,9 +86,12 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
     return{
+        deleteLockKey(id, idKey){
+            dispatch(deleteLockKey(id, idKey));
+        },
         fetchLockKeys(id){
             dispatch(getLockKeys(id));
-        }
+        },
     };
 }
 export default connect(mapStateToProps,mapDispatchToProps)(LockPage);
