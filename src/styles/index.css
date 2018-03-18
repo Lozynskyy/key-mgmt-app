@@ -27,8 +27,10 @@
 }
 
 .vvp-input__error-msg{
-    color:red;
+    margin-bottom: 0;
+    padding: 5px;
 }
 .vvp-input__warning-msg{
-    color:yellow;
+    margin-bottom: 0;
+    padding: 5px;
 }

@@ -1,15 +1,16 @@
-import {LOGIN_USER, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS} from "../constants";
+import {LOGIN_USER, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS} from "../constants/loginUser";
 import {createLogic} from "redux-logic";
 import {history} from "../configurateStore/history";
+import {url} from "../utilities/url";
 
-const postUserDataLogic = createLogic({
+const loginLogic = createLogic({
     type: LOGIN_USER,
     latest: true,
     process({action}, dispatch, done) {
-        const path="https://api-test.opendoors.od.ua:1013/login_check";
+        const path=`${url}/login_check`;
         let myInit = {
             method: "POST",
-            body:JSON.stringify({"_username":action.username,"_password":action.password})
+            body:JSON.stringify(action.data)
         };
         fetch(path,myInit)
             .then((res) => {
@@ -32,4 +33,4 @@ const postUserDataLogic = createLogic({
     }
 });
 
-export default [postUserDataLogic];
+export default [loginLogic];

@@ -1,4 +1,4 @@
-import {LOGIN_USER,LOGIN_USER_SUCCESS,LOGIN_USER_FAILURE} from "../constants";
+import {LOGIN_USER,LOGIN_USER_SUCCESS,LOGIN_USER_FAILURE} from "../constants/loginUser";
 
 const initialState={
     token:"",

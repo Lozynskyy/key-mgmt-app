@@ -1,11 +1,10 @@
-import {LOGIN_USER} from "../constants";
+import {LOGIN_USER} from "../constants/loginUser";
 
 
-export function postUserData(username,password) {
+export const login = (data) => {
     return {
         type: LOGIN_USER,
-        username,
-        password
+        data
     };
-}
+};
 

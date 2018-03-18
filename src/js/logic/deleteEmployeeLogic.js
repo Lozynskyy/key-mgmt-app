@@ -1,11 +1,12 @@
 import {createLogic} from "redux-logic";
-import {DELETE_EMPLOYEE,DELETE_EMPLOYEE_SUCCESS,DELETE_EMPLOYEE_FAILURE} from "../constants";
+import {DELETE_EMPLOYEE,DELETE_EMPLOYEE_SUCCESS,DELETE_EMPLOYEE_FAILURE} from "../constants/deleteEmployee";
+import {url} from "../utilities/url";
 
 const deleteEmployeeLogic=createLogic({
     type:DELETE_EMPLOYEE,
     latest:true,
     process({action},dispatch,done){
-        const path=`https://api-test.opendoors.od.ua:1013/employees/${action.id}`;
+        const path=`${url}/employees/${action.id}`;
         let myInit={
             method:"DELETE"
         };
@@ -15,14 +16,13 @@ const deleteEmployeeLogic=createLogic({
                     dispatch({
                         type:DELETE_EMPLOYEE_SUCCESS
                     });
-                    done();
                 }
                 else {
                     dispatch({
                         type:DELETE_EMPLOYEE_FAILURE
                     });
-                    done();
                 }
+                done();
             })
             .catch(()=>{
                 dispatch({

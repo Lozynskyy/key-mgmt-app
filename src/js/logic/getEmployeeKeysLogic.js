@@ -1,11 +1,12 @@
-import {FETCH_EMPLOYEE_KEYS,FETCH_EMPLOYEE_KEYS_FAILURE,FETCH_EMPLOYEE_KEYS_SUCCESS} from "../constants";
+import {FETCH_EMPLOYEE_KEYS,FETCH_EMPLOYEE_KEYS_FAILURE,FETCH_EMPLOYEE_KEYS_SUCCESS} from "../constants/fetchEmployeeKeys";
 import {createLogic} from "redux-logic";
+import {url} from "../utilities/url";
 
 const getEmployeeKeysLogic=createLogic({
     type: FETCH_EMPLOYEE_KEYS,
     latest: true,
     process({action}, dispatch, done) {
-        const path=`https://api-test.opendoors.od.ua:1013/employees/${action.id}/keys`;
+        const path=`${url}/employees/${action.id}/keys`;
         let myInit = {
             method: "GET",
         };

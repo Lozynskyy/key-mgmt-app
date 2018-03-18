@@ -42,7 +42,7 @@ class EmplyeesTable extends React.Component{
     }
 
     changeEmployee(values){
-        this.props.updateEmpl(this.state.employee.id,values);
+        this.props.updateEmployee(this.state.employee.id,values);
         this.setState({
             showModalUpdateEmpl:false
         });
@@ -159,7 +159,7 @@ function mapDispatchToProps(dispatch){
         getAllEmployeesData(){
             dispatch(getEmployeesData());
         },
-        updateEmpl(id,data){
+        updateEmployee(id,data){
             dispatch(updateEmployee(id,data));
         },
         navigate(url) {

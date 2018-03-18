@@ -1,12 +1,13 @@
 import {createLogic} from "redux-logic";
-import {UPDATE_EMPLOYEE,UPDATE_EMPLOYEE_FAILURE,UPDATE_EMPLOYEE_SUCCESS} from "../constants";
+import {UPDATE_EMPLOYEE,UPDATE_EMPLOYEE_FAILURE,UPDATE_EMPLOYEE_SUCCESS} from "../constants/updateEmployee";
+import {url} from "../utilities/url";
 
 
 const updateEmployeeLogic = createLogic({
     type: UPDATE_EMPLOYEE,
     latest: true,
     process({action}, dispatch, done) {
-        const path=`https://api-test.opendoors.od.ua:1013/employees/${action.id}`;
+        const path=`${url}/employees/${action.id}`;
         let myInit = {
             method: "PUT",
             body:JSON.stringify(action.data)

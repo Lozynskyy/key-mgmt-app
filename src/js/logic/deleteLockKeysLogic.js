@@ -1,11 +1,12 @@
-import {DELETE_LOCK_KEY, DELETE_LOCK_KEY_FAILURE, DELETE_LOCK_KEY_SUCCESS} from "../constants";
+import {DELETE_LOCK_KEY, DELETE_LOCK_KEY_FAILURE, DELETE_LOCK_KEY_SUCCESS} from "../constants/deleteLockKey";
 import {createLogic} from "redux-logic";
+import {url} from "../utilities/url";
 
 const deleteLockKeyLogic=createLogic({
     type:DELETE_LOCK_KEY,
     latest:true,
     process({action},dispatch,done){
-        const path=`https://api-test.opendoors.od.ua:1013/locks/${action.id}/availablekeys/${action.idKey}`;
+        const path=`${url}/locks/${action.id}/availablekeys/${action.idKey}`;
         let myInit={
             method:"DELETE"
         };
@@ -16,19 +17,19 @@ const deleteLockKeyLogic=createLogic({
                     dispatch({
                         type:DELETE_LOCK_KEY_SUCCESS
                     });
-                    done();
                 }
                 else {
                     dispatch({
                         type:DELETE_LOCK_KEY_FAILURE
                     });
-                    done();
                 }
+                done();
             })
             .catch(()=>{
                 dispatch({
                     type:DELETE_LOCK_KEY_FAILURE
                 });
+                done();
             });
     }
 });

@@ -1,11 +1,12 @@
 import { createLogic } from "redux-logic";
-import { FETCH_LOCKS, FETCH_LOCKS_SUCCESS, FETCH_LOCKS_FAILURE } from "../constants";
+import { FETCH_LOCKS, FETCH_LOCKS_SUCCESS, FETCH_LOCKS_FAILURE } from "../constants/fetchLocks";
+import {url} from "../utilities/url";
 
 const getLocksDataLogic = createLogic({
     type: FETCH_LOCKS,
     latest: true,
     process(_, dispatch, done) {
-        const path = "https://api-test.opendoors.od.ua:1013/locks";
+        const path = `${url}/locks`;
         let myInit = {
             method: "GET"
         };

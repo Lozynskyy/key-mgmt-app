@@ -7,3 +7,5 @@ export function buildQueryString(paramValue, paramKey, locationSearch)
     const searchString = "?" + queryString.stringify(parsed);
     return searchString;
 }
+
+export const url="https://api-test.opendoors.od.ua:1013";

@@ -1,8 +1,8 @@
-import {DELETE_EMPLOYEE} from "../constants";
+import {DELETE_EMPLOYEE} from "../constants/deleteEmployee";
 
-export function deleteEmployee(id) {
+export const deleteEmployee = (id) => {
     return {
         type: DELETE_EMPLOYEE,
         id
     };
-}
+};

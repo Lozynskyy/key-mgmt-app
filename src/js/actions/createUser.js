@@ -1,8 +1,8 @@
-import {CREATE_USER} from "../constants";
+import {CREATE_USER} from "../constants/createUser";
 
-export function createUser(data){
+export const createUser = (data) => {
     return{
         type:CREATE_USER,
         data
     };
-}
+};

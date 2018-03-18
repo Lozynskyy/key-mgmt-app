@@ -1,6 +1,6 @@
 import React from "react";
 import {reduxForm,Field} from "redux-form";
-import {Button} from "react-bootstrap";
+import {Button,Alert} from "react-bootstrap";
 
 const required = value => value ? undefined : "Required";
 const maxLength = max => value =>
@@ -12,7 +12,7 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
         <label>{label}</label>
         <div>
             <input className="form-control" {...input} placeholder={label} type={type}/>
-            {touched && ((error && <span className="vvp-input__error-msg">{error}</span>) || (warning && <span className="vvp-input__warning-msg">{warning}</span>))}
+            {touched && ((error && <Alert bsStyle="danger" className="vvp-input__error-msg">{error}</Alert>) || (warning && <Alert bsStyle="warning" className="vvp-input__warning-msg">{warning}</Alert>))}
         </div>
     </div>
 );

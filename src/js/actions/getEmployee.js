@@ -1,8 +1,8 @@
-import {FETCH_EMPLOYEE} from "../constants";
+import {FETCH_EMPLOYEE} from "../constants/fetchEmployee";
 
-export function getEmployee(id){
+export const getEmployee = (id) => {
     return{
         type: FETCH_EMPLOYEE,
         id
     };
-}
+};

@@ -1,11 +1,12 @@
 import { createLogic } from "redux-logic";
-import { FETCH_EMPLOYEE, FETCH_EMPLOYEE_SUCCESS, FETCH_EMPLOYEE_FAILURE } from "../constants";
+import { FETCH_EMPLOYEE, FETCH_EMPLOYEE_SUCCESS, FETCH_EMPLOYEE_FAILURE } from "../constants/fetchEmployee";
+import {url} from "../utilities/url";
 
 const getEmployeeLogic = createLogic({
     type: FETCH_EMPLOYEE,
     latest: true,
     process({ action }, dispatch, done) {
-        const path = `https://api-test.opendoors.od.ua:1013/employees/${action.id}`;
+        const path = `${url}/employees/${action.id}`;
         let myInit = {
             method: "GET"
         };

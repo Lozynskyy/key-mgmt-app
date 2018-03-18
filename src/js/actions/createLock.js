@@ -1,8 +1,8 @@
-import {CREATE_LOCK} from "../constants";
+import {CREATE_LOCK} from "../constants/createLock";
 
-export function createLock(values) {
+export const createLock = (values) => {
     return{
         type:CREATE_LOCK,
         values
     };
-}
+};

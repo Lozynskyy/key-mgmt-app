@@ -1,9 +1,9 @@
-import {UPDATE_EMPLOYEE} from "../constants";
+import {UPDATE_EMPLOYEE} from "../constants/updateEmployee";
 
-export  function updateEmployee(id,data){
+export  const updateEmployee = (id,data) => {
     return{
         type:UPDATE_EMPLOYEE,
         id,
         data
     };
-}
+};

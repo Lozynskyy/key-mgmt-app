@@ -32,7 +32,6 @@ class LockPage extends React.Component{
     }
 
     componentDidMount(){
-        console.log(this.props.match);
         this.props.fetchLockKeys(this.props.match.params.id);
     }
 

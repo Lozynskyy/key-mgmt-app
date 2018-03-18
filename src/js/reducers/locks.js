@@ -1,4 +1,4 @@
-import {FETCH_LOCKS,FETCH_LOCKS_SUCCESS,FETCH_EMPLOYEES_FAILURE} from "../constants";
+import {FETCH_LOCKS,FETCH_LOCKS_SUCCESS,FETCH_LOCKS_FAILURE} from "../constants/fetchLocks";
 
 const initialState={
     data:[],
@@ -20,7 +20,7 @@ export default function (state=initialState, action) {
             loaded:true,
             data:action.payload
         };
-    case  FETCH_EMPLOYEES_FAILURE:
+    case  FETCH_LOCKS_FAILURE:
         return{
             ...state,
             loading:false,

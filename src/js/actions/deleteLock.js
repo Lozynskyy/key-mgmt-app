@@ -1,8 +1,8 @@
-import {DELETE_LOCK} from "../constants";
+import {DELETE_LOCK} from "../constants/deleteLock";
 
-export function deleteLock(id) {
+export const deleteLock = (id) => {
     return {
         type: DELETE_LOCK,
         id
     };
-}
+};

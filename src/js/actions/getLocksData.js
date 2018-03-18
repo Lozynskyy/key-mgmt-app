@@ -1,7 +1,7 @@
-import {FETCH_LOCKS} from "../constants";
+import {FETCH_LOCKS} from "../constants/fetchLocks";
 
-export function getLocksData(){
+export const getLocksData = () => {
     return{
         type: FETCH_LOCKS
     };
-}
+};

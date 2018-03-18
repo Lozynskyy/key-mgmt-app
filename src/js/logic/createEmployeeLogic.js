@@ -1,12 +1,12 @@
 import {createLogic} from "redux-logic";
-import {CREATE_EMPLOYEE_SUCCESS,CREATE_EMPLOYEE,CREATE_EMPLOYEE_FAILURE} from "../constants";
-
+import {CREATE_EMPLOYEE_SUCCESS,CREATE_EMPLOYEE,CREATE_EMPLOYEE_FAILURE} from "../constants/createEmployee";
+import {url} from "../utilities/url";
 
 const createEmployeeLogic = createLogic({
     type: CREATE_EMPLOYEE,
     latest: true,
     process({action}, dispatch, done) {
-        const path="https://api-test.opendoors.od.ua:1013/employees";
+        const path=`${url}/employees`;
         let myInit = {
             method: "POST",
             body:JSON.stringify(action.values)

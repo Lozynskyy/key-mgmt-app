@@ -6,6 +6,7 @@ import {getEmployeeKeys} from "../actions/getEmployeeKeys";
 import {Button, Modal} from "react-bootstrap";
 import {deleteEmployeeKey} from "../actions/deleteEmployeeKey";
 import {attachKeyToEmployee} from "../actions/attachKeyToEmployee";
+import {getEmployee} from "../actions/getEmployee";
 
 class EmployeePage extends React.Component{
     constructor(){
@@ -14,13 +15,16 @@ class EmployeePage extends React.Component{
         this.showDeleteKeyModal=this.showDeleteKeyModal.bind(this);
         this.removeEmplKey=this.removeEmplKey.bind(this);
         this.attachKey=this.attachKey.bind(this);
+        this.showNewKey=this.showNewKey.bind(this);
         this.state={
             showModalDelKey:false,
             showModalUpdateKey:false,
-            keyID:null
+            keyID:null,
+            key:null
         };
     }
     componentDidMount(){
+        this.props.getEmployee(this.props.match.params.id);
         this.props.fetchEmployeeKeys(this.props.match.params.id);
         const socket = new WebSocket("ws://api-test.opendoors.od.ua:8080/");
         socket.onopen = function() {
@@ -37,7 +41,9 @@ class EmployeePage extends React.Component{
         };
 
         socket.onmessage = function(event) {
-            console.log(event.data);
+            this.setState({
+                key:event.data
+            });
         };
 
         socket.onerror = function(error) {
@@ -45,10 +51,14 @@ class EmployeePage extends React.Component{
         };
 
     }
+    showNewKey(){
+        if(this.state.key) {
+            return <NewKey/>;
+        }
+    }
     showEmployeeName(){
-        //TODO:if there are no keys, employee name doesn't show
-        if(this.props.keys && this.props.keys.length && this.props.keys[0].employee.name){
-            return (this.props.keys[0].employee.name+" "+this.props.keys[0].employee.surname);
+        if(this.props.employee) {
+            return `${this.props.employee.name} ${this.props.employee.surname}`;
         }
     }
     showDeleteKeyModal(id){
@@ -99,7 +109,9 @@ class EmployeePage extends React.Component{
                 <div className="vvp-new-keys__wrap">
                     <div className="row vvp-grid">
                         <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10">
-                            <NewKey id="12" tag="66616473" addKey={this.attachKey}/>
+
+                            {this.showNewKey()}
+
                         </div>
                     </div>
                 </div>
@@ -136,7 +148,8 @@ class EmployeePage extends React.Component{
 }
 function mapStateToProps(state) {
     return{
-        keys:state.employeeKeys.data
+        keys:state.employeeKeys.data,
+        employee:state.employee.data
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -149,6 +162,9 @@ function mapDispatchToProps(dispatch) {
         },
         addKeyToEmpl(id,data){
             dispatch(attachKeyToEmployee(id,data));
+        },
+        getEmployee(id){
+            dispatch(getEmployee(id));
         }
     };
 }

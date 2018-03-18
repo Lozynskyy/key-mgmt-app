@@ -1,9 +1,9 @@
-import {DELETE_LOCK_KEY} from "../constants";
+import {DELETE_LOCK_KEY} from "../constants/deleteLockKey";
 
-export function deleteLockKey(id,idKey) {
+export const deleteLockKey = (id,idKey) => {
     return{
         type:DELETE_LOCK_KEY,
         id,
         idKey
     };
-}
+};

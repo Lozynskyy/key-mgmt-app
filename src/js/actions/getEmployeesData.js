@@ -1,7 +1,7 @@
-import {FETCH_EMPLOYEES} from "../constants";
+import {FETCH_EMPLOYEES} from "../constants/fetchEmployees";
 
-export function getEmployeesData(){
+export const getEmployeesData = () => {
     return{
         type: FETCH_EMPLOYEES
     };
-}
+};

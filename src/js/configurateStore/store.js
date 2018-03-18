@@ -1,5 +1,5 @@
 import {applyMiddleware, compose, createStore} from "redux";
-import actions from "../actions";
+import actions from "../logic/index";
 import {middleware} from "./history";
 import {createLogicMiddleware} from "redux-logic";
 import allReducers from "../reducers";

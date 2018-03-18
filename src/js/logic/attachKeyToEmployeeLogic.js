@@ -1,5 +1,6 @@
-import {ATTACH_KEY_TO_EMPLOYEE, ATTACH_KEY_TO_EMPLOYEE_FAILURE, ATTACH_KEY_TO_EMPLOYEE_SUCCESS} from "../constants";
+import {ATTACH_KEY_TO_EMPLOYEE, ATTACH_KEY_TO_EMPLOYEE_FAILURE, ATTACH_KEY_TO_EMPLOYEE_SUCCESS} from "../constants/attachKeyToEmployee";
 import {createLogic} from "redux-logic";
+import {url} from "../utilities/url";
 
 const attachKeyToEmployeeLogic=createLogic({
     type:ATTACH_KEY_TO_EMPLOYEE,
@@ -7,7 +8,7 @@ const attachKeyToEmployeeLogic=createLogic({
     process({action},dispatch,done){
         console.log(action.employeeID);
         console.log(action.key);
-        const path=`https://api-test.opendoors.od.ua:1013/employees/${action.employeeID}/keys`;
+        const path=`${url}/${action.employeeID}/keys`;
         const myInit={
             method:"POST",
             body:JSON.stringify(action.key)
@@ -18,19 +19,19 @@ const attachKeyToEmployeeLogic=createLogic({
                     dispatch({
                         type:ATTACH_KEY_TO_EMPLOYEE_SUCCESS
                     });
-                    done();
                 }
                 else {
                     dispatch({
                         type:ATTACH_KEY_TO_EMPLOYEE_FAILURE
                     });
-                    done();
                 }
+                done();
             })
             .catch(()=>{
                 dispatch({
                     type:ATTACH_KEY_TO_EMPLOYEE_FAILURE
                 });
+                done();
             });
     }
 });
