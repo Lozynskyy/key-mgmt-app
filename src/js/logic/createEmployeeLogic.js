@@ -1,6 +1,7 @@
 import {createLogic} from "redux-logic";
 import {CREATE_EMPLOYEE_SUCCESS,CREATE_EMPLOYEE,CREATE_EMPLOYEE_FAILURE} from "../constants/createEmployee";
 import {url} from "../utilities/url";
+import {FETCH_EMPLOYEES} from "../constants/fetchEmployees";
 
 const createEmployeeLogic = createLogic({
     type: CREATE_EMPLOYEE,
@@ -12,10 +13,12 @@ const createEmployeeLogic = createLogic({
             body:JSON.stringify(action.values)
         };
         fetch(path,myInit)
-            .then((res) => {
-                console.log(res);
+            .then(() => {
                 dispatch({
                     type: CREATE_EMPLOYEE_SUCCESS
+                });
+                dispatch({
+                    type: FETCH_EMPLOYEES
                 });
                 done();
             })

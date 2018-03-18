@@ -19,14 +19,15 @@ import "./js/fetch/fetchInterscept";
 
 
 
-ReactDOM.render(<Provider store={store}>
-    <ConnectedRouter  history={history}>
-        <Switch>
-            <Route exact path='/' component={StartPage}/>
-            <Route path='/dashboard' component={Dashboard}/>
-            <Route path="/lock/:id" component={LockPage}/>
-            <Route path="/employee/:id" component={EmployeePage}/>
-        </Switch>
-    </ConnectedRouter>
-</Provider>,
-document.getElementById("root"));
+ReactDOM.render(
+    <Provider store={store}>
+        <ConnectedRouter history={history}>
+            <Switch>
+                <Route exact path='/' component={StartPage}/>
+                <Route path='/dashboard' component={Dashboard}/>
+                <Route path="/lock/:id" component={LockPage}/>
+                <Route path="/employee/:id" component={EmployeePage}/>
+            </Switch>
+        </ConnectedRouter>
+    </Provider>,
+    document.getElementById("root"));

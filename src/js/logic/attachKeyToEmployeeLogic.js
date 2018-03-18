@@ -1,13 +1,12 @@
 import {ATTACH_KEY_TO_EMPLOYEE, ATTACH_KEY_TO_EMPLOYEE_FAILURE, ATTACH_KEY_TO_EMPLOYEE_SUCCESS} from "../constants/attachKeyToEmployee";
 import {createLogic} from "redux-logic";
 import {url} from "../utilities/url";
+import {FETCH_EMPLOYEE_KEYS} from "../constants/fetchEmployeeKeys";
 
 const attachKeyToEmployeeLogic=createLogic({
     type:ATTACH_KEY_TO_EMPLOYEE,
     latest:true,
     process({action},dispatch,done){
-        console.log(action.employeeID);
-        console.log(action.key);
         const path=`${url}/${action.employeeID}/keys`;
         const myInit={
             method:"POST",
@@ -18,6 +17,9 @@ const attachKeyToEmployeeLogic=createLogic({
                 if(res.status===200){
                     dispatch({
                         type:ATTACH_KEY_TO_EMPLOYEE_SUCCESS
+                    });
+                    dispatch({
+                        type:FETCH_EMPLOYEE_KEYS
                     });
                 }
                 else {

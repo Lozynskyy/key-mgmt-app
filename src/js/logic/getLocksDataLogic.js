@@ -20,8 +20,7 @@ const getLocksDataLogic = createLogic({
                 done();
             })
             .catch(err => {
-                console.error(err);
-                dispatch({ 
+                dispatch({
                     type: FETCH_LOCKS_FAILURE,
                     payload: err,
                     error: true

@@ -14,7 +14,6 @@ const loginLogic = createLogic({
         };
         fetch(path,myInit)
             .then((res) => {
-                console.log(res);
                 dispatch({
                     type: LOGIN_USER_SUCCESS,
                     payload: res.token

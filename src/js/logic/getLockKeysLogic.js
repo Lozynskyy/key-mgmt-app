@@ -12,15 +12,13 @@ const getLockKeysLogic=createLogic({
         };
         fetch(path,myInit)
             .then((payload) => {
-                console.log(payload);
                 dispatch({
                     type: FETCH_LOCK_KEYS_SUCCESS,
                     payload
                 });
                 done();
             })
-            .catch((err) => {
-                console.log(err);
+            .catch(() => {
                 dispatch({
                     type: FETCH_LOCK_KEYS_FAILURE
                 });

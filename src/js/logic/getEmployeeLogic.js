@@ -20,7 +20,6 @@ const getEmployeeLogic = createLogic({
                 done();
             })
             .catch(err => {
-                console.error(err);
                 dispatch({
                     type: FETCH_EMPLOYEE_FAILURE,
                     payload: err,

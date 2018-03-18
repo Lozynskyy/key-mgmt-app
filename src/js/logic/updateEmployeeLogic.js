@@ -1,6 +1,7 @@
 import {createLogic} from "redux-logic";
 import {UPDATE_EMPLOYEE,UPDATE_EMPLOYEE_FAILURE,UPDATE_EMPLOYEE_SUCCESS} from "../constants/updateEmployee";
 import {url} from "../utilities/url";
+import {FETCH_EMPLOYEES} from "../constants/fetchEmployees";
 
 
 const updateEmployeeLogic = createLogic({
@@ -13,10 +14,12 @@ const updateEmployeeLogic = createLogic({
             body:JSON.stringify(action.data)
         };
         fetch(path,myInit)
-            .then((res) => {
-                console.log(res);
+            .then(() => {
                 dispatch({
                     type: UPDATE_EMPLOYEE_SUCCESS
+                });
+                dispatch({
+                    type:FETCH_EMPLOYEES
                 });
                 done();
             })

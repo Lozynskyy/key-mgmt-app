@@ -12,7 +12,7 @@ import getEmployee from "./getEmployeeLogic";
 import createUser from "./createUserLogic";
 import deleteEmployeeKey from "./deleteEmployeeKeyLogic";
 import attachKeyToEmployee from "./attachKeyToEmployeeLogic";
-import deleteLockKey from "./deleteLockKeysLogic";
+import deleteLockKey from "./deleteLockKeyLogic";
 
 const actions=[
     ...loginUser,

@@ -1,6 +1,7 @@
 import {createLogic} from "redux-logic";
 import {DELETE_LOCK,DELETE_LOCK_SUCCESS,DELETE_LOCK_FAILURE} from "../constants/deleteLock";
 import {url} from "../utilities/url";
+import {FETCH_LOCKS} from "../constants/fetchLocks";
 
 const deleteLockLogic=createLogic({
     type:DELETE_LOCK,
@@ -22,6 +23,9 @@ const deleteLockLogic=createLogic({
                         type:DELETE_LOCK_FAILURE
                     });
                 }
+                dispatch({
+                    type:FETCH_LOCKS
+                });
                 done();
             })
             .catch(()=>{

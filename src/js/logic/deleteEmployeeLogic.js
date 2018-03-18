@@ -1,6 +1,7 @@
 import {createLogic} from "redux-logic";
 import {DELETE_EMPLOYEE,DELETE_EMPLOYEE_SUCCESS,DELETE_EMPLOYEE_FAILURE} from "../constants/deleteEmployee";
 import {url} from "../utilities/url";
+import {FETCH_EMPLOYEES} from "../constants/fetchEmployees";
 
 const deleteEmployeeLogic=createLogic({
     type:DELETE_EMPLOYEE,
@@ -22,6 +23,9 @@ const deleteEmployeeLogic=createLogic({
                         type:DELETE_EMPLOYEE_FAILURE
                     });
                 }
+                dispatch({
+                    type:FETCH_EMPLOYEES
+                });
                 done();
             })
             .catch(()=>{

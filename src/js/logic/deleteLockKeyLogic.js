@@ -1,6 +1,7 @@
 import {DELETE_LOCK_KEY, DELETE_LOCK_KEY_FAILURE, DELETE_LOCK_KEY_SUCCESS} from "../constants/deleteLockKey";
 import {createLogic} from "redux-logic";
 import {url} from "../utilities/url";
+import {FETCH_LOCK_KEYS} from "../constants/fetchLockKeys";
 
 const deleteLockKeyLogic=createLogic({
     type:DELETE_LOCK_KEY,
@@ -12,7 +13,6 @@ const deleteLockKeyLogic=createLogic({
         };
         fetch(path,myInit)
             .then((res)=>{
-                console.log(res);
                 if(res.status===200){
                     dispatch({
                         type:DELETE_LOCK_KEY_SUCCESS
@@ -23,6 +23,9 @@ const deleteLockKeyLogic=createLogic({
                         type:DELETE_LOCK_KEY_FAILURE
                     });
                 }
+                dispatch({
+                    type:FETCH_LOCK_KEYS
+                });
                 done();
             })
             .catch(()=>{

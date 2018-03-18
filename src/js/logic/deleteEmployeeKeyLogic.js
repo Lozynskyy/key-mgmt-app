@@ -1,6 +1,7 @@
 import {DELETE_EMPLOYEE_KEY, DELETE_EMPLOYEE_KEY_FAILURE, DELETE_EMPLOYEE_KEY_SUCCESS} from "../constants/deleteEmployeeKey";
 import {createLogic} from "redux-logic";
 import {url} from "../utilities/url";
+import {FETCH_EMPLOYEE_KEYS} from "../constants/fetchEmployeeKeys";
 
 const deleteEmployeeKeyLogic=createLogic({
     type:DELETE_EMPLOYEE_KEY,
@@ -12,7 +13,6 @@ const deleteEmployeeKeyLogic=createLogic({
         };
         fetch(path,myInit)
             .then((res)=>{
-                console.log(res);
                 if(res.status===200){
                     dispatch({
                         type:DELETE_EMPLOYEE_KEY_SUCCESS
@@ -23,6 +23,9 @@ const deleteEmployeeKeyLogic=createLogic({
                         type:DELETE_EMPLOYEE_KEY_FAILURE
                     });
                 }
+                dispatch({
+                    type:FETCH_EMPLOYEE_KEYS
+                });
                 done();
             })
             .catch(()=>{

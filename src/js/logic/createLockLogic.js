@@ -1,6 +1,7 @@
 import {createLogic} from "redux-logic";
 import {CREATE_LOCK_FAILURE,CREATE_LOCK,CREATE_LOCK_SUCCESS} from "../constants/createLock";
 import {url} from "../utilities/url";
+import {FETCH_LOCKS} from "../constants/fetchLocks";
 
 const createLockLogic = createLogic({
     type: CREATE_LOCK,
@@ -12,10 +13,12 @@ const createLockLogic = createLogic({
             body:JSON.stringify(action.values)
         };
         fetch(path,myInit)
-            .then((res) => {
-                console.log(res);
+            .then(() => {
                 dispatch({
                     type: CREATE_LOCK_SUCCESS
+                });
+                dispatch({
+                    type: FETCH_LOCKS
                 });
                 done();
             })

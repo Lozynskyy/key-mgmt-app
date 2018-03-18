@@ -20,8 +20,7 @@ const getEmployeesDataLogic = createLogic({
                 done();
             })
             .catch(err => {
-                console.error(err);
-                dispatch({ 
+                dispatch({
                     type: FETCH_EMPLOYEES_FAILURE,
                     payload: err,
                     error: true

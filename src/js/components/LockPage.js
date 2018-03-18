@@ -22,7 +22,6 @@ class LockPage extends React.Component{
     }
 
     handleShow(data) {
-        console.log(data.key.id);
         this.setState({ show: true, id: data.key.id });
     }
     
