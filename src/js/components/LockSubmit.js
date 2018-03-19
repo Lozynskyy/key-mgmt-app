@@ -18,7 +18,6 @@ class AddLock extends React.Component {
         this.setState({
             isShowModal:false
         });
-        //TODO:redraw the table
     }
     render() {
         return (

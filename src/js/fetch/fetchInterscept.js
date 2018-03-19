@@ -1,11 +1,12 @@
 import fetchIntercept from "fetch-intercept";
 import {history} from "../configurateStore/history";
+import {url} from "../utilities/url";
 
 fetchIntercept.register({
-    request: function (url, config) {
+    request: function (path, config) {
         let token=localStorage.getItem("token");
         config.mode="cors";
-        if(url==="https://api-test.opendoors.od.ua:1013/login_check" || url==="https://api-test.opendoors.od.ua:1013/register"){
+        if(path===`${url}/login_check` || path===`${url}/register`){
             config.headers={
                 "Accept": "application/json",
                 "Content-Type": "application/json"
@@ -18,7 +19,7 @@ fetchIntercept.register({
                 "Authorization": "Bearer " + token
             };
         }
-        return [url, config];
+        return [path, config];
     },
     response: (response)=> {
         if(response.status===401){

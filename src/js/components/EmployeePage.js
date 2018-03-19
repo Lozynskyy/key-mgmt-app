@@ -7,6 +7,7 @@ import {Button, Modal} from "react-bootstrap";
 import {deleteEmployeeKey} from "../actions/deleteEmployeeKey";
 import {attachKeyToEmployee} from "../actions/attachKeyToEmployee";
 import {getEmployee} from "../actions/getEmployee";
+import {websocketKeyUrl} from "../utilities/url";
 
 class EmployeePage extends React.Component{
     constructor(){
@@ -26,7 +27,7 @@ class EmployeePage extends React.Component{
     componentDidMount(){
         this.props.getEmployee(this.props.match.params.id);
         this.props.fetchEmployeeKeys(this.props.match.params.id);
-        const socket = new WebSocket("ws://api-test.opendoors.od.ua:8080/");
+        const socket = new WebSocket(websocketKeyUrl);
         socket.onopen = function() {
             console.log("Соединение установлено.");
         };

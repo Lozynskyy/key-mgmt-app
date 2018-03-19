@@ -9,3 +9,5 @@ export function buildQueryString(paramValue, paramKey, locationSearch)
 }
 
 export const url="https://api-test.opendoors.od.ua:1013";
+
+export const websocketKeyUrl="ws://api-test.opendoors.od.ua:8080";
