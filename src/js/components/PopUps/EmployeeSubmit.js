@@ -2,7 +2,7 @@ import React from "react";
 import EmployeeForm from "./EmployeeForm";
 import {Button,Modal} from "react-bootstrap";
 import {connect} from "react-redux";
-import {createEmployee} from "../../actions/createEmployee";
+import {createEmployee} from "../../actions/employee";
 
 class AddEmployee extends React.Component {
 

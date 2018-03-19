@@ -1,8 +1,8 @@
 import React from "react";
 import {connect} from "react-redux";
-import {getLockKeys} from "../actions/getLockKeys";
+import {getLockKeys} from "../actions/key";
 import { Button, Modal } from "react-bootstrap";
-import {deleteLockKey} from "../actions/deleteLockKey";
+import {deleteLockKey} from "../actions/key";
 
 class LockPage extends React.Component{
     constructor(){

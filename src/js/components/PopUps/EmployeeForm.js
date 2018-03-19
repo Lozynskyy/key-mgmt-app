@@ -2,6 +2,7 @@ import React from "react";
 import { Field, reduxForm } from "redux-form";
 import {Button,Alert} from "react-bootstrap";
 
+
 const required = value => value ? undefined : "Required";
 const maxLength = max => value =>
     value && value.length > max ? `Must be ${max} characters or less` : undefined;
@@ -87,5 +88,10 @@ class EmployeeForm extends React.Component{
     }
 }
 export default reduxForm({
-    form: "Add_employee"
+    form:"Add_employee"
 })(EmployeeForm);
+/*export default connect(reduxForm({
+    form: "Add_employee"
+}),(props)=>({
+    initialValues:props.employee
+}))(EmployeeForm);*/

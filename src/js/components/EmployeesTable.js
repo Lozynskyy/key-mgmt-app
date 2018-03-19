@@ -5,12 +5,12 @@ import { Pagination } from "react-bootstrap";
 import { push } from "react-router-redux";
 import AddEmployee from "./PopUps/EmployeeSubmit";
 import {Button,Modal} from "react-bootstrap";
-import {deleteEmployee} from "../actions/deleteEmployee";
-import {getEmployeesData} from "../actions/getEmployeesData";
+import {deleteEmployee} from "../actions/employee";
+import {getEmployeesData} from "../actions/employee";
 import EmployeeForm from "./PopUps/EmployeeForm";
 import queryString from "query-string";
 import { buildQueryString } from "../utilities/url";
-import {updateEmployee} from "../actions/updateEmployee";
+import {updateEmployee} from "../actions/employee";
 
 class EmplyeesTable extends React.Component{
 
@@ -48,6 +48,7 @@ class EmplyeesTable extends React.Component{
         });
     }
     showUpdateEmployeeModal(data){
+        console.log(data);
         this.setState({
             employee:data,
             showModalUpdateEmpl:true

@@ -1,26 +1,23 @@
-import {FETCH_LOCK_KEYS,FETCH_LOCK_KEYS_FAILURE,FETCH_LOCK_KEYS_SUCCESS} from "../constants/fetchLockKeys";
+import {FETCH_LOCK_KEYS, FETCH_LOCK_KEYS_FAILURE, FETCH_LOCK_KEYS_SUCCESS} from "../constants/key";
 import {createLogic} from "redux-logic";
-import {url} from "../utilities/url";
+import {getRequest} from "../fetch/request";
 
-const getLockKeysLogic=createLogic({
+const getLockKeysLogic = createLogic({
     type: FETCH_LOCK_KEYS,
     latest: true,
     process({action}, dispatch, done) {
-        const path=`${url}/locks/${action.id}/availablekeys`;
-        let myInit = {
-            method: "GET",
-        };
-        fetch(path,myInit)
-            .then((payload) => {
+        getRequest(`locks/${action.id}/availablekeys`).then((payload) => {
+            dispatch({
+                type: FETCH_LOCK_KEYS_SUCCESS,
+                payload
+            });
+            done();
+        })
+            .catch((err) => {
                 dispatch({
-                    type: FETCH_LOCK_KEYS_SUCCESS,
-                    payload
-                });
-                done();
-            })
-            .catch(() => {
-                dispatch({
-                    type: FETCH_LOCK_KEYS_FAILURE
+                    type: FETCH_LOCK_KEYS_FAILURE,
+                    payload: err,
+                    error: true
                 });
                 done();
             });

@@ -3,8 +3,8 @@ import Login from "./Login";
 import RegisterForm from "./RegisterForm";
 import {Modal,Button} from "react-bootstrap";
 import {connect} from "react-redux";
-import {createUser} from "../actions/createUser";
-import {login} from "../actions/login";
+import {createUser} from "../actions/user";
+import {login} from "../actions/user";
 
 
 class StartPage extends React.Component{

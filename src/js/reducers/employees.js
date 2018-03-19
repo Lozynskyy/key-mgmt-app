@@ -1,4 +1,4 @@
-import {FETCH_EMPLOYEES,FETCH_EMPLOYEES_SUCCESS,FETCH_EMPLOYEES_FAILURE} from "../constants/fetchEmployees";
+import {FETCH_EMPLOYEES,FETCH_EMPLOYEES_SUCCESS,FETCH_EMPLOYEES_FAILURE} from "../constants/employee";
 
 const initialState={
     data:[],

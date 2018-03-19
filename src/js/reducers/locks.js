@@ -1,4 +1,4 @@
-import {FETCH_LOCKS,FETCH_LOCKS_SUCCESS,FETCH_LOCKS_FAILURE} from "../constants/fetchLocks";
+import {FETCH_LOCKS,FETCH_LOCKS_SUCCESS,FETCH_LOCKS_FAILURE} from "../constants/lock";
 
 const initialState={
     data:[],

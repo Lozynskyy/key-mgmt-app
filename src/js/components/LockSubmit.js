@@ -2,7 +2,7 @@ import React from "react";
 import LockForm from "./LockForm";
 import {Button,Modal} from "react-bootstrap";
 import {connect} from "react-redux";
-import {createLock} from "../actions/createLock";
+import {createLock} from "../actions/lock";
 
 class AddLock extends React.Component {
 

@@ -2,12 +2,12 @@ import React from "react";
 import NewKey from "./NewKey";
 import KeyListElement from "./KeyListElement";
 import {connect} from "react-redux";
-import {getEmployeeKeys} from "../actions/getEmployeeKeys";
+import {getEmployeeKeys} from "../actions/key";
 import {Button, Modal} from "react-bootstrap";
-import {deleteEmployeeKey} from "../actions/deleteEmployeeKey";
-import {attachKeyToEmployee} from "../actions/attachKeyToEmployee";
-import {getEmployee} from "../actions/getEmployee";
-import {websocketKeyUrl} from "../utilities/url";
+import {deleteEmployeeKey} from "../actions/key";
+import {attachKeyToEmployee} from "../actions/key";
+import {getEmployee} from "../actions/employee";
+import {websocketKeyEndpoint} from "../config";
 
 class EmployeePage extends React.Component{
     constructor(){
@@ -27,7 +27,7 @@ class EmployeePage extends React.Component{
     componentDidMount(){
         this.props.getEmployee(this.props.match.params.id);
         this.props.fetchEmployeeKeys(this.props.match.params.id);
-        const socket = new WebSocket(websocketKeyUrl);
+        const socket = new WebSocket(websocketKeyEndpoint);
         socket.onopen = function() {
             console.log("Соединение установлено.");
         };
