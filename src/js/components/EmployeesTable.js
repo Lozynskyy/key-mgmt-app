@@ -11,16 +11,16 @@ import EmployeeForm from "./PopUps/EmployeeForm";
 import queryString from "query-string";
 import { buildQueryString } from "../utilities/url";
 import {updateEmployee} from "../actions/employee";
+import {initialize} from "redux-form";
 
 class EmplyeesTable extends React.Component{
 
     constructor(props){
         super(props);
         this.state = {
-            showModalDelEmpl:false,
-            showModalUpdateEmpl:false,
-            currentId:null,
-            employee:{}
+            showModalDelEmpl: false,
+            showModalUpdateEmpl: false,
+            currentId: null,
         };
         this.changePage = this.changePage.bind(this);
         this.showDeleteEmployeeModal=this.showDeleteEmployeeModal.bind(this);
@@ -42,15 +42,19 @@ class EmplyeesTable extends React.Component{
     }
 
     changeEmployee(values){
-        this.props.updateEmployee(this.state.employee.id,values);
+        const employee={
+            name:values.name,
+            surname:values.surname,
+            age:values.age
+        };
+        this.props.updateEmployee(values.id,employee);
         this.setState({
             showModalUpdateEmpl:false
         });
     }
     showUpdateEmployeeModal(data){
-        console.log(data);
+        this.props.initializeForm(data);
         this.setState({
-            employee:data,
             showModalUpdateEmpl:true
         });
     }
@@ -165,6 +169,9 @@ function mapDispatchToProps(dispatch){
         },
         navigate(url) {
             dispatch(push(url));
+        },
+        initializeForm (data){
+            dispatch(initialize("CreateUpdateEmployee", data));
         }
     };
 }
