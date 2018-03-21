@@ -8,6 +8,9 @@ import {deleteEmployeeKey} from "../actions/key";
 import {attachKeyToEmployee} from "../actions/key";
 import {getEmployee} from "../actions/employee";
 import {websocketKeyEndpoint} from "../config";
+import KeyForm from "./KeyForm";
+import {initialize} from "redux-form";
+import {updateEmployeeKey} from "../actions/key";
 
 class EmployeePage extends React.Component{
     constructor(){
@@ -17,11 +20,13 @@ class EmployeePage extends React.Component{
         this.removeEmplKey=this.removeEmplKey.bind(this);
         this.attachKey=this.attachKey.bind(this);
         this.showNewKey=this.showNewKey.bind(this);
+        this.showUpdateKeyModal=this.showUpdateKeyModal.bind(this);
+        this.updateKey=this.updateKey.bind(this);
         this.state={
             showModalDelKey:false,
             showModalUpdateKey:false,
-            keyID:null,
-            key:null
+            idKeyEmployeeRelationship:null,
+            newKey:null
         };
     }
     componentDidMount(){
@@ -34,17 +39,18 @@ class EmployeePage extends React.Component{
 
         socket.onclose = function(event) {
             if (event.wasClean) {
-                alert("Соединение закрыто чисто");
             } else {
-                alert("Обрыв соединения");
+                console.log("Обрыв соединения");
             }
-            alert("Код: " + event.code + " причина: " + event.reason);
+            console.log("Код: " + event.code + " причина: " + event.reason);
         };
 
         socket.onmessage = function(event) {
-            this.setState({
-                key:event.data
-            });
+            console.log(event.data);
+            //parse
+            /*this.setState({
+                newKey:event.data
+            });*/
         };
 
         socket.onerror = function(error) {
@@ -53,7 +59,7 @@ class EmployeePage extends React.Component{
 
     }
     showNewKey(){
-        if(this.state.key) {
+        if(this.state.newKey) {
             return <NewKey/>;
         }
     }
@@ -65,14 +71,26 @@ class EmployeePage extends React.Component{
     showDeleteKeyModal(id){
         this.setState({
             showModalDelKey:true,
-            keyID:id
+            idKeyEmployeeRelationship:id
         });
     }
     removeEmplKey(){
         this.setState({
             showModalDelKey:false
         });
-        this.props.delEmplKey(this.props.match.params.id,this.state.keyID);
+        this.props.delEmplKey(this.props.match.params.id,this.state.idKeyEmployeeRelationship);
+    }
+    showUpdateKeyModal(key){
+        this.setState({
+            showModalUpdateKey:true
+        });
+        this.props.initializeForm(key);
+    }
+    updateKey(data){
+        this.setState({
+            showModalUpdateKey:false
+        });
+        this.props.updateEmployeeKey(this.props.match.params.id,data.id,{description:data.description});
     }
     attachKey(data){
         if(data.description && data.description.length<=50){
@@ -103,7 +121,7 @@ class EmployeePage extends React.Component{
                     </thead>
                     <tbody>
                         {this.props.keys.map((key)=>{
-                            return <KeyListElement key={key.id} id={key.id} tag="Not getting tag" description={key.description} deleteKey={this.showDeleteKeyModal}/>;
+                            return <KeyListElement key={key.id} data={key} updateKey={this.showUpdateKeyModal} deleteKey={this.showDeleteKeyModal}/>;
                         })}
                     </tbody>
                 </table>
@@ -136,7 +154,7 @@ class EmployeePage extends React.Component{
                     </Modal.Header>
 
                     <Modal.Body>
-
+                        <KeyForm onSubmit={this.updateKey}/>
                     </Modal.Body>
 
                     <Modal.Footer>
@@ -166,6 +184,12 @@ function mapDispatchToProps(dispatch) {
         },
         getEmployee(id){
             dispatch(getEmployee(id));
+        },
+        initializeForm (data){
+            dispatch(initialize("UpdateKey", data));
+        },
+        updateEmployeeKey(idEmployee,idKey,description){
+            dispatch(updateEmployeeKey(idEmployee,idKey,description));
         }
     };
 }

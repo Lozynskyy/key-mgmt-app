@@ -1,4 +1,4 @@
-import {ATTACH_KEY_TO_EMPLOYEE} from "../constants/key";
+import {ATTACH_KEY_TO_EMPLOYEE, UPDATE_EMPLOYEE_KEY} from "../constants/key";
 import {DELETE_EMPLOYEE_KEY} from "../constants/key";
 import {FETCH_EMPLOYEE_KEYS} from "../constants/key";
 import {FETCH_LOCK_KEYS} from "../constants/key";
@@ -31,4 +31,11 @@ export const deleteLockKey = (id, idKey) => ({
     type: DELETE_LOCK_KEY,
     id,
     idKey
+});
+
+export const updateEmployeeKey = (idEmployee,idKey,data) => ({
+    type:UPDATE_EMPLOYEE_KEY,
+    idEmployee,
+    idKey,
+    data
 });

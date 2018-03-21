@@ -26,3 +26,4 @@ export const getRequest = (url) =>  request(url,"GET");
 export const postRequest = (url,data) => request(url,"POST",data);
 export const putRequest = (url,data) => request(url,"PUT",data);
 export const deleteRequest = (url) => request(url,"DELETE");
+export const patchRequest = (url,data) => request(url,"PATCH",data);
