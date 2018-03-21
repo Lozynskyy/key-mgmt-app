@@ -1,26 +1,20 @@
-import { createLogic } from "redux-logic";
-import { FETCH_EMPLOYEES, FETCH_EMPLOYEES_SUCCESS, FETCH_EMPLOYEES_FAILURE } from "../constants";
+import {createLogic} from "redux-logic";
+import {FETCH_EMPLOYEES, FETCH_EMPLOYEES_SUCCESS, FETCH_EMPLOYEES_FAILURE} from "../constants/employee";
+import {getRequest} from "../fetch/request";
 
 const getEmployeesDataLogic = createLogic({
     type: FETCH_EMPLOYEES,
     latest: true,
     process(_, dispatch, done) {
-        const path = "https://api-test.opendoors.od.ua:1013/employees";
-        let myInit = {
-            method: "GET"
-        };
-        fetch(path, myInit)
-            .then(response => response)
-            .then(employeesArr => {
-                dispatch({
-                    type: FETCH_EMPLOYEES_SUCCESS,
-                    payload: employeesArr
-                });
-                done();
-            })
+        getRequest("employees").then((employees) => {
+            dispatch({
+                type: FETCH_EMPLOYEES_SUCCESS,
+                payload: employees
+            });
+            done();
+        })
             .catch(err => {
-                console.error(err);
-                dispatch({ 
+                dispatch({
                     type: FETCH_EMPLOYEES_FAILURE,
                     payload: err,
                     error: true

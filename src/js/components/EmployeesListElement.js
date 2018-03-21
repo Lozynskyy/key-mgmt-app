@@ -3,9 +3,6 @@ import {Button} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
 class EmployeesListElement extends React.Component{
-    constructor(){
-        super();
-    }
 
     render()
     {

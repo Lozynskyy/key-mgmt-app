@@ -1,9 +1,9 @@
 import React from "react";
 import {connect} from "react-redux";
-import {getLockKeys} from "../actions/getLockKeys";
 import {Button} from "react-bootstrap";
-import {deleteLockKey} from "../actions/deleteLockKey";
 import DeleteModal from "./PopUps/DeleteModal";
+import {getLockKeys} from "../actions/key";
+import {deleteLockKey} from "../actions/key";
 
 class LockPage extends React.Component{
     constructor(){
@@ -30,7 +30,6 @@ class LockPage extends React.Component{
     }
 
     handleShow(data) {
-        console.log(data.key.id);
         this.setState({ show: true, id: data.key.id });
     }
     
@@ -40,7 +39,6 @@ class LockPage extends React.Component{
     }
 
     componentDidMount(){
-        console.log(this.props.match);
         this.props.fetchLockKeys(this.props.match.params.id);
     }
 

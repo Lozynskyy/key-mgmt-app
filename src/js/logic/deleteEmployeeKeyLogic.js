@@ -1,34 +1,26 @@
-import {DELETE_EMPLOYEE_KEY, DELETE_EMPLOYEE_KEY_FAILURE, DELETE_EMPLOYEE_KEY_SUCCESS} from "../constants";
+import {DELETE_EMPLOYEE_KEY, DELETE_EMPLOYEE_KEY_FAILURE, DELETE_EMPLOYEE_KEY_SUCCESS} from "../constants/key";
 import {createLogic} from "redux-logic";
+import {deleteRequest} from "../fetch/request";
+import {FETCH_EMPLOYEE_KEYS} from "../constants/key";
 
-const deleteEmployeeKeyLogic=createLogic({
-    type:DELETE_EMPLOYEE_KEY,
-    latest:true,
-    process({action},dispatch,done){
-        const path=`https://api-test.opendoors.od.ua:1013/employees/${action.idEmpl}/keys/${action.idKey}`;
-        let myInit={
-            method:"DELETE"
-        };
-        fetch(path,myInit)
-            .then((res)=>{
-                console.log(res);
-                if(res.status===200){
-                    dispatch({
-                        type:DELETE_EMPLOYEE_KEY_SUCCESS
-                    });
-                    done();
-                }
-                else {
-                    dispatch({
-                        type:DELETE_EMPLOYEE_KEY_FAILURE
-                    });
-                    done();
-                }
-            })
-            .catch(()=>{
+const deleteEmployeeKeyLogic = createLogic({
+    type: DELETE_EMPLOYEE_KEY,
+    latest: true,
+    process({action}, dispatch, done) {
+        deleteRequest(`employees/${action.idEmpl}/keys/${action.idKey}`).then(() => {
+            dispatch({
+                type: DELETE_EMPLOYEE_KEY_SUCCESS
+            });
+            dispatch({
+                type: FETCH_EMPLOYEE_KEYS
+            });
+            done();
+        })
+            .catch(() => {
                 dispatch({
-                    type:DELETE_EMPLOYEE_KEY_FAILURE
+                    type: DELETE_EMPLOYEE_KEY_FAILURE
                 });
+                done();
             });
     }
 });

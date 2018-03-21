@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import {Pagination} from "react-bootstrap";
 import {push} from "react-router-redux";
 import queryString from "query-string";
-import {getLocksData} from "../actions/getLocksData";
+import {getLocksData} from "../actions/lock";
 import { buildQueryString } from "../utilities/url";
-import {deleteLock} from "../actions/deleteLock";
+import {deleteLock} from "../actions/lock";
 import AddLock from "./LockSubmit";
 import DeleteModal from "./PopUps/DeleteModal";
 

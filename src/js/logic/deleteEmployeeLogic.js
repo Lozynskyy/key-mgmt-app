@@ -1,32 +1,24 @@
 import {createLogic} from "redux-logic";
-import {DELETE_EMPLOYEE,DELETE_EMPLOYEE_SUCCESS,DELETE_EMPLOYEE_FAILURE} from "../constants";
+import {DELETE_EMPLOYEE, DELETE_EMPLOYEE_SUCCESS, DELETE_EMPLOYEE_FAILURE} from "../constants/employee";
+import {deleteRequest} from "../fetch/request";
+import {FETCH_EMPLOYEES} from "../constants/employee";
 
-const deleteEmployeeLogic=createLogic({
-    type:DELETE_EMPLOYEE,
-    latest:true,
-    process({action},dispatch,done){
-        const path=`https://api-test.opendoors.od.ua:1013/employees/${action.id}`;
-        let myInit={
-            method:"DELETE"
-        };
-        fetch(path,myInit)
-            .then((res)=>{
-                if(res.status===200){
-                    dispatch({
-                        type:DELETE_EMPLOYEE_SUCCESS
-                    });
-                    done();
-                }
-                else {
-                    dispatch({
-                        type:DELETE_EMPLOYEE_FAILURE
-                    });
-                    done();
-                }
-            })
-            .catch(()=>{
+const deleteEmployeeLogic = createLogic({
+    type: DELETE_EMPLOYEE,
+    latest: true,
+    process({action}, dispatch, done) {
+        deleteRequest(`employees/${action.id}`).then(() => {
+            dispatch({
+                type: DELETE_EMPLOYEE_SUCCESS
+            });
+            dispatch({
+                type: FETCH_EMPLOYEES
+            });
+            done();
+        })
+            .catch(() => {
                 dispatch({
-                    type:DELETE_EMPLOYEE_FAILURE
+                    type: DELETE_EMPLOYEE_FAILURE
                 });
                 done();
             });
