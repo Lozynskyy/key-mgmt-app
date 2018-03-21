@@ -6,6 +6,7 @@ import {getEmployeeKeys} from "../actions/getEmployeeKeys";
 import {Button, Modal} from "react-bootstrap";
 import {deleteEmployeeKey} from "../actions/deleteEmployeeKey";
 import {attachKeyToEmployee} from "../actions/attachKeyToEmployee";
+import DeleteModal from "./PopUps/DeleteModal";
 
 class EmployeePage extends React.Component{
     constructor(){
@@ -14,6 +15,7 @@ class EmployeePage extends React.Component{
         this.showDeleteKeyModal=this.showDeleteKeyModal.bind(this);
         this.removeEmplKey=this.removeEmplKey.bind(this);
         this.attachKey=this.attachKey.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.state={
             showModalDelKey:false,
             showModalUpdateKey:false,
@@ -44,6 +46,11 @@ class EmployeePage extends React.Component{
             alert("Ошибка " + error.message);
         };
 
+    }
+    closeModal(hide) {
+        this.setState({
+            showModalDelKey: hide
+        });
     }
     showEmployeeName(){
         //TODO:if there are no keys, employee name doesn't show
@@ -104,18 +111,7 @@ class EmployeePage extends React.Component{
                     </div>
                 </div>
 
-                <Modal show={this.state.showModalDelKey}>
-                    <Modal.Header>
-                        <Modal.Title>Confirm action</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>Do you really want to delete this key?</Modal.Body>
-
-                    <Modal.Footer>
-                        <Button onClick={()=>{this.setState({showModalDelKey:false});}}>Close</Button>
-                        <Button onClick={this.removeEmplKey} bsStyle="danger">Delete</Button>
-                    </Modal.Footer>
-                </Modal>
+                <DeleteModal show={this.state.showModalDelKey} name="key" closeModal={this.closeModal} delete={this.removeEmplKey}/>
 
                 <Modal show={this.state.showModalUpdateKey}>
                     <Modal.Header>

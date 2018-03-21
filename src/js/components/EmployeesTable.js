@@ -11,6 +11,7 @@ import EmployeeForm from "./PopUps/EmployeeForm";
 import queryString from "query-string";
 import { buildQueryString } from "../utilities/url";
 import {updateEmployee} from "../actions/updateEmployee";
+import DeleteModal from "./PopUps/DeleteModal";
 
 class EmplyeesTable extends React.Component{
 
@@ -28,7 +29,15 @@ class EmplyeesTable extends React.Component{
         this.showUpdateEmployeeModal=this.showUpdateEmployeeModal.bind(this);
         this.changePage = this.changePage.bind(this);
         this.changeEmployee=this.changeEmployee.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
+
+    closeModal(hide) {
+        this.setState({
+            showModalDelEmpl: hide
+        });
+    }
+
     showDeleteEmployeeModal(id){
         this.setState({
             showModalDelEmpl:true,
@@ -78,7 +87,6 @@ class EmplyeesTable extends React.Component{
         return(
             <div>
                 <AddEmployee/>
-
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
@@ -106,36 +114,18 @@ class EmplyeesTable extends React.Component{
                 <Pagination className="employees-pagination pull-right" bsSize="medium">
                     {this.renderPages(pages)}
                 </Pagination>
-
-
-                <Modal show={this.state.showModalDelEmpl}>
-                    <Modal.Header>
-                        <Modal.Title>Confirm action</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>Do you really want to delete this employee?</Modal.Body>
-
-                    <Modal.Footer>
-                        <Button onClick={()=>{this.setState({showModalDelEmpl:false});}}>Close</Button>
-                        <Button onClick={this.removeEmployee} bsStyle="danger">Delete</Button>
-                    </Modal.Footer>
-                </Modal>
-
+                <DeleteModal show={this.state.showModalDelEmpl} name="employee" closeModal={this.closeModal} delete={this.removeEmployee}/>
                 <Modal show={this.state.showModalUpdateEmpl}>
                     <Modal.Header>
                         <Modal.Title>Update employee</Modal.Title>
                     </Modal.Header>
-
                     <Modal.Body>
                         <EmployeeForm onSubmit={this.changeEmployee} employee={this.state.employee}/>
                     </Modal.Body>
-
                     <Modal.Footer>
                         <Button type="button" bsSize="large" onClick={()=>this.setState({showModalUpdateEmpl:false})}>Close</Button>
                     </Modal.Footer>
                 </Modal>
-
-
             </div>
         );
     }
