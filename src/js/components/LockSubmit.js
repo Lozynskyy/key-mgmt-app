@@ -2,7 +2,7 @@ import React from "react";
 import LockForm from "./LockForm";
 import {Button,Modal} from "react-bootstrap";
 import {connect} from "react-redux";
-import {createLock} from "../actions/createLock";
+import {createLock} from "../actions/lock";
 
 class AddLock extends React.Component {
 
@@ -18,7 +18,6 @@ class AddLock extends React.Component {
         this.setState({
             isShowModal:false
         });
-        //TODO:redraw the table
     }
     render() {
         return (

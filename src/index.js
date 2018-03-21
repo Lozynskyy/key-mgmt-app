@@ -8,7 +8,7 @@ import "./styles/index.css";
 import "./styles/login.css";
 import "./styles/lockKeysTable.css";
 import "./styles/table.css";
-import Login from "./js/components/Login";
+import StartPage from "./js/components/StartPage";
 import Dashboard from "./js/components/Dashboard";
 import LockPage from "./js/components/LockPage";
 import EmployeePage from "./js/components/EmployeePage";
@@ -19,14 +19,15 @@ import "./js/fetch/fetchInterscept";
 
 
 
-ReactDOM.render(<Provider store={store}>
-    <ConnectedRouter  history={history}>
-        <Switch>
-            <Route exact path='/' component={Login}/>
-            <Route path='/dashboard' component={Dashboard}/>
-            <Route path="/lock/:id" component={LockPage}/>
-            <Route path="/employee/:id" component={EmployeePage}/>
-        </Switch>
-    </ConnectedRouter>
-</Provider>,
-document.getElementById("root"));
+ReactDOM.render(
+    <Provider store={store}>
+        <ConnectedRouter history={history}>
+            <Switch>
+                <Route exact path='/' component={StartPage}/>
+                <Route path='/dashboard' component={Dashboard}/>
+                <Route path="/lock/:id" component={LockPage}/>
+                <Route path="/employee/:id" component={EmployeePage}/>
+            </Switch>
+        </ConnectedRouter>
+    </Provider>,
+    document.getElementById("root"));

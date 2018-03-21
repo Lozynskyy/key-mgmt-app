@@ -1,24 +1,22 @@
 import {createLogic} from "redux-logic";
-import {UPDATE_EMPLOYEE,UPDATE_EMPLOYEE_FAILURE,UPDATE_EMPLOYEE_SUCCESS} from "../constants";
+import {UPDATE_EMPLOYEE, UPDATE_EMPLOYEE_FAILURE, UPDATE_EMPLOYEE_SUCCESS} from "../constants/employee";
+import {putRequest} from "../fetch/request";
+import {FETCH_EMPLOYEES} from "../constants/employee";
 
 
 const updateEmployeeLogic = createLogic({
     type: UPDATE_EMPLOYEE,
     latest: true,
     process({action}, dispatch, done) {
-        const path=`https://api-test.opendoors.od.ua:1013/employees/${action.id}`;
-        let myInit = {
-            method: "PUT",
-            body:JSON.stringify(action.data)
-        };
-        fetch(path,myInit)
-            .then((res) => {
-                console.log(res);
-                dispatch({
-                    type: UPDATE_EMPLOYEE_SUCCESS
-                });
-                done();
-            })
+        putRequest(`employees/${action.id}`, action.data).then(() => {
+            dispatch({
+                type: UPDATE_EMPLOYEE_SUCCESS
+            });
+            dispatch({
+                type: FETCH_EMPLOYEES
+            });
+            done();
+        })
             .catch(() => {
                 dispatch({
                     type: UPDATE_EMPLOYEE_FAILURE,

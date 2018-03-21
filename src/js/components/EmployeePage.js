@@ -2,10 +2,15 @@ import React from "react";
 import NewKey from "./NewKey";
 import KeyListElement from "./KeyListElement";
 import {connect} from "react-redux";
-import {getEmployeeKeys} from "../actions/getEmployeeKeys";
+import {getEmployeeKeys} from "../actions/key";
 import {Button, Modal} from "react-bootstrap";
-import {deleteEmployeeKey} from "../actions/deleteEmployeeKey";
-import {attachKeyToEmployee} from "../actions/attachKeyToEmployee";
+import {deleteEmployeeKey} from "../actions/key";
+import {attachKeyToEmployee} from "../actions/key";
+import {getEmployee} from "../actions/employee";
+import {websocketKeyEndpoint} from "../config";
+import KeyForm from "./KeyForm";
+import {initialize} from "redux-form";
+import {updateEmployeeKey} from "../actions/key";
 
 class EmployeePage extends React.Component{
     constructor(){
@@ -14,30 +19,38 @@ class EmployeePage extends React.Component{
         this.showDeleteKeyModal=this.showDeleteKeyModal.bind(this);
         this.removeEmplKey=this.removeEmplKey.bind(this);
         this.attachKey=this.attachKey.bind(this);
+        this.showNewKey=this.showNewKey.bind(this);
+        this.showUpdateKeyModal=this.showUpdateKeyModal.bind(this);
+        this.updateKey=this.updateKey.bind(this);
         this.state={
             showModalDelKey:false,
             showModalUpdateKey:false,
-            keyID:null
+            idKeyEmployeeRelationship:null,
+            newKey:null
         };
     }
     componentDidMount(){
+        this.props.getEmployee(this.props.match.params.id);
         this.props.fetchEmployeeKeys(this.props.match.params.id);
-        const socket = new WebSocket("ws://api-test.opendoors.od.ua:8080/");
+        const socket = new WebSocket(websocketKeyEndpoint);
         socket.onopen = function() {
             console.log("Соединение установлено.");
         };
 
         socket.onclose = function(event) {
             if (event.wasClean) {
-                alert("Соединение закрыто чисто");
             } else {
-                alert("Обрыв соединения");
+                console.log("Обрыв соединения");
             }
-            alert("Код: " + event.code + " причина: " + event.reason);
+            console.log("Код: " + event.code + " причина: " + event.reason);
         };
 
         socket.onmessage = function(event) {
             console.log(event.data);
+            //parse
+            /*this.setState({
+                newKey:event.data
+            });*/
         };
 
         socket.onerror = function(error) {
@@ -45,23 +58,39 @@ class EmployeePage extends React.Component{
         };
 
     }
+    showNewKey(){
+        if(this.state.newKey) {
+            return <NewKey/>;
+        }
+    }
     showEmployeeName(){
-        //TODO:if there are no keys, employee name doesn't show
-        if(this.props.keys && this.props.keys.length && this.props.keys[0].employee.name){
-            return (this.props.keys[0].employee.name+" "+this.props.keys[0].employee.surname);
+        if(this.props.employee) {
+            return `${this.props.employee.name} ${this.props.employee.surname}`;
         }
     }
     showDeleteKeyModal(id){
         this.setState({
             showModalDelKey:true,
-            keyID:id
+            idKeyEmployeeRelationship:id
         });
     }
     removeEmplKey(){
         this.setState({
             showModalDelKey:false
         });
-        this.props.delEmplKey(this.props.match.params.id,this.state.keyID);
+        this.props.delEmplKey(this.props.match.params.id,this.state.idKeyEmployeeRelationship);
+    }
+    showUpdateKeyModal(key){
+        this.setState({
+            showModalUpdateKey:true
+        });
+        this.props.initializeForm(key);
+    }
+    updateKey(data){
+        this.setState({
+            showModalUpdateKey:false
+        });
+        this.props.updateEmployeeKey(this.props.match.params.id,data.id,{description:data.description});
     }
     attachKey(data){
         if(data.description && data.description.length<=50){
@@ -92,14 +121,16 @@ class EmployeePage extends React.Component{
                     </thead>
                     <tbody>
                         {this.props.keys.map((key)=>{
-                            return <KeyListElement key={key.id} id={key.id} tag="Not getting tag" description={key.description} deleteKey={this.showDeleteKeyModal}/>;
+                            return <KeyListElement key={key.id} data={key} updateKey={this.showUpdateKeyModal} deleteKey={this.showDeleteKeyModal}/>;
                         })}
                     </tbody>
                 </table>
                 <div className="vvp-new-keys__wrap">
                     <div className="row vvp-grid">
                         <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10">
-                            <NewKey id="12" tag="66616473" addKey={this.attachKey}/>
+
+                            {this.showNewKey()}
+
                         </div>
                     </div>
                 </div>
@@ -123,7 +154,7 @@ class EmployeePage extends React.Component{
                     </Modal.Header>
 
                     <Modal.Body>
-
+                        <KeyForm onSubmit={this.updateKey}/>
                     </Modal.Body>
 
                     <Modal.Footer>
@@ -136,7 +167,8 @@ class EmployeePage extends React.Component{
 }
 function mapStateToProps(state) {
     return{
-        keys:state.employeeKeys.data
+        keys:state.employeeKeys.data,
+        employee:state.employee.data
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -149,6 +181,15 @@ function mapDispatchToProps(dispatch) {
         },
         addKeyToEmpl(id,data){
             dispatch(attachKeyToEmployee(id,data));
+        },
+        getEmployee(id){
+            dispatch(getEmployee(id));
+        },
+        initializeForm (data){
+            dispatch(initialize("UpdateKey", data));
+        },
+        updateEmployeeKey(idEmployee,idKey,description){
+            dispatch(updateEmployeeKey(idEmployee,idKey,description));
         }
     };
 }

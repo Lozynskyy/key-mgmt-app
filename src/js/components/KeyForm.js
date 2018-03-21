@@ -1,11 +1,10 @@
 import React from "react";
-import {reduxForm,Field} from "redux-form";
-import {Button,Alert} from "react-bootstrap";
-
+import { Field, reduxForm } from "redux-form";
+import {Alert,Button} from "react-bootstrap"
 const required = value => value ? undefined : "Required";
 const maxLength = max => value =>
     value && value.length > max ? `Must be ${max} characters or less` : undefined;
-const max_length = maxLength(20);
+const max_length = maxLength(30);
 
 const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
     <div  className="vvp-input">
@@ -17,28 +16,19 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
     </div>
 );
 
-
-class RegisterForm extends React.Component{
-
+class KeyForm extends React.Component{
     render(){
         return(
             <form onSubmit={this.props.handleSubmit}>
-
-                <Field name="username" type="text"
-                    component={renderField} label="Username"
+                <Field name="description" type="text"
+                    component={renderField}
                     validate={[ required, max_length ]}
-                />
-                <Field name="password" type="password"
-                    component={renderField} label="Password"
-                    validate={[required,max_length]}
-                />
-                <Field name="password2" type="password"
-                    component={renderField} label="Password"
-                    validate={[required,max_length]}
                 />
                 <div>
                     <Button bsStyle="success" bsSize="small" type="submit" disabled={this.props.pristine || this.props.submitting}>Submit</Button>
-                    <Button bsSize="small" type="button" disabled={this.props.pristine || this.props.submitting} onClick={this.props.reset}>Clear Values</Button>
+                    <Button bsSize="small" type="button" disabled={this.props.pristine || this.props.submitting} onClick={this.props.reset}>
+                        Undo Changes
+                    </Button>
                 </div>
             </form>
         );
@@ -46,5 +36,5 @@ class RegisterForm extends React.Component{
 }
 
 export default reduxForm({
-    form: "Create_User"
-})(RegisterForm);
+    form:"UpdateKey"
+})(KeyForm);

@@ -1,27 +1,21 @@
-import {LOGIN_USER, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS} from "../constants";
+import {LOGIN_USER, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS} from "../constants/user";
 import {createLogic} from "redux-logic";
 import {history} from "../configurateStore/history";
+import {postRequest} from "../fetch/request";
 
-const postUserDataLogic = createLogic({
+const loginLogic = createLogic({
     type: LOGIN_USER,
     latest: true,
     process({action}, dispatch, done) {
-        const path="https://api-test.opendoors.od.ua:1013/login_check";
-        let myInit = {
-            method: "POST",
-            body:JSON.stringify({"_username":action.username,"_password":action.password})
-        };
-        fetch(path,myInit)
-            .then((res) => {
-                console.log(res);
-                dispatch({
-                    type: LOGIN_USER_SUCCESS,
-                    payload: res.token
-                });
-                localStorage.setItem("token",res.token);
-                history.push({pathname:"/dashboard"});
-                done();
-            })
+        postRequest("login_check", action.data).then((res) => {
+            dispatch({
+                type: LOGIN_USER_SUCCESS,
+                payload: res.token
+            });
+            localStorage.setItem("token", res.token);
+            history.push({pathname: "/dashboard"});
+            done();
+        })
             .catch((res) => {
                 dispatch({
                     type: LOGIN_USER_FAILURE,
@@ -32,4 +26,4 @@ const postUserDataLogic = createLogic({
     }
 });
 
-export default [postUserDataLogic];
+export default [loginLogic];
