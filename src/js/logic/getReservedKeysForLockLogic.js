@@ -5,7 +5,7 @@ import {getRequest} from "../fetch/request";
 const getReservedKeysForLockLogic = createLogic({
     type: FETCH_RESERVED_KEYS_FOR_LOCK,
     latest: true,
-    process( dispatch, done) {
+    process(_, dispatch, done) {
         getRequest("keys").then((res) => {
             dispatch({
                 type: FETCH_RESERVED_KEYS_FOR_LOCK_SUCCESS,

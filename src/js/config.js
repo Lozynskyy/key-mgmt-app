@@ -1,3 +1,3 @@
-export const API_HOST="https://api-test.opendoors.od.ua:1013";
+export const API_HOST=process.env.REACT_APP_API_HOST;
 
 export const websocketKeyEndpoint="ws://api-test.opendoors.od.ua:8080";
