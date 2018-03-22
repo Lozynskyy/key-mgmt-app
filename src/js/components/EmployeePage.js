@@ -38,19 +38,17 @@ class EmployeePage extends React.Component{
         };
 
         socket.onclose = function(event) {
-            if (event.wasClean) {
-            } else {
+            if(!event.wasClean){
                 console.log("Обрыв соединения");
             }
             console.log("Код: " + event.code + " причина: " + event.reason);
         };
 
-        socket.onmessage = function(event) {
-            console.log(event.data);
-            //parse
-            /*this.setState({
-                newKey:event.data
-            });*/
+        socket.onmessage = (event) => {
+            const data=JSON.parse(event.data);
+            this.setState({
+                newKey:data.payload
+            });
         };
 
         socket.onerror = function(error) {
@@ -60,7 +58,7 @@ class EmployeePage extends React.Component{
     }
     showNewKey(){
         if(this.state.newKey) {
-            return <NewKey/>;
+            return <NewKey addKey={this.attachKey} data={this.state.newKey}/>;
         }
     }
     showEmployeeName(){
@@ -95,6 +93,9 @@ class EmployeePage extends React.Component{
     attachKey(data){
         if(data.description && data.description.length<=50){
             this.props.addKeyToEmpl(this.props.match.params.id,data);
+            this.setState({
+                newKey:null
+            });
         }
         else if(data.description && data.description.length>50){
             alert("description should be shorter");
@@ -104,6 +105,7 @@ class EmployeePage extends React.Component{
         }
     }
     render(){
+
         return(
             <div>
                 <h3>{this.showEmployeeName()}</h3>
@@ -113,7 +115,7 @@ class EmployeePage extends React.Component{
                             <th colSpan="4">Keys</th>
                         </tr>
                         <tr>
-                            <th>ID of connection,not key ID</th>
+                            <th>ID</th>
                             <th>Tag</th>
                             <th>Description</th>
                             <th>Action</th>

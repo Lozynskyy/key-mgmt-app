@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {getLockKeys} from "../actions/key";
+import {attachKeyToLock, getLockKeys, getReservedKeyForLock} from "../actions/key";
 import { Button, Modal } from "react-bootstrap";
 import {deleteLockKey} from "../actions/key";
 
@@ -10,7 +10,7 @@ class LockPage extends React.Component{
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.removeKey = this.removeKey.bind(this);
-        
+        this.attachKeyToLock=this.attachKeyToLock.bind(this);
         this.state = {
             show: false,
             id: ""
@@ -20,7 +20,9 @@ class LockPage extends React.Component{
     handleClose() {
         this.setState({ show: false });
     }
-
+    attachKeyToLock(id){
+        this.props.attachKeyToLock(this.props.match.params.id,{"key":id});
+    }
     handleShow(data) {
         this.setState({ show: true, id: data.key.id });
     }
@@ -32,10 +34,10 @@ class LockPage extends React.Component{
 
     componentDidMount(){
         this.props.fetchLockKeys(this.props.match.params.id);
+        this.props.getReservedKeysForLock();
     }
 
     render(){
-
         return (
             <div className="row">
                 <div className="col-xl-10 col-lg-10 col-md-12 col-sm-12">
@@ -59,6 +61,11 @@ class LockPage extends React.Component{
                             })}
                         </tbody>
                     </table>
+                    <ul>
+                        {this.props.reservedKeys.map((key) => {
+                            return <li key={key.id}>{key.id} {key.tag} <button onClick={this.attachKeyToLock.bind(this,key.id)}>Add To lock</button></li>;
+                        })}
+                    </ul>
                     <Modal show={this.state.show} onHide={this.handleClose}>
                         <Modal.Header closeButton>
                             <Modal.Title>Confirm action</Modal.Title>
@@ -79,7 +86,8 @@ class LockPage extends React.Component{
 
 function mapStateToProps(state) {
     return{
-        keys:state.lockKeys.keys
+        keys:state.lockKeys.keys,
+        reservedKeys:state.reservedKeysForLock.keys
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -90,6 +98,12 @@ function mapDispatchToProps(dispatch) {
         fetchLockKeys(id){
             dispatch(getLockKeys(id));
         },
+        getReservedKeysForLock(){
+            dispatch(getReservedKeyForLock());
+        },
+        attachKeyToLock(idLock,idKey){
+            dispatch(attachKeyToLock(idLock,idKey));
+        }
     };
 }
 export default connect(mapStateToProps,mapDispatchToProps)(LockPage);

@@ -14,7 +14,7 @@ export default class KeyListElement extends React.Component{
                 <td>{this.props.data.rkey.tag}</td>
                 <td>{this.props.data.description}</td>
                 <td className="actions-column">
-                    <Button type="button" onClick={this.props.deleteKey.bind(this,this.props.data.id)} bsSize="small" bsStyle="danger">Delete</Button>
+                    <Button type="button" onClick={this.props.deleteKey.bind(this,key.id)} bsSize="small" bsStyle="danger">Delete</Button>
                     <Button type="button" bsSize="small" bsStyle="warning" onClick={this.props.updateKey.bind(this, key)}>Update</Button>
                 </td>
             </tr>

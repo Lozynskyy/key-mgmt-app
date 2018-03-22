@@ -1,8 +1,4 @@
-import {CREATE_EMPLOYEE} from "../constants/employee";
-import {DELETE_EMPLOYEE} from "../constants/employee";
-import {FETCH_EMPLOYEE} from "../constants/employee";
-import {UPDATE_EMPLOYEE} from "../constants/employee";
-import {FETCH_EMPLOYEES} from "../constants/employee";
+import {CREATE_EMPLOYEE,DELETE_EMPLOYEE,FETCH_EMPLOYEE,UPDATE_EMPLOYEE,FETCH_EMPLOYEES} from "../constants/employee";
 
 export const createEmployee = (values) => ({
     type: CREATE_EMPLOYEE,

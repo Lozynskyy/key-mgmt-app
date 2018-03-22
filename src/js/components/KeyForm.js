@@ -1,6 +1,6 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
-import {Alert,Button} from "react-bootstrap"
+import {Alert,Button} from "react-bootstrap";
 const required = value => value ? undefined : "Required";
 const maxLength = max => value =>
     value && value.length > max ? `Must be ${max} characters or less` : undefined;

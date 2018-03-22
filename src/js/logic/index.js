@@ -14,6 +14,8 @@ import deleteEmployeeKey from "./deleteEmployeeKeyLogic";
 import attachKeyToEmployee from "./attachKeyToEmployeeLogic";
 import deleteLockKey from "./deleteLockKeyLogic";
 import updateEmployeeKey from "./updateEmployeeKeyLogic";
+import getReservedKeysForLock from "./getReservedKeysForLockLogic";
+import attachKeyToLock from "./attachKeyToLockLogic";
 
 const actions=[
     ...loginUser,
@@ -31,7 +33,9 @@ const actions=[
     ...deleteEmployeeKey,
     ...attachKeyToEmployee,
     ...deleteLockKey,
-    ...updateEmployeeKey
+    ...updateEmployeeKey,
+    ...getReservedKeysForLock,
+    ...attachKeyToLock
 ];
 
 export default actions;
