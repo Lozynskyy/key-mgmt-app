@@ -6,9 +6,9 @@ import {push} from "react-router-redux";
 import queryString from "query-string";
 import {getLocksData} from "../actions/lock";
 import { buildQueryString } from "../utilities/url";
-import {Button,Modal} from "react-bootstrap";
 import {deleteLock} from "../actions/lock";
 import AddLock from "./LockSubmit";
+import DeleteModal from "./PopUps/DeleteModal";
 
 class LocksTable extends React.Component{
     constructor(props){
@@ -20,6 +20,13 @@ class LocksTable extends React.Component{
         this.changePage = this.changePage.bind(this);
         this.showDeleteLockModal = this.showDeleteLockModal.bind(this);
         this.delLock = this.delLock.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+    }
+
+    closeModal(hide) {
+        this.setState({
+            showDelLockModal: hide
+        });
     }
     componentDidMount(){
         this.props.getAllLocksData();
@@ -83,20 +90,7 @@ class LocksTable extends React.Component{
                 <Pagination className="locks-pagination pull-right" bsSize="medium">
                     {this.renderPages(pages)}
                 </Pagination>
-
-                <Modal show={this.state.showDelLockModal}>
-                    <Modal.Header>
-                        <Modal.Title>Confirm action</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>Do you really want to delete this lock?</Modal.Body>
-
-                    <Modal.Footer>
-                        <Button onClick={()=>{this.setState({showDelLockModal:false});}}>Close</Button>
-                        <Button bsStyle="danger" onClick={this.delLock}>Delete</Button>
-                    </Modal.Footer>
-                </Modal>
-
+                <DeleteModal show={this.state.showDelLockModal} name="lock" closeModal={this.closeModal} delete={this.delLock}/>
             </div>
         );
     }
