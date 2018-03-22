@@ -1,8 +1,8 @@
 import React from "react";
 import {connect} from "react-redux";
-import {attachKeyToLock, getLockKeys, getReservedKeyForLock} from "../actions/key";
-import { Button, Modal } from "react-bootstrap";
-import {deleteLockKey} from "../actions/key";
+import {attachKeyToLock, getLockKeys, getReservedKeyForLock,deleteLockKey} from "../actions/key";
+import { Button } from "react-bootstrap";
+import DeleteModal from "./PopUps/DeleteModal";
 
 class LockPage extends React.Component{
     constructor(){
@@ -11,12 +11,20 @@ class LockPage extends React.Component{
         this.handleClose = this.handleClose.bind(this);
         this.removeKey = this.removeKey.bind(this);
         this.attachKeyToLock=this.attachKeyToLock.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        
         this.state = {
-            show: false,
+            showDelKeyModal: false,
             id: ""
         };
     }
-    
+
+    closeModal(hide) {
+        this.setState({
+            showDelKeyModal: hide
+        });
+    }
+
     handleClose() {
         this.setState({ show: false });
     }
@@ -66,18 +74,8 @@ class LockPage extends React.Component{
                             return <li key={key.id}>{key.id} {key.tag} <button onClick={this.attachKeyToLock.bind(this,key.id)}>Add To lock</button></li>;
                         })}
                     </ul>
-                    <Modal show={this.state.show} onHide={this.handleClose}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Confirm action</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <p>Do you really want to delete this key?</p>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button onClick={this.handleClose}>Close</Button>
-                            <Button bsStyle="danger" onClick={this.removeKey}>Delete</Button>
-                        </Modal.Footer>
-                    </Modal>
+
+                    <DeleteModal show={this.state.showDelKeyModal} name="key" closeModal={this.closeModal} delete={this.removeKey}/>
                 </div>
             </div>
         );

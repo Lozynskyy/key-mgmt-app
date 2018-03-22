@@ -2,15 +2,13 @@ import React from "react";
 import NewKey from "./NewKey";
 import KeyListElement from "./KeyListElement";
 import {connect} from "react-redux";
-import {getEmployeeKeys} from "../actions/key";
+import {getEmployeeKeys, deleteEmployeeKey, attachKeyToEmployee, updateEmployeeKey} from "../actions/key";
 import {Button, Modal} from "react-bootstrap";
-import {deleteEmployeeKey} from "../actions/key";
-import {attachKeyToEmployee} from "../actions/key";
+import DeleteModal from "./PopUps/DeleteModal";
 import {getEmployee} from "../actions/employee";
 import {websocketKeyEndpoint} from "../config";
 import KeyForm from "./KeyForm";
 import {initialize} from "redux-form";
-import {updateEmployeeKey} from "../actions/key";
 
 class EmployeePage extends React.Component{
     constructor(){
@@ -19,6 +17,7 @@ class EmployeePage extends React.Component{
         this.showDeleteKeyModal=this.showDeleteKeyModal.bind(this);
         this.removeEmplKey=this.removeEmplKey.bind(this);
         this.attachKey=this.attachKey.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.showNewKey=this.showNewKey.bind(this);
         this.showUpdateKeyModal=this.showUpdateKeyModal.bind(this);
         this.updateKey=this.updateKey.bind(this);
@@ -38,7 +37,7 @@ class EmployeePage extends React.Component{
         };
 
         socket.onclose = function(event) {
-            if(!event.wasClean){
+            if (!event.wasClean){
                 console.log("Обрыв соединения");
             }
             console.log("Код: " + event.code + " причина: " + event.reason);
@@ -54,8 +53,13 @@ class EmployeePage extends React.Component{
         socket.onerror = function(error) {
             alert("Ошибка " + error.message);
         };
-
     }
+    closeModal(hide) {
+        this.setState({
+            showModalDelKey: hide
+        });
+    }
+
     showNewKey(){
         if(this.state.newKey) {
             return <NewKey addKey={this.attachKey} data={this.state.newKey}/>;
@@ -137,18 +141,7 @@ class EmployeePage extends React.Component{
                     </div>
                 </div>
 
-                <Modal show={this.state.showModalDelKey}>
-                    <Modal.Header>
-                        <Modal.Title>Confirm action</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>Do you really want to delete this key?</Modal.Body>
-
-                    <Modal.Footer>
-                        <Button onClick={()=>{this.setState({showModalDelKey:false});}}>Close</Button>
-                        <Button onClick={this.removeEmplKey} bsStyle="danger">Delete</Button>
-                    </Modal.Footer>
-                </Modal>
+                <DeleteModal show={this.state.showModalDelKey} name="key" closeModal={this.closeModal} delete={this.removeEmplKey}/>
 
                 <Modal show={this.state.showModalUpdateKey}>
                     <Modal.Header>
