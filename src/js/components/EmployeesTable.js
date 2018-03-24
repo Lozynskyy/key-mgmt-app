@@ -11,7 +11,8 @@ import { buildQueryString } from "../utilities/url";
 import DeleteModal from "./PopUps/DeleteModal";
 import {initialize} from "redux-form";
 import UpdateModal from "./PopUps/UpdateModal";
-
+import SearchEmployee from "./SearchEmployee";
+import {Button} from "react-bootstrap";
 class EmployeesTable extends React.Component{
 
     constructor(props){
@@ -20,6 +21,7 @@ class EmployeesTable extends React.Component{
             showModalDelEmpl: false,
             showModalUpdateEmpl: false,
             currentId: null,
+            findEmployee:""
         };
         this.changePage = this.changePage.bind(this);
         this.showDeleteEmployeeModal=this.showDeleteEmployeeModal.bind(this);
@@ -29,6 +31,7 @@ class EmployeesTable extends React.Component{
         this.changeEmployee=this.changeEmployee.bind(this);
         this.closeDeleteModal = this.closeDeleteModal.bind(this);
         this.closeUpdateModal=this.closeUpdateModal.bind(this);
+        this.findEmployee=this.findEmployee.bind(this);
     }
 
     closeDeleteModal(hide) {
@@ -74,6 +77,9 @@ class EmployeesTable extends React.Component{
     componentDidMount() {
         this.props.getAllEmployeesData();
     }
+    findEmployee(data){
+        this.props.getAllEmployeesData(`?filter=${data.toFind}`);
+    }
     changePage(pageNumber){
         const url = buildQueryString(pageNumber, "employeesPage", this.props.location.search);
         this.props.navigate(url);
@@ -95,6 +101,8 @@ class EmployeesTable extends React.Component{
         return(
             <div>
                 <AddEmployee/>
+                <SearchEmployee onSubmit={this.findEmployee}/>
+                <Button onClick={()=>this.props.getAllEmployeesData()}>All Employees</Button>
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
@@ -145,8 +153,8 @@ function mapDispatchToProps(dispatch){
         delEmployee(id){
             dispatch(deleteEmployee(id));
         },
-        getAllEmployeesData(){
-            dispatch(getEmployeesData());
+        getAllEmployeesData(filter){
+            dispatch(getEmployeesData(filter));
         },
         updateEmployee(id,data){
             dispatch(updateEmployee(id,data));

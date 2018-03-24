@@ -9,6 +9,8 @@ import { buildQueryString } from "../utilities/url";
 import {deleteLock} from "../actions/lock";
 import AddLock from "./LockSubmit";
 import DeleteModal from "./PopUps/DeleteModal";
+import SearchLock from "./SearchLock";
+import {Button} from "react-bootstrap";
 
 class LocksTable extends React.Component{
     constructor(props){
@@ -21,6 +23,7 @@ class LocksTable extends React.Component{
         this.showDeleteLockModal = this.showDeleteLockModal.bind(this);
         this.delLock = this.delLock.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.findLock=this.findLock.bind(this);
     }
 
     closeModal(hide) {
@@ -48,6 +51,9 @@ class LocksTable extends React.Component{
         this.setState({showDelLockModal:false});
         this.props.getAllLocksData();
     }
+    findLock(data){
+        this.props.getAllLocksData(`?filter=${data.toFind}`);
+    }
     renderPages(pages) {
         const result = [];
         for (let number = 1; number <= pages; number++) {
@@ -65,6 +71,9 @@ class LocksTable extends React.Component{
         return(
             <div>
                 <AddLock/>
+                <SearchLock onSubmit={this.findLock}/>
+                <Button onClick={()=>this.props.getAllLocksData()}>Show all locks</Button>
+
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
@@ -107,8 +116,8 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        getAllLocksData(){
-            dispatch(getLocksData());
+        getAllLocksData(filter){
+            dispatch(getLocksData(filter));
         },
         deleteThisLock(id){
             dispatch(deleteLock(id));

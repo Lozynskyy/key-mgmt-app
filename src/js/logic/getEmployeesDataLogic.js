@@ -5,22 +5,43 @@ import {getRequest} from "../fetch/request";
 const getEmployeesDataLogic = createLogic({
     type: FETCH_EMPLOYEES,
     latest: true,
-    process(_, dispatch, done) {
-        getRequest("employees").then((employees) => {
-            dispatch({
-                type: FETCH_EMPLOYEES_SUCCESS,
-                payload: employees
-            });
-            done();
-        })
-            .catch(err => {
+    process({action}, dispatch, done) {
+        //TODO:Bad code
+        if(action.filter){
+            getRequest(`employees${action.filter}`).then((employees) => {
                 dispatch({
-                    type: FETCH_EMPLOYEES_FAILURE,
-                    payload: err,
-                    error: true
+                    type: FETCH_EMPLOYEES_SUCCESS,
+                    payload: employees
                 });
                 done();
-            });
+            })
+                .catch(err => {
+                    dispatch({
+                        type: FETCH_EMPLOYEES_FAILURE,
+                        payload: err,
+                        error: true
+                    });
+                    done();
+                });
+        }
+        else {
+            getRequest("employees").then((employees) => {
+                dispatch({
+                    type: FETCH_EMPLOYEES_SUCCESS,
+                    payload: employees
+                });
+                done();
+            })
+
+                .catch(err => {
+                    dispatch({
+                        type: FETCH_EMPLOYEES_FAILURE,
+                        payload: err,
+                        error: true
+                    });
+                    done();
+                });
+        }
     }
 });
 

@@ -22,6 +22,7 @@ export const updateEmployee = (id, data) => ({
 });
 
 
-export const getEmployeesData = () => ({
-    type: FETCH_EMPLOYEES
+export const getEmployeesData = (filter) => ({
+    type: FETCH_EMPLOYEES,
+    filter
 });
