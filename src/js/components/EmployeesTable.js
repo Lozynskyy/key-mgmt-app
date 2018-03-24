@@ -4,15 +4,15 @@ import { connect } from "react-redux";
 import { Pagination } from "react-bootstrap";
 import { push } from "react-router-redux";
 import AddEmployee from "./PopUps/EmployeeSubmit";
-import {Button,Modal} from "react-bootstrap";
 import {deleteEmployee, getEmployeesData, updateEmployee} from "../actions/employee";
 import EmployeeForm from "./PopUps/EmployeeForm";
 import queryString from "query-string";
 import { buildQueryString } from "../utilities/url";
 import DeleteModal from "./PopUps/DeleteModal";
 import {initialize} from "redux-form";
+import UpdateModal from "./PopUps/UpdateModal";
 
-class EmplyeesTable extends React.Component{
+class EmployeesTable extends React.Component{
 
     constructor(props){
         super(props);
@@ -27,10 +27,11 @@ class EmplyeesTable extends React.Component{
         this.showUpdateEmployeeModal=this.showUpdateEmployeeModal.bind(this);
         this.changePage = this.changePage.bind(this);
         this.changeEmployee=this.changeEmployee.bind(this);
-        this.closeModal = this.closeModal.bind(this);
+        this.closeDeleteModal = this.closeDeleteModal.bind(this);
+        this.closeUpdateModal=this.closeUpdateModal.bind(this);
     }
 
-    closeModal(hide) {
+    closeDeleteModal(hide) {
         this.setState({
             showModalDelEmpl: hide
         });
@@ -65,7 +66,11 @@ class EmplyeesTable extends React.Component{
             showModalUpdateEmpl:true
         });
     }
-
+    closeUpdateModal(show){
+        this.setState({
+            showModalUpdateEmpl:show
+        });
+    }
     componentDidMount() {
         this.props.getAllEmployeesData();
     }
@@ -117,18 +122,9 @@ class EmplyeesTable extends React.Component{
                 <Pagination className="employees-pagination pull-right" bsSize="medium">
                     {this.renderPages(pages)}
                 </Pagination>
-                <DeleteModal show={this.state.showModalDelEmpl} name="employee" closeModal={this.closeModal} delete={this.removeEmployee}/>
-                <Modal show={this.state.showModalUpdateEmpl}>
-                    <Modal.Header>
-                        <Modal.Title>Update employee</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <EmployeeForm onSubmit={this.changeEmployee} employee={this.state.employee}/>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button type="button" bsSize="large" onClick={()=>this.setState({showModalUpdateEmpl:false})}>Close</Button>
-                    </Modal.Footer>
-                </Modal>
+                <DeleteModal show={this.state.showModalDelEmpl} name="employee" closeModal={this.closeDeleteModal} delete={this.removeEmployee}/>
+                <UpdateModal name="employee" show={this.state.showModalUpdateEmpl} closeModal={this.closeUpdateModal} form={<EmployeeForm onSubmit={this.changeEmployee}/>}/>
+
             </div>
         );
     }
@@ -164,4 +160,4 @@ function mapDispatchToProps(dispatch){
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmplyeesTable);
+export default connect(mapStateToProps, mapDispatchToProps)(EmployeesTable);

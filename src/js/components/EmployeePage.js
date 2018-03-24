@@ -3,12 +3,12 @@ import NewKey from "./NewKey";
 import KeyListElement from "./KeyListElement";
 import {connect} from "react-redux";
 import {getEmployeeKeys, deleteEmployeeKey, attachKeyToEmployee, updateEmployeeKey} from "../actions/key";
-import {Button, Modal} from "react-bootstrap";
 import DeleteModal from "./PopUps/DeleteModal";
 import {getEmployee} from "../actions/employee";
 import {websocketKeyEndpoint} from "../config";
 import KeyForm from "./KeyForm";
 import {initialize} from "redux-form";
+import UpdateModal from "./PopUps/UpdateModal";
 
 class EmployeePage extends React.Component{
     constructor(){
@@ -17,7 +17,8 @@ class EmployeePage extends React.Component{
         this.showDeleteKeyModal=this.showDeleteKeyModal.bind(this);
         this.removeEmplKey=this.removeEmplKey.bind(this);
         this.attachKey=this.attachKey.bind(this);
-        this.closeModal = this.closeModal.bind(this);
+        this.closeDeleteModal = this.closeDeleteModal.bind(this);
+        this.closeUpdateKeyModal=this.closeUpdateKeyModal.bind(this);
         this.showNewKey=this.showNewKey.bind(this);
         this.showUpdateKeyModal=this.showUpdateKeyModal.bind(this);
         this.updateKey=this.updateKey.bind(this);
@@ -51,10 +52,10 @@ class EmployeePage extends React.Component{
         };
 
         socket.onerror = function(error) {
-            alert("Ошибка " + error.message);
+            console.log("Ошибка " + error.message);
         };
     }
-    closeModal(hide) {
+    closeDeleteModal(hide) {
         this.setState({
             showModalDelKey: hide
         });
@@ -69,6 +70,7 @@ class EmployeePage extends React.Component{
         if(this.props.employee) {
             return `${this.props.employee.name} ${this.props.employee.surname}`;
         }
+        return " ";
     }
     showDeleteKeyModal(id){
         this.setState({
@@ -87,6 +89,11 @@ class EmployeePage extends React.Component{
             showModalUpdateKey:true
         });
         this.props.initializeForm(key);
+    }
+    closeUpdateKeyModal(show){
+        this.setState({
+            showModalUpdateKey:show
+        });
     }
     updateKey(data){
         this.setState({
@@ -141,21 +148,9 @@ class EmployeePage extends React.Component{
                     </div>
                 </div>
 
-                <DeleteModal show={this.state.showModalDelKey} name="key" closeModal={this.closeModal} delete={this.removeEmplKey}/>
+                <DeleteModal show={this.state.showModalDelKey} name="key" closeModal={this.closeDeleteModal} delete={this.removeEmplKey}/>
 
-                <Modal show={this.state.showModalUpdateKey}>
-                    <Modal.Header>
-                        <Modal.Title>Update key</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-                        <KeyForm onSubmit={this.updateKey}/>
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                        <Button type="button" bsSize="large" onClick={()=>this.setState({showModalUpdateKey:false})}>Close</Button>
-                    </Modal.Footer>
-                </Modal>
+                <UpdateModal show={this.state.showModalUpdateKey} name="key" form={<KeyForm onSubmit={this.updateKey}/>} closeModal={this.closeUpdateKeyModal}/>
             </div>
         );
     }
