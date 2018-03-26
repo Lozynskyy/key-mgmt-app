@@ -14,6 +14,7 @@ class LocksListElement extends React.Component{
                 <td className="actions-column">
                     <Button type="button" onClick={this.props.deleteLock.bind(this,lock.id)} bsSize="small" bsStyle="danger">Delete</Button>
                     <Button type="button" bsSize="small" bsStyle="warning">Update</Button>
+                    <Button type="button" bsSize="small" bsStyle="primary" onClick={this.props.getLockConfig.bind(this,lock.id)}>&#9881;</Button>
                 </td>
             </tr>
         );

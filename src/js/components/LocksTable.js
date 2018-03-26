@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import {Pagination} from "react-bootstrap";
 import {push} from "react-router-redux";
 import queryString from "query-string";
-import {getLocksData} from "../actions/lock";
+import {getLockCofig, getLocksData} from "../actions/lock";
 import { buildQueryString } from "../utilities/url";
 import {deleteLock} from "../actions/lock";
 import AddLock from "./LockSubmit";
@@ -24,6 +24,7 @@ class LocksTable extends React.Component{
         this.delLock = this.delLock.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.findLock=this.findLock.bind(this);
+        this.getLockConfig=this.getLockConfig.bind(this);
     }
 
     closeModal(hide) {
@@ -53,6 +54,9 @@ class LocksTable extends React.Component{
     }
     findLock(data){
         this.props.getAllLocksData(`?filter=${data.toFind}`);
+    }
+    getLockConfig(lockID){
+        this.props.getLockConfig(lockID);
     }
     renderPages(pages) {
         const result = [];
@@ -90,7 +94,7 @@ class LocksTable extends React.Component{
                             if (index >= start_offset && start_count < per_page) {
                                 start_count ++;
                                 return(
-                                    <LocksListElement key={lock.id} lock={lock} deleteLock={this.showDeleteLockModal}/>
+                                    <LocksListElement key={lock.id} lock={lock} getLockConfig={this.getLockConfig} deleteLock={this.showDeleteLockModal}/>
                                 );
                             }
                         })}
@@ -124,6 +128,9 @@ function mapDispatchToProps(dispatch){
         },
         navigate(url) {
             dispatch(push(url));
+        },
+        getLockConfig(id){
+            dispatch(getLockCofig(id));
         }
     };
 }
