@@ -78,7 +78,7 @@ class EmployeesTable extends React.Component{
         this.props.getAllEmployeesData();
     }
     findEmployee(data){
-        this.props.getAllEmployeesData(`?filter=${data.toFind}`);
+        this.props.getAllEmployeesData(data.toFind);
     }
     changePage(pageNumber){
         const url = buildQueryString(pageNumber, "employeesPage", this.props.location.search);

@@ -1,7 +1,7 @@
 import React from "react";
 import {Button} from "react-bootstrap";
 import {Link} from "react-router-dom";
-
+import {API_HOST} from "../config";
 
 class LocksListElement extends React.Component{
     render()
@@ -14,7 +14,7 @@ class LocksListElement extends React.Component{
                 <td className="actions-column">
                     <Button type="button" onClick={this.props.deleteLock.bind(this,lock.id)} bsSize="small" bsStyle="danger">Delete</Button>
                     <Button type="button" bsSize="small" bsStyle="warning">Update</Button>
-                    <Button type="button" bsSize="small" bsStyle="primary" onClick={this.props.getLockConfig.bind(this,lock.id)}>&#9881;</Button>
+                    <Button type="button" bsSize="small" bsStyle="primary" onClick={()=>window.open(`${API_HOST}/locks/${lock.id}/config`)}>&#9881;</Button>
                 </td>
             </tr>
         );

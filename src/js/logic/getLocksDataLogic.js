@@ -6,41 +6,26 @@ const getLocksDataLogic = createLogic({
     type: FETCH_LOCKS,
     latest: true,
     process({action}, dispatch, done) {
-        //TODO:Bad code
-        if(action.filter) {
-            getRequest(`locks${action.filter}`).then((locksArr) => {
+        let filter = action.filter || "";
+        if(filter){
+            filter="?filter="+action.filter;
+        }
+        getRequest(`locks${filter}`).then((locksArr) => {
+            dispatch({
+                type: FETCH_LOCKS_SUCCESS,
+                payload: locksArr
+            });
+            done();
+        })
+            .catch(err => {
                 dispatch({
-                    type: FETCH_LOCKS_SUCCESS,
-                    payload: locksArr
+                    type: FETCH_LOCKS_FAILURE,
+                    payload: err,
+                    error: true
                 });
                 done();
-            })
-                .catch(err => {
-                    dispatch({
-                        type: FETCH_LOCKS_FAILURE,
-                        payload: err,
-                        error: true
-                    });
-                    done();
-                });
-        }
-        else {
-            getRequest("locks").then((locksArr) => {
-                dispatch({
-                    type: FETCH_LOCKS_SUCCESS,
-                    payload: locksArr
-                });
-                done();
-            })
-                .catch(err => {
-                    dispatch({
-                        type: FETCH_LOCKS_FAILURE,
-                        payload: err,
-                        error: true
-                    });
-                    done();
-                });
-        }
+            });
+
     }
 });
 

@@ -6,42 +6,26 @@ const getEmployeesDataLogic = createLogic({
     type: FETCH_EMPLOYEES,
     latest: true,
     process({action}, dispatch, done) {
-        //TODO:Bad code
-        if(action.filter){
-            getRequest(`employees${action.filter}`).then((employees) => {
-                dispatch({
-                    type: FETCH_EMPLOYEES_SUCCESS,
-                    payload: employees
-                });
-                done();
-            })
-                .catch(err => {
-                    dispatch({
-                        type: FETCH_EMPLOYEES_FAILURE,
-                        payload: err,
-                        error: true
-                    });
-                    done();
-                });
+        let filter = action.filter || "";
+        if(filter){
+            filter="?filter="+action.filter;
         }
-        else {
-            getRequest("employees").then((employees) => {
+        getRequest(`employees${filter}`).then((employees) => {
+            dispatch({
+                type: FETCH_EMPLOYEES_SUCCESS,
+                payload: employees
+            });
+            done();
+        })
+            .catch(err => {
                 dispatch({
-                    type: FETCH_EMPLOYEES_SUCCESS,
-                    payload: employees
+                    type: FETCH_EMPLOYEES_FAILURE,
+                    payload: err,
+                    error: true
                 });
                 done();
-            })
+            });
 
-                .catch(err => {
-                    dispatch({
-                        type: FETCH_EMPLOYEES_FAILURE,
-                        payload: err,
-                        error: true
-                    });
-                    done();
-                });
-        }
     }
 });
 
