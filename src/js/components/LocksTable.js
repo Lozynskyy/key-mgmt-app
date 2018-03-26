@@ -4,13 +4,13 @@ import { connect } from "react-redux";
 import {Pagination} from "react-bootstrap";
 import {push} from "react-router-redux";
 import queryString from "query-string";
-import {getLocksData} from "../actions/getLocksData";
+import {getLocksData} from "../actions/lock";
 import { buildQueryString } from "../utilities/url";
-import {Button,Modal} from "react-bootstrap";
-import {deleteLock} from "../actions/deleteLock";
+import {deleteLock} from "../actions/lock";
 import AddLock from "./LockSubmit";
 import LockForm from "./LockForm";
 import {updateLock} from "../actions/updateLock";
+import DeleteModal from "./PopUps/DeleteModal";
 
 class LocksTable extends React.Component{
     constructor(props){
@@ -26,6 +26,13 @@ class LocksTable extends React.Component{
         this.showUpdateLockModal = this.showUpdateLockModal.bind(this);
         this.delLock = this.delLock.bind(this);
         this.currentLockData = this.currentLockData.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+    }
+
+    closeModal(hide) {
+        this.setState({
+            showDelLockModal: hide
+        });
     }
 
     submit(values){
@@ -109,35 +116,7 @@ class LocksTable extends React.Component{
                     {this.renderPages(pages)}
                 </Pagination>
 
-                <Modal show={this.state.showDelLockModal}>
-                    <Modal.Header>
-                        <Modal.Title>Confirm action</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>Do you really want to delete this lock?</Modal.Body>
-
-                    <Modal.Footer>
-                        <Button onClick={()=>{this.setState({showDelLockModal:false});}}>Close</Button>
-                        <Button bsStyle="danger" onClick={this.delLock}>Delete</Button>
-                    </Modal.Footer>
-                </Modal>
-
-                <Modal show={this.state.showUpLockModal}>
-                    <Modal.Header>
-                        <Modal.Title>Update lock</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-
-                        <LockForm onSubmit={this.submit} lock={this.currentLockData()} />
-
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                        <Button type="button" bsSize="large" onClick={()=>this.setState({showUpLockModal:false})}>Close</Button>
-                    </Modal.Footer>
-                </Modal>
-
+                <DeleteModal show={this.state.showDelLockModal} name="lock" closeModal={this.closeModal} delete={this.delLock}/>
             </div>
         );
     }

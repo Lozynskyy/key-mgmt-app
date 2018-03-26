@@ -9,12 +9,15 @@ const max_length = maxLength(25);
 
 
 
-const renderField = ({ input, label, defValue, changeValue, type, meta: { touched, error, warning } }) => (
+const renderField = (field) => (
     <div>
-        <label>{label}</label>
+        <label>{field.label}</label>
         <div>
-            <input className="form-control" {...input} placeholder={label} type={type} value={defValue} onChange={changeValue}/>
-            {touched && ((error && <span className="vvp-input__error-msg">{error}</span>) || (warning && <span className="vvp-input__warning-msg">{warning}</span>))}
+            <input className="form-control" {...field.input} placeholder={field.label} type={field.type} value={field.defValue} onChange={(e) => {
+                field.onChangeAction(e.target.value);
+                field.input.onChange(e);
+            }} />
+            {field.touched && ((field.error && <span className="vvp-input__error-msg">{field.error}</span>) || (field.warning && <span className="vvp-input__warning-msg">{field.warning}</span>))}
         </div>
     </div>
 );
@@ -28,6 +31,7 @@ class LockForm extends React.Component{
         };
         this.changeName=this.changeName.bind(this);
         this.changePass=this.changePass.bind(this);
+        this.updateValue=this.updateValue.bind(this);
     }
     componentDidMount(){
         if(this.props.lock){
@@ -43,18 +47,28 @@ class LockForm extends React.Component{
     changePass(e){
         this.setState({lock_pass:e.target.value});
     }
+
+    updateValue(e) {
+        if( this.props.onChangeAction!==undefined )
+            this.props.onChangeAction(e.target.value);
+
+        this.props.input.onChange(e);
+    }
+
     render(){
         return (
             <form onSubmit={this.props.handleSubmit}>
                 <Field name="lock_name" type="text"
-                    defValue={this.state.lock_name}
-                    changeValue={this.changeName}
+                    defValue={this.props.lock.lock_name}
+                    // changeValue={this.changeName}
+                       onChangeAction={this.props.onChangeAction}
                     component={renderField} label="Name"
                     validate={[ required, max_length ]}
                 />
                 <Field name="lock_pass" type="text"
-                    defValue={this.state.lock_pass}
-                    changeValue={this.changePass}
+                    defValue={this.props.lock.lock_pass}
+                    //changeValue={this.changePass}
+                       onChangeAction={this.props.onChangeAction}
                     component={renderField} label="Pass"
                     validate={[required,max_length]}
                 />
