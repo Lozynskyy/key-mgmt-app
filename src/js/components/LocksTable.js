@@ -8,19 +8,26 @@ import {getLocksData} from "../actions/lock";
 import { buildQueryString } from "../utilities/url";
 import {deleteLock} from "../actions/lock";
 import AddLock from "./LockSubmit";
+import {updateLock} from "../actions/lock";
 import DeleteModal from "./PopUps/DeleteModal";
 import SearchLock from "./SearchLock";
 import {Button} from "react-bootstrap";
+import UpdateModal from "./PopUps/UpdateModal";
+import LockForm from "./LockForm";
+import {initialize} from "redux-form";
 
 class LocksTable extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             showDelLockModal:false,
+            showUpLockModal:false,
             currentLock:null
         };
+        this.lockUpdate = this.lockUpdate.bind(this);
         this.changePage = this.changePage.bind(this);
         this.showDeleteLockModal = this.showDeleteLockModal.bind(this);
+        this.showUpdateLockModal = this.showUpdateLockModal.bind(this);
         this.delLock = this.delLock.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.findLock=this.findLock.bind(this);
@@ -28,9 +35,20 @@ class LocksTable extends React.Component{
 
     closeModal(hide) {
         this.setState({
-            showDelLockModal: hide
+            showDelLockModal: hide,
+            showUpLockModal: hide
         });
     }
+
+    lockUpdate(values){
+        const lock={
+            lock_name: values.lock_name,
+            lock_pass: values.lock_pass
+        };
+        this.props.updateLockData(values.id, lock);
+        this.setState({showUpLockModal:false});
+    }
+
     componentDidMount(){
         this.props.getAllLocksData();
     }
@@ -46,11 +64,20 @@ class LocksTable extends React.Component{
             currentLock:id
         });
     }
+
+    showUpdateLockModal(data){
+        this.props.initializeForm(data);
+        this.setState({
+            showUpLockModal:true,
+        });
+    }
+
     delLock(){
         this.props.deleteThisLock(this.state.currentLock);
         this.setState({showDelLockModal:false});
         this.props.getAllLocksData();
     }
+
     findLock(data){
         this.props.getAllLocksData(data.toFind);
     }
@@ -91,7 +118,7 @@ class LocksTable extends React.Component{
                             if (index >= start_offset && start_count < per_page) {
                                 start_count ++;
                                 return(
-                                    <LocksListElement key={lock.id} lock={lock}  deleteLock={this.showDeleteLockModal}/>
+                                    <LocksListElement key={lock.id} lock={lock}  deleteLock={this.showDeleteLockModal} updateLock={this.showUpdateLockModal}/>
                                 );
                             }
                         })}
@@ -100,7 +127,9 @@ class LocksTable extends React.Component{
                 <Pagination className="locks-pagination pull-right" bsSize="medium">
                     {this.renderPages(pages)}
                 </Pagination>
+
                 <DeleteModal show={this.state.showDelLockModal} name="lock" closeModal={this.closeModal} delete={this.delLock}/>
+                <UpdateModal show={this.state.showUpLockModal} name="lock" closeModal={this.closeModal} form={<LockForm onSubmit={this.lockUpdate}/>}/>
             </div>
         );
     }
@@ -125,6 +154,12 @@ function mapDispatchToProps(dispatch){
         },
         navigate(url) {
             dispatch(push(url));
+        },
+        updateLockData(id, values){
+            dispatch(updateLock(id, values));
+        },
+        initializeForm(data){
+            dispatch(initialize("AddUpdateLock", data));
         }
     };
 }
