@@ -25,4 +25,4 @@ const createEmployeeLogic = createLogic({
     }
 });
 
-export default [createEmployeeLogic];
+export default createEmployeeLogic;

@@ -7,12 +7,13 @@ const attachKeyToEmployeeLogic = createLogic({
     type: ATTACH_KEY_TO_EMPLOYEE,
     latest: true,
     process({action}, dispatch, done) {
-        postRequest(`${action.employee}/keys`, action.key).then(() => {
+        postRequest(`employees/${action.employeeID}/keys`, action.key).then(() => {
             dispatch({
                 type: ATTACH_KEY_TO_EMPLOYEE_SUCCESS
             });
             dispatch({
-                type: FETCH_EMPLOYEE_KEYS
+                type: FETCH_EMPLOYEE_KEYS,
+                id:action.employeeID
             });
             done();
         })
@@ -24,4 +25,4 @@ const attachKeyToEmployeeLogic = createLogic({
             });
     }
 });
-export default [attachKeyToEmployeeLogic];
+export default attachKeyToEmployeeLogic;

@@ -25,4 +25,4 @@ const createLockLogic = createLogic({
     }
 });
 
-export default [createLockLogic];
+export default createLockLogic;

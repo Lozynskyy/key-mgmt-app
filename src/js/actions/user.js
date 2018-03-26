@@ -1,5 +1,4 @@
-import {CREATE_USER} from "../constants/user";
-import {LOGIN_USER} from "../constants/user";
+import {CREATE_USER,LOGIN_USER} from "../constants/user";
 
 export const createUser = (data) => ({
     type: CREATE_USER,

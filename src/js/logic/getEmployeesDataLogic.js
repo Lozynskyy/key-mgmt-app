@@ -5,8 +5,12 @@ import {getRequest} from "../fetch/request";
 const getEmployeesDataLogic = createLogic({
     type: FETCH_EMPLOYEES,
     latest: true,
-    process(_, dispatch, done) {
-        getRequest("employees").then((employees) => {
+    process({action}, dispatch, done) {
+        let filter = action.filter || "";
+        if(filter){
+            filter="?filter="+action.filter;
+        }
+        getRequest(`employees${filter}`).then((employees) => {
             dispatch({
                 type: FETCH_EMPLOYEES_SUCCESS,
                 payload: employees
@@ -21,7 +25,8 @@ const getEmployeesDataLogic = createLogic({
                 });
                 done();
             });
+
     }
 });
 
-export default [getEmployeesDataLogic];
+export default getEmployeesDataLogic;

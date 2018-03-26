@@ -24,4 +24,4 @@ const getLockKeysLogic = createLogic({
     }
 });
 
-export default [getLockKeysLogic];
+export default getLockKeysLogic;

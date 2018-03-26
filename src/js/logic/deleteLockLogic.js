@@ -25,4 +25,4 @@ const deleteLockLogic = createLogic({
     }
 });
 
-export default [deleteLockLogic];
+export default deleteLockLogic;
