@@ -26,4 +26,4 @@ const deleteEmployeeKeyLogic = createLogic({
     }
 });
 
-export default [deleteEmployeeKeyLogic];
+export default deleteEmployeeKeyLogic;

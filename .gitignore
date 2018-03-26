@@ -24,3 +24,5 @@ yarn-error.log*
 
 front_pub.py
 
+.env
+.env.dist

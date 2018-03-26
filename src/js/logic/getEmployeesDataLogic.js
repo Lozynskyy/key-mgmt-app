@@ -29,4 +29,4 @@ const getEmployeesDataLogic = createLogic({
     }
 });
 
-export default [getEmployeesDataLogic];
+export default getEmployeesDataLogic;

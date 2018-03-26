@@ -26,4 +26,4 @@ const loginLogic = createLogic({
     }
 });
 
-export default [loginLogic];
+export default loginLogic;

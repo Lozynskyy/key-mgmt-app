@@ -25,4 +25,4 @@ const attachKeyToLockLogic = createLogic({
             });
     }
 });
-export default [attachKeyToLockLogic];
+export default attachKeyToLockLogic;

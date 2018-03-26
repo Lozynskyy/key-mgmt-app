@@ -14,7 +14,7 @@ class LocksListElement extends React.Component{
                 <td className="actions-column">
                     <Button type="button" onClick={this.props.deleteLock.bind(this,lock.id)} bsSize="small" bsStyle="danger">Delete</Button>
                     <Button type="button" bsSize="small" bsStyle="warning">Update</Button>
-                    <Button type="button" bsSize="small" bsStyle="primary" onClick={()=>window.open(`${API_HOST}/locks/${lock.id}/config`)}>&#9881;</Button>
+                    <a href={`${API_HOST}/locks/${lock.id}/config`}>&#9881;</a>
                 </td>
             </tr>
         );

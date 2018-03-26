@@ -24,4 +24,4 @@ const getReservedKeysForLockLogic = createLogic({
     }
 });
 
-export default [getReservedKeysForLockLogic];
+export default getReservedKeysForLockLogic;

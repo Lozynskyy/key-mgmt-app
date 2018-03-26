@@ -68,10 +68,10 @@ class EmployeePage extends React.Component{
         }
     }
     showEmployeeName(){
-        if(this.props.employee) {
+        if(this.props.employee.name) {
             return `${this.props.employee.name} ${this.props.employee.surname}`;
         }
-        return " ";
+        return "";
     }
     showDeleteKeyModal(id){
         this.setState({

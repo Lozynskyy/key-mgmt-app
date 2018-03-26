@@ -25,4 +25,4 @@ const deleteLockKeyLogic = createLogic({
     }
 });
 
-export default [deleteLockKeyLogic];
+export default deleteLockKeyLogic;

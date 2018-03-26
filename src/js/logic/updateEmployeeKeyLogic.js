@@ -26,4 +26,4 @@ const updateEmployeeKeyLogic = createLogic({
     }
 });
 
-export default [updateEmployeeKeyLogic];
+export default updateEmployeeKeyLogic;

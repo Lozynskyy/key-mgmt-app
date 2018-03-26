@@ -29,4 +29,4 @@ const getLocksDataLogic = createLogic({
     }
 });
 
-export default [getLocksDataLogic];
+export default getLocksDataLogic;

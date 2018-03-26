@@ -25,4 +25,4 @@ const attachKeyToEmployeeLogic = createLogic({
             });
     }
 });
-export default [attachKeyToEmployeeLogic];
+export default attachKeyToEmployeeLogic;
