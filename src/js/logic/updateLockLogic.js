@@ -1,23 +1,23 @@
 import { createLogic } from "redux-logic";
-import { UPDATE_LOCK, UPDATE_LOCK_SUCCESS, UPDATE_LOCK_FAILURE } from "../constants";
+import { UPDATE_LOCK, UPDATE_LOCK_SUCCESS, UPDATE_LOCK_FAILURE } from "../constants/lock";
+import {FETCH_LOCKS} from "../constants/lock";
+import {putRequest} from "../fetch/request";
 
 const updateLockLogic = createLogic({
     type: UPDATE_LOCK,
     latest: true,
     process({action}, dispatch, done) {
-        const path = `https://api-test.opendoors.od.ua:1013/locks/${action.id}`;
-        let myInit = {
-            method: "PUT",
-            body: JSON.stringify(action.data),
-        };
-        fetch(path, myInit)
-            .then((res) => {
+        putRequest(`locks/${action.id}`, action.data)
+            .then(() => {
                 dispatch({
                     type: UPDATE_LOCK_SUCCESS
                 });
+                dispatch({
+                    type: FETCH_LOCKS
+                });
                 done();
             })
-            .catch((res) => {
+            .catch(() => {
                 dispatch({
                     type: UPDATE_LOCK_FAILURE,
                 });
@@ -26,4 +26,4 @@ const updateLockLogic = createLogic({
     }
 });
 
-export default [updateLockLogic];
+export default updateLockLogic;

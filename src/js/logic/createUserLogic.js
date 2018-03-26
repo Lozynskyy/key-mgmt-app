@@ -21,4 +21,4 @@ const createUserLogic = createLogic({
     }
 });
 
-export default [createUserLogic];
+export default createUserLogic;

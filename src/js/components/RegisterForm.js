@@ -1,22 +1,8 @@
 import React from "react";
 import {reduxForm,Field} from "redux-form";
-import {Button,Alert} from "react-bootstrap";
-
-const required = value => value ? undefined : "Required";
-const maxLength = max => value =>
-    value && value.length > max ? `Must be ${max} characters or less` : undefined;
-const max_length = maxLength(20);
-
-const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
-    <div  className="vvp-input">
-        <label>{label}</label>
-        <div>
-            <input className="form-control" {...input} placeholder={label} type={type}/>
-            {touched && ((error && <Alert bsStyle="danger" className="vvp-input__error-msg">{error}</Alert>) || (warning && <Alert bsStyle="warning" className="vvp-input__warning-msg">{warning}</Alert>))}
-        </div>
-    </div>
-);
-
+import {Button} from "react-bootstrap";
+import {required,max_length} from "../validation/user";
+import {renderField} from "./renderInputs";
 
 class RegisterForm extends React.Component{
 

@@ -25,4 +25,4 @@ const deleteEmployeeLogic = createLogic({
     }
 });
 
-export default [deleteEmployeeLogic];
+export default deleteEmployeeLogic;

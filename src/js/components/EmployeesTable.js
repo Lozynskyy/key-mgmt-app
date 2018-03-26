@@ -4,15 +4,16 @@ import { connect } from "react-redux";
 import { Pagination } from "react-bootstrap";
 import { push } from "react-router-redux";
 import AddEmployee from "./PopUps/EmployeeSubmit";
-import {Button,Modal} from "react-bootstrap";
 import {deleteEmployee, getEmployeesData, updateEmployee} from "../actions/employee";
 import EmployeeForm from "./PopUps/EmployeeForm";
 import queryString from "query-string";
 import { buildQueryString } from "../utilities/url";
 import DeleteModal from "./PopUps/DeleteModal";
 import {initialize} from "redux-form";
-
-class EmplyeesTable extends React.Component{
+import UpdateModal from "./PopUps/UpdateModal";
+import SearchEmployee from "./SearchEmployee";
+import {Button} from "react-bootstrap";
+class EmployeesTable extends React.Component{
 
     constructor(props){
         super(props);
@@ -20,6 +21,7 @@ class EmplyeesTable extends React.Component{
             showModalDelEmpl: false,
             showModalUpdateEmpl: false,
             currentId: null,
+            findEmployee:""
         };
         this.changePage = this.changePage.bind(this);
         this.showDeleteEmployeeModal=this.showDeleteEmployeeModal.bind(this);
@@ -27,10 +29,12 @@ class EmplyeesTable extends React.Component{
         this.showUpdateEmployeeModal=this.showUpdateEmployeeModal.bind(this);
         this.changePage = this.changePage.bind(this);
         this.changeEmployee=this.changeEmployee.bind(this);
-        this.closeModal = this.closeModal.bind(this);
+        this.closeDeleteModal = this.closeDeleteModal.bind(this);
+        this.closeUpdateModal=this.closeUpdateModal.bind(this);
+        this.findEmployee=this.findEmployee.bind(this);
     }
 
-    closeModal(hide) {
+    closeDeleteModal(hide) {
         this.setState({
             showModalDelEmpl: hide
         });
@@ -65,9 +69,16 @@ class EmplyeesTable extends React.Component{
             showModalUpdateEmpl:true
         });
     }
-
+    closeUpdateModal(show){
+        this.setState({
+            showModalUpdateEmpl:show
+        });
+    }
     componentDidMount() {
         this.props.getAllEmployeesData();
+    }
+    findEmployee(data){
+        this.props.getAllEmployeesData(data.toFind);
     }
     changePage(pageNumber){
         const url = buildQueryString(pageNumber, "employeesPage", this.props.location.search);
@@ -90,6 +101,8 @@ class EmplyeesTable extends React.Component{
         return(
             <div>
                 <AddEmployee/>
+                <SearchEmployee onSubmit={this.findEmployee}/>
+                <Button onClick={()=>this.props.getAllEmployeesData()}>All Employees</Button>
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
@@ -117,18 +130,9 @@ class EmplyeesTable extends React.Component{
                 <Pagination className="employees-pagination pull-right" bsSize="medium">
                     {this.renderPages(pages)}
                 </Pagination>
-                <DeleteModal show={this.state.showModalDelEmpl} name="employee" closeModal={this.closeModal} delete={this.removeEmployee}/>
-                <Modal show={this.state.showModalUpdateEmpl}>
-                    <Modal.Header>
-                        <Modal.Title>Update employee</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <EmployeeForm onSubmit={this.changeEmployee} employee={this.state.employee}/>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button type="button" bsSize="large" onClick={()=>this.setState({showModalUpdateEmpl:false})}>Close</Button>
-                    </Modal.Footer>
-                </Modal>
+                <DeleteModal show={this.state.showModalDelEmpl} name="employee" closeModal={this.closeDeleteModal} delete={this.removeEmployee}/>
+                <UpdateModal name="employee" show={this.state.showModalUpdateEmpl} closeModal={this.closeUpdateModal} form={<EmployeeForm onSubmit={this.changeEmployee}/>}/>
+
             </div>
         );
     }
@@ -149,8 +153,8 @@ function mapDispatchToProps(dispatch){
         delEmployee(id){
             dispatch(deleteEmployee(id));
         },
-        getAllEmployeesData(){
-            dispatch(getEmployeesData());
+        getAllEmployeesData(filter){
+            dispatch(getEmployeesData(filter));
         },
         updateEmployee(id,data){
             dispatch(updateEmployee(id,data));
@@ -164,4 +168,4 @@ function mapDispatchToProps(dispatch){
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmplyeesTable);
+export default connect(mapStateToProps, mapDispatchToProps)(EmployeesTable);

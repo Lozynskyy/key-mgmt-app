@@ -5,8 +5,12 @@ import {getRequest} from "../fetch/request";
 const getLocksDataLogic = createLogic({
     type: FETCH_LOCKS,
     latest: true,
-    process(_, dispatch, done) {
-        getRequest("locks").then((locksArr) => {
+    process({action}, dispatch, done) {
+        let filter = action.filter || "";
+        if(filter){
+            filter="?filter="+action.filter;
+        }
+        getRequest(`locks${filter}`).then((locksArr) => {
             dispatch({
                 type: FETCH_LOCKS_SUCCESS,
                 payload: locksArr
@@ -21,7 +25,8 @@ const getLocksDataLogic = createLogic({
                 });
                 done();
             });
+
     }
 });
 
-export default [getLocksDataLogic];
+export default getLocksDataLogic;

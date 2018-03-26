@@ -24,4 +24,4 @@ const getEmployeeLogic = createLogic({
     }
 });
 
-export default [getEmployeeLogic];
+export default getEmployeeLogic;

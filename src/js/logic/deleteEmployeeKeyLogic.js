@@ -12,7 +12,8 @@ const deleteEmployeeKeyLogic = createLogic({
                 type: DELETE_EMPLOYEE_KEY_SUCCESS
             });
             dispatch({
-                type: FETCH_EMPLOYEE_KEYS
+                type: FETCH_EMPLOYEE_KEYS,
+                id:action.idEmpl
             });
             done();
         })
@@ -25,4 +26,4 @@ const deleteEmployeeKeyLogic = createLogic({
     }
 });
 
-export default [deleteEmployeeKeyLogic];
+export default deleteEmployeeKeyLogic;

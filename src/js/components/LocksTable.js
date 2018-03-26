@@ -8,9 +8,13 @@ import {getLocksData} from "../actions/lock";
 import { buildQueryString } from "../utilities/url";
 import {deleteLock} from "../actions/lock";
 import AddLock from "./LockSubmit";
-import LockForm from "./LockForm";
-import {updateLock} from "../actions/updateLock";
+import {updateLock} from "../actions/lock";
 import DeleteModal from "./PopUps/DeleteModal";
+import SearchLock from "./SearchLock";
+import {Button} from "react-bootstrap";
+import UpdateModal from "./PopUps/UpdateModal";
+import LockForm from "./LockForm";
+import {initialize} from "redux-form";
 
 class LocksTable extends React.Component{
     constructor(props){
@@ -20,23 +24,28 @@ class LocksTable extends React.Component{
             showUpLockModal:false,
             currentLock:null
         };
-        this.submit = this.submit.bind(this);
+        this.lockUpdate = this.lockUpdate.bind(this);
         this.changePage = this.changePage.bind(this);
         this.showDeleteLockModal = this.showDeleteLockModal.bind(this);
         this.showUpdateLockModal = this.showUpdateLockModal.bind(this);
         this.delLock = this.delLock.bind(this);
-        this.currentLockData = this.currentLockData.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.findLock=this.findLock.bind(this);
     }
 
     closeModal(hide) {
         this.setState({
-            showDelLockModal: hide
+            showDelLockModal: hide,
+            showUpLockModal: hide
         });
     }
 
-    submit(values){
-        this.props.updateLockData(this.state.currentLock, values);
+    lockUpdate(values){
+        const lock={
+            lock_name: values.lock_name,
+            lock_pass: values.lock_pass
+        };
+        this.props.updateLockData(values.id, lock);
         this.setState({showUpLockModal:false});
     }
 
@@ -56,21 +65,21 @@ class LocksTable extends React.Component{
         });
     }
 
-    showUpdateLockModal(id){
+    showUpdateLockModal(data){
+        this.props.initializeForm(data);
         this.setState({
             showUpLockModal:true,
-            currentLock:id
         });
-    }
-
-    currentLockData(){
-        return this.props.locks.find(lock => lock.id === this.state.currentLock);
     }
 
     delLock(){
         this.props.deleteThisLock(this.state.currentLock);
         this.setState({showDelLockModal:false});
         this.props.getAllLocksData();
+    }
+
+    findLock(data){
+        this.props.getAllLocksData(data.toFind);
     }
 
     renderPages(pages) {
@@ -90,6 +99,9 @@ class LocksTable extends React.Component{
         return(
             <div>
                 <AddLock/>
+                <SearchLock onSubmit={this.findLock}/>
+                <Button onClick={()=>this.props.getAllLocksData()}>Show all locks</Button>
+
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
@@ -106,7 +118,7 @@ class LocksTable extends React.Component{
                             if (index >= start_offset && start_count < per_page) {
                                 start_count ++;
                                 return(
-                                    <LocksListElement key={lock.id} lock={lock} deleteLock={this.showDeleteLockModal} updateLock={this.showUpdateLockModal}/>
+                                    <LocksListElement key={lock.id} lock={lock}  deleteLock={this.showDeleteLockModal} updateLock={this.showUpdateLockModal}/>
                                 );
                             }
                         })}
@@ -117,6 +129,7 @@ class LocksTable extends React.Component{
                 </Pagination>
 
                 <DeleteModal show={this.state.showDelLockModal} name="lock" closeModal={this.closeModal} delete={this.delLock}/>
+                <UpdateModal show={this.state.showUpLockModal} name="lock" closeModal={this.closeModal} form={<LockForm onSubmit={this.lockUpdate}/>}/>
             </div>
         );
     }
@@ -133,8 +146,8 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        getAllLocksData(){
-            dispatch(getLocksData());
+        getAllLocksData(filter){
+            dispatch(getLocksData(filter));
         },
         deleteThisLock(id){
             dispatch(deleteLock(id));
@@ -144,6 +157,9 @@ function mapDispatchToProps(dispatch){
         },
         updateLockData(id, values){
             dispatch(updateLock(id, values));
+        },
+        initializeForm(data){
+            dispatch(initialize("AddUpdateLock", data));
         }
     };
 }

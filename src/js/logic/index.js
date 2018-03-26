@@ -14,26 +14,30 @@ import deleteEmployeeKey from "./deleteEmployeeKeyLogic";
 import attachKeyToEmployee from "./attachKeyToEmployeeLogic";
 import deleteLockKey from "./deleteLockKeyLogic";
 import updateEmployeeKey from "./updateEmployeeKeyLogic";
-import updateLock from "../logic/updateLockLogic";
+import getReservedKeysForLock from "./getReservedKeysForLockLogic";
+import attachKeyToLock from "./attachKeyToLockLogic";
+import updateLock from "./updateLockLogic";
 
 const actions=[
-    ...loginUser,
-    ...createEmployee,
-    ...deleteEmployee,
-    ...getEmployeeKeys,
-    ...fetchEmployees,
-    ...fetchLocks,
-    ...deleteLock,
-    ...createLock,
-    ...getLockKeys,
-    ...updateEmployee,
-    ...getEmployee,
-    ...createUser,
-    ...deleteEmployeeKey,
-    ...attachKeyToEmployee,
-    ...deleteLockKey,
-    ...updateEmployeeKey,
-    ...updateLock
+    loginUser,
+    createEmployee,
+    deleteEmployee,
+    getEmployeeKeys,
+    fetchEmployees,
+    fetchLocks,
+    deleteLock,
+    createLock,
+    getLockKeys,
+    updateEmployee,
+    getEmployee,
+    createUser,
+    deleteEmployeeKey,
+    attachKeyToEmployee,
+    deleteLockKey,
+    updateEmployeeKey,
+    getReservedKeysForLock,
+    attachKeyToLock,
+    updateLock
 ];
 
 export default actions;
