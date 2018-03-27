@@ -22,7 +22,8 @@ class LocksTable extends React.Component{
         this.state = {
             showDelLockModal:false,
             showUpLockModal:false,
-            currentLock:null
+            currentLock:null,
+            displayShowAllBtn:"allEmployeeBtn--hide"
         };
         this.lockUpdate = this.lockUpdate.bind(this);
         this.changePage = this.changePage.bind(this);
@@ -80,6 +81,9 @@ class LocksTable extends React.Component{
 
     findLock(data){
         this.props.getAllLocksData(data.toFind);
+        this.setState({
+            displayShowAllBtn:""
+        });
     }
 
     renderPages(pages) {
@@ -100,7 +104,7 @@ class LocksTable extends React.Component{
             <div>
                 <AddLock/>
                 <SearchLock onSubmit={this.findLock}/>
-                <Button onClick={()=>this.props.getAllLocksData()}>Show all locks</Button>
+                <Button className={this.state.displayShowAllBtn} onClick={()=>{this.setState({displayShowAllBtn:"allEmployeeBtn--hide"}); this.props.getAllLocksData()}}>Show all locks</Button>
 
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
