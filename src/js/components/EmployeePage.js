@@ -26,7 +26,7 @@ class EmployeePage extends React.Component{
             showModalDelKey:false,
             showModalUpdateKey:false,
             idKeyEmployeeRelationship:null,
-            newKey:null
+            newKeys:[]
         };
     }
     componentDidMount(){
@@ -45,10 +45,11 @@ class EmployeePage extends React.Component{
         };
 
         socket.onmessage = (event) => {
-            console.log(event.data);
             const data=JSON.parse(event.data);
+            let keys=this.state.newKeys;
+            keys.push(data.payload);
             this.setState({
-                newKey:data.payload
+                newKeys:keys
             });
         };
 
@@ -61,11 +62,12 @@ class EmployeePage extends React.Component{
             showModalDelKey: hide
         });
     }
-
+    componentWillUnmount(){
+        const socket = new WebSocket(websocketKeyEndpoint);
+        socket.close();
+    }
     showNewKey(){
-        if(this.state.newKey) {
-            return <NewKey addKey={this.attachKey} data={this.state.newKey}/>;
-        }
+        return this.state.newKeys.map((key) => {return <NewKey key={key.id} addKey={this.attachKey} data={key}/>;});
     }
     showEmployeeName(){
         if(this.props.employee.name) {
@@ -105,8 +107,14 @@ class EmployeePage extends React.Component{
     attachKey(data){
         if(data.description && data.description.length<=50){
             this.props.addKeyToEmpl(this.props.match.params.id,data);
+            let keysArr=this.state.newKeys.filter((key)=>{
+                if(key.id!==data.rkey){
+                    return key;
+                }
+            });
+
             this.setState({
-                newKey:null
+                newKeys:keysArr
             });
         }
         else if(data.description && data.description.length>50){
