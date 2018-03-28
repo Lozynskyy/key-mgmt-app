@@ -84,14 +84,9 @@ class LockPage extends React.Component{
 }
 
 function mapStateToProps(state) {
-    const keys = state.lockKeys.keys.map(item => {
-        return {
-            id: item.key.id
-        };
-    });
     return{
         keys: state.lockKeys.keys,
-        reservedKeys: state.reservedKeysForLock.keys.filter(key => keys.findIndex(item => item.id === key.id) < 0)
+        reservedKeys: state.reservedKeysForLock.keys.filter(key => state.lockKeys.keys.findIndex(item => item.key.id === key.id) < 0)
     };
 }
 function mapDispatchToProps(dispatch) {

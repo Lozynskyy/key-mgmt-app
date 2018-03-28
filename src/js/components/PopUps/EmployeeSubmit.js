@@ -43,9 +43,8 @@ class AddEmployee extends React.Component {
     }
 }
 
-function mapStateToProps() {
-    return{
-
+function mapStateToProps(){
+    return {
     };
 }
 
