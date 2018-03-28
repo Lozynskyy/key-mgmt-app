@@ -32,19 +32,19 @@ class EmployeePage extends React.Component{
     componentDidMount(){
         this.props.getEmployee(this.props.match.params.id);
         this.props.fetchEmployeeKeys(this.props.match.params.id);
-        const socket = new WebSocket(websocketKeyEndpoint);
-        socket.onopen = function() {
+        this.socket = new WebSocket(websocketKeyEndpoint);
+        this.socket.onopen = function() {
             console.log("Соединение установлено.");
         };
 
-        socket.onclose = function(event) {
+        this.socket.onclose = function(event) {
             if (!event.wasClean){
                 console.log("Обрыв соединения");
             }
             console.log("Код: " + event.code + " причина: " + event.reason);
         };
 
-        socket.onmessage = (event) => {
+        this.socket.onmessage = (event) => {
             const data=JSON.parse(event.data);
             let keys=this.state.newKeys;
             keys.push(data.payload);
@@ -53,7 +53,7 @@ class EmployeePage extends React.Component{
             });
         };
 
-        socket.onerror = function(error) {
+        this.socket.onerror = function(error) {
             console.log("Ошибка " + error.message);
         };
     }
@@ -63,8 +63,7 @@ class EmployeePage extends React.Component{
         });
     }
     componentWillUnmount(){
-        const socket = new WebSocket(websocketKeyEndpoint);
-        socket.close();
+        this.socket.close();
     }
     showNewKey(){
         return this.state.newKeys.map((key) => {return <NewKey key={key.id} addKey={this.attachKey} data={key}/>;});
