@@ -95,7 +95,7 @@ class LocksTable extends React.Component{
     }
     render()
     {
-        const per_page = 5;
+        const per_page = 10;
         const pages = Math.ceil(this.props.locks.length / per_page);
         const current_page = this.props.page;
         const start_offset = (current_page - 1) * per_page;
