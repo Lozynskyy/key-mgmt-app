@@ -12,7 +12,8 @@ const deleteLockKeyLogic = createLogic({
                 type: DELETE_LOCK_KEY_SUCCESS
             });
             dispatch({
-                type: FETCH_LOCK_KEYS
+                type: FETCH_LOCK_KEYS,
+                id: action.id
             });
             done();
         })

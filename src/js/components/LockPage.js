@@ -32,11 +32,11 @@ class LockPage extends React.Component{
         this.props.attachKeyToLock(this.props.match.params.id,{"key":id});
     }
     handleShow(data) {
-        this.setState({ show: true, id: data.key.id });
+        this.setState({ showDelKeyModal: true, id: data.key.id });
     }
     
     removeKey() {
-        this.setState({ show: false });
+        this.setState({ showDelKeyModal: false });
         this.props.deleteLockKey(this.props.match.params.id, this.state.id);
     }
 
@@ -67,14 +67,15 @@ class LockPage extends React.Component{
                                     </td>
                                 </tr>;
                             })}
+                            {this.props.reservedKeys.map((key) => {
+                                return <tr key={key.id}><td>#{key.id}</td><td>{key.tag}</td><td>{key.description}</td><td>{key.employee}</td>
+                                    <td className="action-column">
+                                        <Button bsStyle="primary" onClick={this.attachKeyToLock.bind(this,key.id)}>Add To lock</Button>
+                                    </td>
+                                </tr>;
+                            })}
                         </tbody>
                     </table>
-                    <ul>
-                        {this.props.reservedKeys.map((key) => {
-                            return <li key={key.id}>{key.id} {key.tag} <button onClick={this.attachKeyToLock.bind(this,key.id)}>Add To lock</button></li>;
-                        })}
-                    </ul>
-
                     <DeleteModal show={this.state.showDelKeyModal} name="key" closeModal={this.closeModal} delete={this.removeKey}/>
                 </div>
             </div>
@@ -83,9 +84,14 @@ class LockPage extends React.Component{
 }
 
 function mapStateToProps(state) {
+    const keys = state.lockKeys.keys.map(item => {
+        return {
+            id: item.key.id
+        };
+    });
     return{
-        keys:state.lockKeys.keys,
-        reservedKeys:state.reservedKeysForLock.keys
+        keys: state.lockKeys.keys,
+        reservedKeys: state.reservedKeysForLock.keys.filter(key => keys.findIndex(item => item.id === key.id) < 0)
     };
 }
 function mapDispatchToProps(dispatch) {
