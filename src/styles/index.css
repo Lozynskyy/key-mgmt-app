@@ -34,3 +34,16 @@
     margin-bottom: 0;
     padding: 5px;
 }
+.vvp-config-icon:hover{
+    text-decoration: none;
+}
+
+.vvp-logout-icon{
+    width: 20px;
+    fill: #fff;
+}
+
+.vvp-logout-button{
+    display: block;
+    margin-left: auto;
+}
