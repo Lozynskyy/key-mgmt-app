@@ -45,9 +45,10 @@ class EmployeePage extends React.Component{
         };
 
         this.socket.onmessage = (event) => {
+            console.log(event.data);
             const data=JSON.parse(event.data);
             let keys=this.state.newKeys;
-            keys.push(data.payload);
+            keys.unshift(data.payload);
             this.setState({
                 newKeys:keys
             });
