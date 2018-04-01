@@ -1,14 +1,15 @@
 import React from "react";
 import NewKey from "./NewKey";
-import KeyListElement from "./KeyListElement";
+//import KeyListElement from "./KeyListElement";
 import {connect} from "react-redux";
-import {getEmployeeKeys, deleteEmployeeKey, attachKeyToEmployee, updateEmployeeKey} from "../actions/key";
+import {getEmployeeKeys, deleteEmployeeKey, attachKeyToEmployee, updateEmployeeKey, getLockKeys} from "../actions/key";
 import DeleteModal from "./PopUps/DeleteModal";
 import {getEmployee} from "../actions/employee";
 import {websocketKeyEndpoint} from "../config";
 import KeyForm from "./KeyForm";
 import {initialize} from "redux-form";
 import UpdateModal from "./PopUps/UpdateModal";
+import {getLocksData} from "../actions/lock";
 
 class EmployeePage extends React.Component{
     constructor(){
@@ -32,6 +33,7 @@ class EmployeePage extends React.Component{
     componentDidMount(){
         this.props.getEmployee(this.props.match.params.id);
         this.props.fetchEmployeeKeys(this.props.match.params.id);
+        this.props.getLocksData();
         this.socket = new WebSocket(websocketKeyEndpoint);
         this.socket.onopen = function() {
             console.log("Соединение установлено.");
@@ -129,7 +131,7 @@ class EmployeePage extends React.Component{
         return(
             <div>
                 <h3>{this.showEmployeeName()}</h3>
-                <table className="table table-bordered table-hover table-striped">
+                {/*                <table className="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
                             <th colSpan="4">Keys</th>
@@ -144,6 +146,27 @@ class EmployeePage extends React.Component{
                     <tbody>
                         {this.props.keys.map((key)=>{
                             return <KeyListElement key={key.id} data={key} updateKey={this.showUpdateKeyModal} deleteKey={this.showDeleteKeyModal}/>;
+                        })}
+                    </tbody>
+                </table>*/}
+                <table className="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Lock name</th>
+                            {this.props.keys.map((key) => {
+                                return <th key={key.id}>{key.rkey.id}</th>;
+                            })}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.props.locks.map((lock) => {
+                            this.props.getLockKeys(lock.id);
+                            return <tr>
+                                <td>{lock.lock_name}</td>
+                                {this.props.lockKeys.map(key =>{
+                                    return <td>{key}</td>;
+                                })}
+                            </tr>;
                         })}
                     </tbody>
                 </table>
@@ -167,7 +190,9 @@ class EmployeePage extends React.Component{
 function mapStateToProps(state) {
     return{
         keys:state.employeeKeys.data,
-        employee:state.employee.data
+        employee:state.employee.data,
+        locks:state.locks.data,
+        lockKeys:state.lockKeys.keys
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -189,6 +214,12 @@ function mapDispatchToProps(dispatch) {
         },
         updateEmployeeKey(idEmployee,idKey,description){
             dispatch(updateEmployeeKey(idEmployee,idKey,description));
+        },
+        getLocksData(){
+            dispatch(getLocksData());
+        },
+        getLockKeys(id){
+            dispatch(getLockKeys(id));
         }
     };
 }

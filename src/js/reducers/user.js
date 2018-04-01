@@ -19,8 +19,7 @@ export default function (state=initialState, action) {
             ...state,
             loading:false,
             loaded:true,
-            token:action.payload,
-            isSignedIn:true
+            token:action.payload
         };
 
     case  LOGIN_USER_FAILURE:

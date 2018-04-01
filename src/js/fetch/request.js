@@ -1,6 +1,6 @@
 import {API_HOST} from "../config";
 
-export const request = (url,method,data) => {
+const request = (url,method,data) => {
     let headers;
     if(data){
         headers={
