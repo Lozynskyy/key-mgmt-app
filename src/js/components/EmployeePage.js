@@ -48,7 +48,7 @@ class EmployeePage extends React.Component{
             if (!event.wasClean){
                 console.log("Обрыв соединения");
             }
-            if(event.code===1000){
+            if(event.code===1006){
                 this.socket = new WebSocket(websocketKeyEndpoint);
             }
             console.log("Код: " + event.code + " причина: " + event.reason);
