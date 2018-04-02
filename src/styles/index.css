@@ -34,6 +34,10 @@
     margin-bottom: 0;
     padding: 5px;
 }
+
+.allEmployeeBtn--hide {
+    display: none;
+}
 .vvp-config-icon:hover{
     text-decoration: none;
 }
@@ -46,4 +50,11 @@
 .vvp-logout-button{
     display: block;
     margin-left: auto;
+}
+
+.spinner{
+    position: fixed;
+    top:50%;
+    right: 50%;
+    z-index: 111;
 }

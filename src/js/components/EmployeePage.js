@@ -2,13 +2,17 @@ import React from "react";
 import NewKey from "./NewKey";
 import KeyListElement from "./KeyListElement";
 import {connect} from "react-redux";
-import {getEmployeeKeys, deleteEmployeeKey, attachKeyToEmployee, updateEmployeeKey} from "../actions/key";
+import {
+    getEmployeeKeys, deleteEmployeeKey, attachKeyToEmployee, updateEmployeeKey, getLockKeys,
+    getUnreservedKeys
+} from "../actions/key";
 import DeleteModal from "./PopUps/DeleteModal";
 import {getEmployee} from "../actions/employee";
 import {websocketKeyEndpoint} from "../config";
 import KeyForm from "./KeyForm";
 import {initialize} from "redux-form";
 import UpdateModal from "./PopUps/UpdateModal";
+import {getLocksData} from "../actions/lock";
 
 class EmployeePage extends React.Component{
     constructor(){
@@ -19,40 +23,48 @@ class EmployeePage extends React.Component{
         this.attachKey=this.attachKey.bind(this);
         this.closeDeleteModal = this.closeDeleteModal.bind(this);
         this.closeUpdateKeyModal=this.closeUpdateKeyModal.bind(this);
-        this.showNewKey=this.showNewKey.bind(this);
+        this.showNewKeyWebsocket=this.showNewKeyWebsocket.bind(this);
+        this.showNewKeyDB=this.showNewKeyDB.bind(this);
         this.showUpdateKeyModal=this.showUpdateKeyModal.bind(this);
         this.updateKey=this.updateKey.bind(this);
         this.state={
             showModalDelKey:false,
             showModalUpdateKey:false,
             idKeyEmployeeRelationship:null,
-            newKey:null
+            newKeys:[]
         };
     }
     componentDidMount(){
         this.props.getEmployee(this.props.match.params.id);
         this.props.fetchEmployeeKeys(this.props.match.params.id);
-        const socket = new WebSocket(websocketKeyEndpoint);
-        socket.onopen = function() {
+        this.props.getUnreservedKeys();
+        this.props.getLocksData();
+        this.socket = new WebSocket(websocketKeyEndpoint);
+        this.socket.onopen = function() {
             console.log("Соединение установлено.");
         };
 
-        socket.onclose = function(event) {
+        this.socket.onclose = function(event) {
             if (!event.wasClean){
                 console.log("Обрыв соединения");
+            }
+            if(event.code===1006){
+                this.socket = new WebSocket(websocketKeyEndpoint);
             }
             console.log("Код: " + event.code + " причина: " + event.reason);
         };
 
-        socket.onmessage = (event) => {
+        this.socket.onmessage = (event) => {
             console.log(event.data);
             const data=JSON.parse(event.data);
+            let keys=this.state.newKeys;
+            keys.unshift(data.payload);
             this.setState({
-                newKey:data.payload
+                newKeys:keys
             });
         };
 
-        socket.onerror = function(error) {
+        this.socket.onerror = function(error) {
             console.log("Ошибка " + error.message);
         };
     }
@@ -61,11 +73,14 @@ class EmployeePage extends React.Component{
             showModalDelKey: hide
         });
     }
-
-    showNewKey(){
-        if(this.state.newKey) {
-            return <NewKey addKey={this.attachKey} data={this.state.newKey}/>;
-        }
+    componentWillUnmount(){
+        this.socket.close();
+    }
+    showNewKeyWebsocket(){
+        return this.state.newKeys.map((key) => {return <NewKey key={key.id} addKey={this.attachKey} data={key}/>;});
+    }
+    showNewKeyDB(){
+        return this.props.unreservedKeys.map(key => {return <NewKey key={key.id} addKey={this.attachKey} data={key}/>;});
     }
     showEmployeeName(){
         if(this.props.employee.name) {
@@ -105,8 +120,14 @@ class EmployeePage extends React.Component{
     attachKey(data){
         if(data.description && data.description.length<=50){
             this.props.addKeyToEmpl(this.props.match.params.id,data);
+            let keysArr=this.state.newKeys.filter((key)=>{
+                if(key.id!==data.rkey){
+                    return key;
+                }
+            });
+
             this.setState({
-                newKey:null
+                newKeys:keysArr
             });
         }
         else if(data.description && data.description.length>50){
@@ -139,11 +160,14 @@ class EmployeePage extends React.Component{
                         })}
                     </tbody>
                 </table>
+
                 <div className="vvp-new-keys__wrap">
                     <div className="row vvp-grid">
                         <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10">
 
-                            {this.showNewKey()}
+                            {this.showNewKeyWebsocket()}
+
+                            {this.showNewKeyDB()}
 
                         </div>
                     </div>
@@ -159,7 +183,10 @@ class EmployeePage extends React.Component{
 function mapStateToProps(state) {
     return{
         keys:state.employeeKeys.data,
-        employee:state.employee.data
+        employee:state.employee.data,
+        locks:state.locks.data,
+        lockKeys:state.lockKeys.keys,
+        unreservedKeys:state.unreservedKeys.keys
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -181,6 +208,15 @@ function mapDispatchToProps(dispatch) {
         },
         updateEmployeeKey(idEmployee,idKey,description){
             dispatch(updateEmployeeKey(idEmployee,idKey,description));
+        },
+        getLocksData(){
+            dispatch(getLocksData());
+        },
+        getLockKeys(id){
+            dispatch(getLockKeys(id));
+        },
+        getUnreservedKeys(){
+            dispatch(getUnreservedKeys());
         }
     };
 }

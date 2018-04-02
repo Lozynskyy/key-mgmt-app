@@ -8,8 +8,8 @@ import user from "./user";
 import { reducer as formReducer } from "redux-form";
 import employee from "./employee";
 import reservedKeysForLock from "./reservedKeysForLock";
-
-
+import lockConfig from "./lockConfig";
+import unreservedKeys from "./unreservedKeys";
 const allReducers=combineReducers({
     employees: employees,
     locks: locks,
@@ -20,6 +20,8 @@ const allReducers=combineReducers({
     reservedKeysForLock,
     routing: routerReducer,
     form: formReducer,
+    lockConfig,
+    unreservedKeys
 });
 
 export default allReducers;

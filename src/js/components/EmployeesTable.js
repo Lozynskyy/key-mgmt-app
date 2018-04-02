@@ -21,7 +21,8 @@ class EmployeesTable extends React.Component{
             showModalDelEmpl: false,
             showModalUpdateEmpl: false,
             currentId: null,
-            findEmployee:""
+            findEmployee:"",
+            displayShowAllBtn:"allEmployeeBtn--hide"
         };
         this.changePage = this.changePage.bind(this);
         this.showDeleteEmployeeModal=this.showDeleteEmployeeModal.bind(this);
@@ -79,6 +80,9 @@ class EmployeesTable extends React.Component{
     }
     findEmployee(data){
         this.props.getAllEmployeesData(data.toFind);
+        this.setState({
+            displayShowAllBtn:""
+        });
     }
     changePage(pageNumber){
         const url = buildQueryString(pageNumber, "employeesPage", this.props.location.search);
@@ -102,7 +106,7 @@ class EmployeesTable extends React.Component{
             <div>
                 <AddEmployee/>
                 <SearchEmployee onSubmit={this.findEmployee}/>
-                <Button onClick={()=>this.props.getAllEmployeesData()}>All Employees</Button>
+                <Button className={this.state.displayShowAllBtn} onClick={()=>{this.setState({displayShowAllBtn:"allEmployeeBtn--hide"}); this.props.getAllEmployeesData();}}>All Employees</Button>
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>

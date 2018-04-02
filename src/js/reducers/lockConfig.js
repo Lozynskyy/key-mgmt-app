@@ -1,33 +1,31 @@
-import {LOGIN_USER,LOGIN_USER_SUCCESS,LOGIN_USER_FAILURE} from "../constants/user";
+import {GET_LOCK_CONFIG,GET_LOCK_CONFIG_FAILURE,GET_LOCK_CONFIG_SUCCESS} from "../constants/lock";
 
 const initialState={
-    token:"",
+    data:null,
     loading:false,
-    loaded:false,
-    isSignedIn:false
+    loaded:false
 };
 
 export default function (state=initialState, action) {
     switch (action.type){
-    case LOGIN_USER:
+    case GET_LOCK_CONFIG:
         return {
             ...state,
             loading:true
         };
-    case LOGIN_USER_SUCCESS:
+    case GET_LOCK_CONFIG_SUCCESS:
         return{
             ...state,
             loading:false,
             loaded:true,
-            token:action.payload
+            data:action.payload
         };
-
-    case  LOGIN_USER_FAILURE:
-        return{
+    case  GET_LOCK_CONFIG_FAILURE:
+        return {
             ...state,
-            loading:false,
-            loaded:false,
-            token:""
+            loading: false,
+            loaded: false,
+            data: null
         };
     default:
         return state;
