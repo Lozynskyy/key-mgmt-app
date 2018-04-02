@@ -1,8 +1,11 @@
 import React from "react";
 import NewKey from "./NewKey";
-//import KeyListElement from "./KeyListElement";
+import KeyListElement from "./KeyListElement";
 import {connect} from "react-redux";
-import {getEmployeeKeys, deleteEmployeeKey, attachKeyToEmployee, updateEmployeeKey, getLockKeys} from "../actions/key";
+import {
+    getEmployeeKeys, deleteEmployeeKey, attachKeyToEmployee, updateEmployeeKey, getLockKeys,
+    getUnreservedKeys
+} from "../actions/key";
 import DeleteModal from "./PopUps/DeleteModal";
 import {getEmployee} from "../actions/employee";
 import {websocketKeyEndpoint} from "../config";
@@ -20,7 +23,8 @@ class EmployeePage extends React.Component{
         this.attachKey=this.attachKey.bind(this);
         this.closeDeleteModal = this.closeDeleteModal.bind(this);
         this.closeUpdateKeyModal=this.closeUpdateKeyModal.bind(this);
-        this.showNewKey=this.showNewKey.bind(this);
+        this.showNewKeyWebsocket=this.showNewKeyWebsocket.bind(this);
+        this.showNewKeyDB=this.showNewKeyDB.bind(this);
         this.showUpdateKeyModal=this.showUpdateKeyModal.bind(this);
         this.updateKey=this.updateKey.bind(this);
         this.state={
@@ -33,6 +37,7 @@ class EmployeePage extends React.Component{
     componentDidMount(){
         this.props.getEmployee(this.props.match.params.id);
         this.props.fetchEmployeeKeys(this.props.match.params.id);
+        this.props.getUnreservedKeys();
         this.props.getLocksData();
         this.socket = new WebSocket(websocketKeyEndpoint);
         this.socket.onopen = function() {
@@ -42,6 +47,9 @@ class EmployeePage extends React.Component{
         this.socket.onclose = function(event) {
             if (!event.wasClean){
                 console.log("Обрыв соединения");
+            }
+            if(event.code===1006){
+                this.socket = new WebSocket(websocketKeyEndpoint);
             }
             console.log("Код: " + event.code + " причина: " + event.reason);
         };
@@ -68,8 +76,11 @@ class EmployeePage extends React.Component{
     componentWillUnmount(){
         this.socket.close();
     }
-    showNewKey(){
+    showNewKeyWebsocket(){
         return this.state.newKeys.map((key) => {return <NewKey key={key.id} addKey={this.attachKey} data={key}/>;});
+    }
+    showNewKeyDB(){
+        return this.props.unreservedKeys.map(key => {return <NewKey key={key.id} addKey={this.attachKey} data={key}/>;});
     }
     showEmployeeName(){
         if(this.props.employee.name) {
@@ -131,7 +142,7 @@ class EmployeePage extends React.Component{
         return(
             <div>
                 <h3>{this.showEmployeeName()}</h3>
-                {/*                <table className="table table-bordered table-hover table-striped">
+                <table className="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
                             <th colSpan="4">Keys</th>
@@ -148,33 +159,15 @@ class EmployeePage extends React.Component{
                             return <KeyListElement key={key.id} data={key} updateKey={this.showUpdateKeyModal} deleteKey={this.showDeleteKeyModal}/>;
                         })}
                     </tbody>
-                </table>*/}
-                <table className="table table-bordered table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <th>Lock name</th>
-                            {this.props.keys.map((key) => {
-                                return <th key={key.id}>{key.rkey.id}</th>;
-                            })}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.props.locks.map((lock) => {
-                            this.props.getLockKeys(lock.id);
-                            return <tr>
-                                <td>{lock.lock_name}</td>
-                                {this.props.lockKeys.map(key =>{
-                                    return <td>{key}</td>;
-                                })}
-                            </tr>;
-                        })}
-                    </tbody>
                 </table>
+
                 <div className="vvp-new-keys__wrap">
                     <div className="row vvp-grid">
                         <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10">
 
-                            {this.showNewKey()}
+                            {this.showNewKeyWebsocket()}
+
+                            {this.showNewKeyDB()}
 
                         </div>
                     </div>
@@ -192,7 +185,8 @@ function mapStateToProps(state) {
         keys:state.employeeKeys.data,
         employee:state.employee.data,
         locks:state.locks.data,
-        lockKeys:state.lockKeys.keys
+        lockKeys:state.lockKeys.keys,
+        unreservedKeys:state.unreservedKeys.keys
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -220,6 +214,9 @@ function mapDispatchToProps(dispatch) {
         },
         getLockKeys(id){
             dispatch(getLockKeys(id));
+        },
+        getUnreservedKeys(){
+            dispatch(getUnreservedKeys());
         }
     };
 }
