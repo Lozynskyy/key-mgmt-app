@@ -7,6 +7,7 @@ const attachKeyToEmployeeLogic = createLogic({
     type: ATTACH_KEY_TO_EMPLOYEE,
     latest: true,
     process({action}, dispatch, done) {
+        console.log(action);
         postRequest(`employees/${action.employeeID}/keys`, action.key).then(() => {
             dispatch({
                 type: ATTACH_KEY_TO_EMPLOYEE_SUCCESS

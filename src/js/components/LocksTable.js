@@ -4,11 +4,10 @@ import { connect } from "react-redux";
 import {Pagination} from "react-bootstrap";
 import {push} from "react-router-redux";
 import queryString from "query-string";
-import {getLocksData} from "../actions/lock";
+import {getLocksData,updateLock,getLockConfig} from "../actions/lock";
 import { buildQueryString } from "../utilities/url";
 import {deleteLock} from "../actions/lock";
 import AddLock from "./LockSubmit";
-import {updateLock} from "../actions/lock";
 import DeleteModal from "./PopUps/DeleteModal";
 import SearchLock from "./SearchLock";
 import {Button} from "react-bootstrap";
@@ -22,7 +21,8 @@ class LocksTable extends React.Component{
         this.state = {
             showDelLockModal:false,
             showUpLockModal:false,
-            currentLock:null
+            currentLock:null,
+            displayShowAllBtn:"allEmployeeBtn--hide"
         };
         this.lockUpdate = this.lockUpdate.bind(this);
         this.changePage = this.changePage.bind(this);
@@ -31,6 +31,7 @@ class LocksTable extends React.Component{
         this.delLock = this.delLock.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.findLock=this.findLock.bind(this);
+        this.formConfig=this.formConfig.bind(this);
     }
 
     closeModal(hide) {
@@ -80,8 +81,13 @@ class LocksTable extends React.Component{
 
     findLock(data){
         this.props.getAllLocksData(data.toFind);
+        this.setState({
+            displayShowAllBtn:""
+        });
     }
-
+    formConfig(id){
+        this.props.getLockConfig(id);
+    }
     renderPages(pages) {
         const result = [];
         for (let number = 1; number <= pages; number++) {
@@ -98,9 +104,10 @@ class LocksTable extends React.Component{
         let start_count = 0;
         return(
             <div>
+                {this.props.lockConfig}
                 <AddLock/>
                 <SearchLock onSubmit={this.findLock}/>
-                <Button onClick={()=>this.props.getAllLocksData()}>Show all locks</Button>
+                <Button className={this.state.displayShowAllBtn} onClick={()=>{this.setState({displayShowAllBtn:"allEmployeeBtn--hide"}); this.props.getAllLocksData();}}>Show all locks</Button>
 
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
@@ -118,7 +125,7 @@ class LocksTable extends React.Component{
                             if (index >= start_offset && start_count < per_page) {
                                 start_count ++;
                                 return(
-                                    <LocksListElement key={lock.id} lock={lock}  deleteLock={this.showDeleteLockModal} updateLock={this.showUpdateLockModal}/>
+                                    <LocksListElement key={lock.id} lock={lock} formConfig={this.formConfig} deleteLock={this.showDeleteLockModal} updateLock={this.showUpdateLockModal}/>
                                 );
                             }
                         })}
@@ -140,7 +147,8 @@ function mapStateToProps(state){
     return({
         locks: state.locks.data,
         page: Number(parsed.locksPage) || 1,
-        location: state.routing.location
+        location: state.routing.location,
+        lockConfig:state.lockConfig.data
     });
 }
 
@@ -160,6 +168,9 @@ function mapDispatchToProps(dispatch){
         },
         initializeForm(data){
             dispatch(initialize("AddUpdateLock", data));
+        },
+        getLockConfig(id){
+            dispatch(getLockConfig(id));
         }
     };
 }

@@ -1,4 +1,4 @@
-import {CREATE_LOCK, DELETE_LOCK, FETCH_LOCKS, UPDATE_LOCK} from "../constants/lock";
+import {CREATE_LOCK, DELETE_LOCK, FETCH_LOCKS, GET_LOCK_CONFIG, UPDATE_LOCK} from "../constants/lock";
 
 
 export const createLock = (values) => ({
@@ -20,4 +20,9 @@ export  const updateLock = (id,data) => ({
 export const getLocksData = (filter) => ({
     type: FETCH_LOCKS,
     filter
+});
+
+export const getLockConfig = (id) => ({
+    type:GET_LOCK_CONFIG,
+    id
 });

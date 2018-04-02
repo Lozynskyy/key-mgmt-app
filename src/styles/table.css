@@ -5,3 +5,8 @@
 .id-column {
     width: 70px;
 }
+
+.searchingInputsWrap{
+    display: flex;
+    flex-direction: column;
+}

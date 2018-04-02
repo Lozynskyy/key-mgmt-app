@@ -5,7 +5,7 @@ import {Modal,Button} from "react-bootstrap";
 import {connect} from "react-redux";
 import {createUser} from "../actions/user";
 import {login} from "../actions/user";
-
+import Spinner from "./Spinner";
 
 class StartPage extends React.Component{
     constructor(){
@@ -50,6 +50,9 @@ class StartPage extends React.Component{
                         <Button type="button" bsSize="small" onClick={()=>this.setState({showModal:false})}>Close</Button>
                     </Modal.Footer>
                 </Modal>
+
+                <Spinner show={this.props.loadingUser}/>
+
             </div>
         );
     }
@@ -57,7 +60,8 @@ class StartPage extends React.Component{
 
 function mapStateToProps(state){
     return {
-        token:state.token
+        token:state.token,
+        loadingUser:state.user.loading
     };
 }
 function mapDispatchToProps(dispatch){

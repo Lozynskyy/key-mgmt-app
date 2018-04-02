@@ -1,31 +1,32 @@
-import { FETCH_LOCK, FETCH_LOCK_FAILURE, FETCH_LOCK_SUCCESS } from "../constants";
+import {FETCH_UNRESERVED_KEYS,FETCH_UNRESERVED_KEYS_FAILURE,FETCH_UNRESERVED_KEYS_SUCCESS} from "../constants/key";
 
 const initialState={
-    data:{},
+    keys:[],
     loading:false,
-    loaded:false
+    loaded:false,
 };
 
 export default function (state=initialState, action) {
     switch (action.type){
-    case FETCH_LOCK:
+    case FETCH_UNRESERVED_KEYS:
         return {
             ...state,
             loading:true
         };
-    case FETCH_LOCK_SUCCESS:
+    case FETCH_UNRESERVED_KEYS_SUCCESS:
         return{
             ...state,
             loading:false,
             loaded:true,
-            data:action.payload
+            keys:action.payload
         };
-    case  FETCH_LOCK_FAILURE:
+
+    case  FETCH_UNRESERVED_KEYS_FAILURE:
         return{
             ...state,
             loading:false,
             loaded:false,
-            data:{}
+            keys:[]
         };
     default:
         return state;

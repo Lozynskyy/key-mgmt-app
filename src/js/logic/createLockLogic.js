@@ -7,7 +7,7 @@ const createLockLogic = createLogic({
     type: CREATE_LOCK,
     latest: true,
     process({action}, dispatch, done) {
-        postRequest("locks", action.values).then(() => {
+        postRequest("locks/try", action.values).then(() => {
             dispatch({
                 type: CREATE_LOCK_SUCCESS
             });
