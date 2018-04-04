@@ -104,9 +104,13 @@ class EmployeesTable extends React.Component{
         let start_count = 0;
         return(
             <div>
-                <AddEmployee/>
-                <SearchEmployee onSubmit={this.findEmployee}/>
-                <Button className={this.state.displayShowAllBtn} onClick={()=>{this.setState({displayShowAllBtn:"allEmployeeBtn--hide"}); this.props.getAllEmployeesData();}}>All Employees</Button>
+                <nav className="navbar navbar-default">
+                    <div className="container d-flex align-items-center">
+                        <AddEmployee/>
+                        <SearchEmployee onSubmit={this.findEmployee}/>
+                        <Button className={this.state.displayShowAllBtn} onClick={()=>{this.setState({displayShowAllBtn:"allEmployeeBtn--hide"}); this.props.getAllEmployeesData();}}>All Employees</Button>
+                    </div>
+                </nav>
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>

@@ -1,6 +1,6 @@
 import React from "react";
 import EmployeeForm from "./EmployeeForm";
-import {Button,Modal} from "react-bootstrap";
+import {Button,Modal, Navbar} from "react-bootstrap";
 import {connect} from "react-redux";
 import {createEmployee} from "../../actions/employee";
 
@@ -21,8 +21,9 @@ class AddEmployee extends React.Component {
     }
     render() {
         return (
-            <div>
-                <Button bsStyle="primary" bsSize="small" onClick={()=>this.setState({isShowModal:true})}>Add Employee</Button>
+
+            <Navbar.Header>
+                <Button bsStyle="primary" onClick={()=>this.setState({isShowModal:true})}><i className="glyphicon glyphicon-plus" /> Add Employee</Button>
                 <Modal show={this.state.isShowModal}>
                     <Modal.Header>
                         <Modal.Title>Create new employee</Modal.Title>
@@ -38,7 +39,8 @@ class AddEmployee extends React.Component {
                         <Button type="button" bsSize="large" onClick={()=>this.setState({isShowModal:false})}>Close</Button>
                     </Modal.Footer>
                 </Modal>
-            </div>
+            </Navbar.Header>
+
         );
     }
 }

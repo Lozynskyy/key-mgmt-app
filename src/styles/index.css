@@ -58,3 +58,11 @@
     right: 50%;
     z-index: 111;
 }
+
+.d-flex{
+    display: flex;
+}
+
+.align-items-center{
+    align-items: center;
+}
