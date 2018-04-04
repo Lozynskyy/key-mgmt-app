@@ -8,6 +8,7 @@ import "./styles/index.css";
 import "./styles/login.css";
 import "./styles/lockKeysTable.css";
 import "./styles/table.css";
+import "./styles/dashboard.css";
 import StartPage from "./js/components/StartPage";
 import Dashboard from "./js/components/Dashboard";
 import LockPage from "./js/components/LockPage";
