@@ -105,9 +105,13 @@ class LocksTable extends React.Component{
         return(
             <div>
                 {this.props.lockConfig}
-                <AddLock/>
-                <SearchLock onSubmit={this.findLock}/>
-                <Button className={this.state.displayShowAllBtn} onClick={()=>{this.setState({displayShowAllBtn:"allEmployeeBtn--hide"}); this.props.getAllLocksData();}}>Show all locks</Button>
+                <nav className="navbar navbar-default">
+                    <div className="container d-flex align-items-center">
+                        <AddLock/>
+                        <SearchLock onSubmit={this.findLock}/>
+                        <Button className={this.state.displayShowAllBtn} onClick={()=>{this.setState({displayShowAllBtn:"allEmployeeBtn--hide"}); this.props.getAllLocksData();}}>Show all locks</Button>
+                    </div>
+                </nav>
 
                 <table className="table table-bordered table-hover table-striped">
                     <thead>

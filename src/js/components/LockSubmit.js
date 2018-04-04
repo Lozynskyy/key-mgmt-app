@@ -1,6 +1,6 @@
 import React from "react";
 import LockForm from "./LockForm";
-import {Button,Modal} from "react-bootstrap";
+import {Button,Modal,Navbar} from "react-bootstrap";
 import {connect} from "react-redux";
 import {createLock} from "../actions/lock";
 
@@ -21,8 +21,8 @@ class AddLock extends React.Component {
     }
     render() {
         return (
-            <div>
-                <Button bsStyle="primary" bsSize="small" onClick={()=>this.setState({isShowModal:true})}>Add Lock</Button>
+            <Navbar.Header>
+                <Button bsStyle="primary" onClick={()=>this.setState({isShowModal:true})}><i className="glyphicon glyphicon-plus" /> Add Lock</Button>
                 <Modal show={this.state.isShowModal}>
                     <Modal.Header>
                         <Modal.Title>Create new lock</Modal.Title>
@@ -38,7 +38,7 @@ class AddLock extends React.Component {
                         <Button type="button" bsSize="large" onClick={()=>this.setState({isShowModal:false})}>Close</Button>
                     </Modal.Footer>
                 </Modal>
-            </div>
+            </Navbar.Header>
         );
     }
 }
