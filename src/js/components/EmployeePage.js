@@ -13,6 +13,7 @@ import KeyForm from "./KeyForm";
 import {initialize} from "redux-form";
 import UpdateModal from "./PopUps/UpdateModal";
 import {getLocksData} from "../actions/lock";
+import Header from "./Header";
 
 class EmployeePage extends React.Component{
     constructor(){
@@ -141,6 +142,7 @@ class EmployeePage extends React.Component{
 
         return(
             <div>
+                <Header homeButton={true}/>
                 <h3>{this.showEmployeeName()}</h3>
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
